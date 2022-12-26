@@ -90,6 +90,13 @@ const userController = {
             res.status(500).json(error)
         }
     },
+    // logout : async (req, res) => {
+    //     try {
+    //         res.clearCookie
+    //     } catch (error) {
+    //         res.status(200).json(error);
+    //     }
+    // },
     getAllUsers : async (req, res) => {
         try {
             const listUser = await userModel.find({}).exec();
