@@ -1,43 +1,23 @@
 import "./home.css";
-
+import axios from 'axios'
+import { useEffect, useState } from "react";
 const HomePage = () => {
-  //DUMMY DATA
-  const userData = [
-    {
-      username: "anhduy1202",
-    },
-    {
-      username: "kelly1234",
-    },
-    {
-      username: "danny5678",
-    },
-    {
-      username: "kenny1122",
-    },
-    {
-      username: "jack1234",
-    },
-    {
-      username: "loi1202",
-    },
-    {
-      username: "nhinhi2009",
-    },
-    {
-      username: "kellynguyen1122",
-    },
-    
-  ];
+  const [listProduct, setListProduct] = useState([]);
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getAllProducts`)
+        .then((res) => setListProduct(res.data))
+  },[])
   return (
     <main className="home-container">
       <div className="home-title">User List</div>
       <div className="home-userlist">
-        {userData.map((user) => {
+        {listProduct.map((item) => {
           return (
-            <div className="user-container">
-              <div className="home-user">{user.username}</div>
-              <div className="delete-user"> Delete </div>
+            <div>
+              <div className="home-user">{item.nameProduct}</div>
+              {/* <div className="home-user">{item.imgaeProduct}</div> */}
+              <img src={`${item.imgaeProduct}`} alt="" />
+              <div className="home-user">{item.quantity}</div>
             </div>
           );
         })}

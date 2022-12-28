@@ -40,7 +40,7 @@ const userController = {
             },
             process.env.JWT_ACCESS_KEY,
             {
-                expiresIn: "30s"
+                expiresIn: "30d"
             }
         )
     },
@@ -52,7 +52,7 @@ const userController = {
             },
             process.env.JWT_ACCESS_KEY,
             {
-                expiresIn: "30s"
+                expiresIn: "30d"
             }
         )
     },

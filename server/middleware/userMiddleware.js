@@ -16,8 +16,8 @@ const middlewareController = {
         else 
             res.status(401).json("you aren't authenticatied");
     },
-    verifyTokenFromAdmin : (req, res, next) => {
-        const token = req.headers.token;
+    verifyTokenFromAdmin : async (req, res, next) => {
+        const token = await req.headers.token;
         if(token) {
             const asccessToken = token.split(" ")[1];
             jwt.verify(asccessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
