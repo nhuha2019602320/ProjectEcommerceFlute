@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const userRouter = require('./router/userRouter');
 const productRouter = require('./router/productRouter');
+const categoryRouter = require('./router/categoryRouter');
 const cors = require('cors');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -23,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/user', userRouter);
 
 app.use('/api/product', productRouter)
+
+app.use('/api/category', categoryRouter)
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)
