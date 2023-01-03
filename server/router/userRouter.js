@@ -8,8 +8,8 @@ userRouter.post('/register', userController.creatUser)
 
 userRouter.post('/login', userController.loginUser);
 
-userRouter.get('/getAllUsers',userMiddleWare.verifyToken ,userController.getAllUsers);
-// userRouter.get('/getAllUsers' ,userController.getAllUsers);
+// userRouter.get('/getAllUsers',userMiddleWare.verifyToken ,userController.getAllUsers);
+userRouter.get('/getAllUsers' ,userController.getAllUsers);
 
 userRouter.get('/getOneUser', userController.getOneUser);
 
