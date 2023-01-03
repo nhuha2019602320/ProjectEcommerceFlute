@@ -22,3 +22,7 @@ export const registerAccout = async(user, dispatch) => {
         dispatch(registerFailed())
     }
 }
+
+// export const getAllUsers = async (users) => {
+//     try
+// }
