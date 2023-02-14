@@ -9,16 +9,18 @@ import AdminPage from "./Components/Admin/AdminPage";
 import Users from "./Components/pages/Users/index";
 import Products from "./Components/pages/Products/index"
 import Caterories from "./Components/pages/Caterories/index"
+import 'bootstrap/dist/js/bootstrap.js';
 function App() {
   return (
     <Router>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="App"> 
         <Routes>
-          {/* <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/homepage" element={<HomePage />} />
           <Route path="/login" element={ <Login />} />
-          <Route path="/register" element={<Register />} /> */}
-          <Route path="/" element={<AdminPage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/users" element={<Users />} />
           <Route path="/products" element={<Products />} />
           <Route path="/categories" element={<Caterories />} />

@@ -14,3 +14,15 @@
     color: RGB(136, 176, 75);
     transition: 0.8s;
 }
+.catalogList {
+    display: flex;
+    align-items: center;
+}
+
+
+
+@media only screen and (max-width: 375px) {
+    .menuManagement {
+      display: none;
+    }
+  }

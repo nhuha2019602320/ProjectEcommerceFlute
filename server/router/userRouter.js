@@ -13,7 +13,8 @@ userRouter.get('/getAllUsers' ,userController.getAllUsers);
 
 userRouter.get('/getOneUser', userController.getOneUser);
 
-userRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin  ,userController.deleteUser);
+// userRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin  ,userController.deleteUser);
+userRouter.delete('/:id' ,userController.deleteUser);
 
 userRouter.put('/:id', userController.editUser);
 
