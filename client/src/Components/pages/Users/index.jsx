@@ -4,8 +4,7 @@ import Table from "react-bootstrap/Table";
 import axios from "axios";
 import "./user.css";
 import Navigate from "../../Navigate/Navigate";
-import DeleteUser from "../../../services/user";
-import { useNavigate } from "react-router-dom";
+import { DeleteUser, EditUser } from "../../../services/user";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -15,34 +14,47 @@ const Index = () => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (id) => {
+    setShow(true);
+    console.log("idnay", id);
+    localStorage.setItem("idUser", id);
+  };
 
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumberone, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-
-  const handleDelete = (e, id, navigate) => {
+  const handleDelete = (e, id, index, navigate) => {
     e.preventDefault();
     console.log(id);
     DeleteUser(id.toString(), navigate);
+    setUsers(users.filter((o, i) => index !== i));
   };
 
   const handleEditUser = () => {
-    console.log(userName, email, phone, password, confirmPassword);
-    let formData = new FormData();
-    formData.append("userName", userName);
-    formData.append("email", email);
-    // formData.append("password", password);
-    formData.append("phoneNumber", phone)
-    const config = {
-      headers: { "content-type": "multipart/form-data" },
-    };
+    const idUser = localStorage.getItem("idUser");
+    if (
+      userName === "" ||
+      email === "" ||
+      password === "" ||
+      password !== confirmPassword
+    ) {
+      alert("Vui lòng kiểm tra lại thông tin");
+    } else {
+      const editUser = {
+        userName: userName,
+        email: email,
+        password: password,
+        phoneNumber: phoneNumberone,
+      };
 
-    axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/63e9394017707cc8763ec45c`)
+      EditUser(idUser, editUser);
+      localStorage.clear();
+    }
   };
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getAllUsers`)
@@ -85,7 +97,7 @@ const Index = () => {
                 <td>
                   <button
                     className="handleBtn"
-                    onClick={(e) => handleDelete(e, user._id)}
+                    onClick={(e) => handleDelete(e, user._id, index)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +110,10 @@ const Index = () => {
                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                     </svg>
                   </button>
-                  <button className="handleBtn" onClick={handleShow}>
+                  <button
+                    className="handleBtn"
+                    onClick={() => handleShow(user._id)}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="14"
@@ -134,7 +149,10 @@ const Index = () => {
             <label>Email</label>
             <input type="email" onChange={(e) => setEmail(e.target.value)} />
             <label htmlFor="">Số điện thoại</label>
-            <input type="text" onChange={(e) => setPhone(e.target.value)} />
+            <input
+              type="text"
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
             <label htmlFor="">Mật khẩu</label>
             <input
               type="password"

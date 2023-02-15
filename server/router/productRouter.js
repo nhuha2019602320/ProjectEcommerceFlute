@@ -11,7 +11,8 @@ productRouter.get('/getProduct', productController.getProduct);
 
 productRouter.get('/getAllProducts', productController.getAllProducts);
 
-productRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin,  productController.deleteProduct);
+// productRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin,  productController.deleteProduct);
+productRouter.delete('/:id', productController.deleteProduct);
 
 productRouter.put('/:id',userMiddleWare.verifyTokenFromAdmin,  productController.editProduct);
 
