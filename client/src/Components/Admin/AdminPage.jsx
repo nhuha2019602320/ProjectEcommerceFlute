@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import {useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import NavBar from "../NavBar/NavBar";
 
 const AdminPage = () => {
   const [token, setToken] = useState("");

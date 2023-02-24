@@ -4,7 +4,6 @@ import HomePage from "./Components/Home/HomePage";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
-import NavBar from "./Components/NavBar/NavBar";
 import AdminPage from "./Components/Admin/AdminPage";
 import Users from "./Components/pages/Users/index";
 import Products from "./Components/pages/Products/index";
