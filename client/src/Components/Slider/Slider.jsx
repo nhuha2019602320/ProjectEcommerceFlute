@@ -10,19 +10,19 @@ export default function Slider() {
       <MDBCarouselItem
         className='w-100 d-block'
         itemId={1}
-        src='https://mdbootstrap.com/img/new/slides/041.jpg'
+        src='https://res.cloudinary.com/uploadimgvvv/image/upload/v1677342449/phk33nv5gwrcogbhe9zz.png'
         alt='...'
       />
       <MDBCarouselItem
         className='w-100 d-block'
         itemId={2}
-        src='https://mdbootstrap.com/img/new/slides/042.jpg'
+        src='https://res.cloudinary.com/uploadimgvvv/image/upload/v1677341859/fxbbgsatycizvuys7z4g.png'
         alt='...'
       />
       <MDBCarouselItem
         className='w-100 d-block'
         itemId={3}
-        src='https://mdbootstrap.com/img/new/slides/043.jpg'
+        src='https://res.cloudinary.com/uploadimgvvv/image/upload/v1677342449/phk33nv5gwrcogbhe9zz.png'
         alt='...'
       />
     </MDBCarousel>

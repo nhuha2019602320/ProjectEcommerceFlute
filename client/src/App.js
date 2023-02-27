@@ -10,6 +10,8 @@ import Products from "./Components/pages/Products/index";
 import Caterories from "./Components/pages/Caterories/index";
 import "bootstrap/dist/js/bootstrap.js";
 import { useSelector } from "react-redux";
+import Introduction from "./Components/Introduction/Introduction";
+import Cart from "./Components/Cart/Cart";
 
 function App() {
   const { login } = useSelector((state) => state.auth);
@@ -19,6 +21,7 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/cart" element={<Cart />} />
 
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/login" element={<Login />} />
@@ -27,6 +30,8 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/products" element={<Products />} />
           <Route path="/categories" element={<Caterories />} />
+          <Route path="/introduction" element={<Introduction />} />
+
         </Routes>
       </div>
     </Router>

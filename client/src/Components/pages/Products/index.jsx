@@ -8,6 +8,7 @@ import CreateProduct from "./CreateProduct";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import NavBar from "../../NavBar/NavBar";
+// import { Pagination } from "antd";
 
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -19,6 +20,29 @@ const Index = () => {
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
+
+  ////////////////////////////////
+  // const [total, setTotal] = useState("");
+  // const [page, setPage] = useState(1);
+  // const [postPerPage, setPostPerPage] = useState(10);
+  // /////////////////////////
+
+  // const indexOfLastPage = page + postPerPage;
+  // const indexOfFirstPage = indexOfLastPage - postPerPage;
+  // const currentPosts = products.slice(indexOfFirstPage, indexOfLastPage);
+
+  // const onShowSizeChange = (curent, pageSize) => {
+  //   setPostPerPage(pageSize);
+  // };
+
+  // const itemRender = (curent, type, originnalElement) => {
+  //   if (type === "prev") return <a>Previous</a>;
+  //   if (type === "next") return <a>Next</a>;
+
+  //   return originnalElement;
+  // };
+
+  /////////////////////
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
@@ -73,6 +97,9 @@ const Index = () => {
       .then((res) => {
         console.log("product", res.data);
         setProducts(res.data);
+        /////////////////
+        // setTotal(res.data.length);
+        /////////////////////////
       });
   }, []);
 
@@ -158,7 +185,18 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
-        
+        {/* <div>
+        <Pagination
+          onChange={(value) => setPage(value)}
+          pageSize={postPerPage}
+          total={total}
+          current={page}
+          showSizeChanger
+          showQuickJumper
+          onShowSizeChange={onShowSizeChange}
+          itemRender={itemRender}
+        />
+      </div> */}
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -208,6 +246,18 @@ const Index = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* <div>
+        <Pagination
+          onChange={(value) => setPage(value)}
+          pageSize={postPerPage}
+          total={total}
+          current={page}
+          showSizeChanger
+          showQuickJumper
+          onShowSizeChange={onShowSizeChange}
+          itemRender={itemRender}
+        />
+      </div> */}
     </div>
   );
 };
