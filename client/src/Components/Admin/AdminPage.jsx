@@ -58,7 +58,7 @@ const AdminPage = () => {
               <span>Quản Lý Sản Phẩm</span>
             </Link>
           </Row>
-          <Row>
+          {/* <Row>
             <Link className="catalogList" to="/categories">
               <div>
                 <svg
@@ -74,7 +74,7 @@ const AdminPage = () => {
               </div>
               <span>Quản Lý Danh Mục</span>
             </Link>
-          </Row>
+          </Row> */}
         </Col>
       </Container>
       {/* <Navigate/> */}
