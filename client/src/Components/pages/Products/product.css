@@ -1,6 +1,6 @@
 th {
-    height: 4px;
-    width: 160px;
+    /* height: 4px;
+    width: 160px; */
     text-align: center;
     vertical-align: middle;
 }
@@ -11,4 +11,8 @@ th {
     transition: 0.7s;
     cursor: pointer;
     background-color: rgb(212, 193, 193)
+}
+
+.gg {
+    height: 20vh;
 }

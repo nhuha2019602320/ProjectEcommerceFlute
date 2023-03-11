@@ -97,9 +97,7 @@ const Index = () => {
       .then((res) => {
         console.log("product", res.data);
         setProducts(res.data);
-        /////////////////
-        // setTotal(res.data.length);
-        /////////////////////////
+
       });
   }, []);
 
@@ -128,7 +126,7 @@ const Index = () => {
               <th>Chức năng</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="ffsd">
             {products.map((product, index) => (
               <tr
                 key={product._id.toString()}
@@ -185,18 +183,6 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
-        {/* <div>
-        <Pagination
-          onChange={(value) => setPage(value)}
-          pageSize={postPerPage}
-          total={total}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          onShowSizeChange={onShowSizeChange}
-          itemRender={itemRender}
-        />
-      </div> */}
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -246,18 +232,6 @@ const Index = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* <div>
-        <Pagination
-          onChange={(value) => setPage(value)}
-          pageSize={postPerPage}
-          total={total}
-          current={page}
-          showSizeChanger
-          showQuickJumper
-          onShowSizeChange={onShowSizeChange}
-          itemRender={itemRender}
-        />
-      </div> */}
     </div>
   );
 };

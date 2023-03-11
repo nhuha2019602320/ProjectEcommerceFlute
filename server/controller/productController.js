@@ -35,7 +35,7 @@ const productController = {
       newProduct.imgaeProduct = req.body.imgaeProduct;
       newProduct.quantity = req.body.quantity;
       newProduct.description = req.body.description;
-      // newProduct.category = req.body.category;
+      newProduct.category = req.body.category;
 
         const saveProduct = await newProduct.save();
         if (req.body.category) {

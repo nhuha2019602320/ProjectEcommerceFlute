@@ -19,10 +19,16 @@ const cartSlice = createSlice({
                 state.cartlists.push(tempvar)
             }
 
+        },
+        DeleteCart: (state, action) => {
+            const itemDelete = state.cartlists.filter(
+                (item) => item._id !== action.payload._id
+            )
+            state.cartlists = itemDelete;
         }
     }
 })
 
-export const {AddCard} = cartSlice.actions;
+export const {AddCard, DeleteCart} = cartSlice.actions;
 
 export default cartSlice.reducer;

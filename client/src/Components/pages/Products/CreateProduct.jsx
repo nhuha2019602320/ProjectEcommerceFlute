@@ -40,7 +40,7 @@ const CreateProduct = () => {
       imgaeProduct: urlImg,
       quantity: quantity,
       description: description,
-      // category: category
+      category: category
     };
     NewProduct(product);
   };

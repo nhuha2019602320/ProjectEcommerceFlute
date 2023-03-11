@@ -10,30 +10,33 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./cart.css";
+import { DeleteCart } from "../../redux/cartSlice";
+import { useDispatch } from "react-redux";
 const Cart = () => {
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const cartLists = cart.cartlists;
   console.log("carts/cart", cartLists);
-  const priceListProduct = cartLists.map(a => a.price)
-  const convertPriceListProduct = priceListProduct.map(str => {
+  const priceListProduct = cartLists.map((a) => a.price);
+  const dispatch = useDispatch();
+
+  const convertPriceListProduct = priceListProduct.map((str) => {
     return parseInt(str, 10);
   });
-  convertPriceListProduct.reduce((a, b) => a + b, 0)
+  convertPriceListProduct.reduce((a, b) => a + b, 0);
 
   const handlePay = () => {
-    toast.success("Thanh toán thành công. Cảm ơn quý khách đã tin tưởng của hàng!");
-    // alert("Thanh toán thành công. Cảm ơn quý khách đã tin tưởng của hàng!")
-  }
-
-  const notify = () => toast("Wow so easy!");
+    toast.success(
+      "Thanh toán thành công. Cảm ơn quý khách đã tin tưởng của hàng!"
+    );
+  };
   return (
-    <Container style={{ marginTop: "30px", width:"100%", textAlign:"center" }}>
+    <Container style={{ marginTop: "30px", width: "100%", textAlign: "center" }} fluid>
       <Row>
-        <Col style={{ backgroundColor: "white", borderRight: "1px" }} xs={8}>
+        <Col style={{ backgroundColor: "white", borderRight: "1px" }}>
           <Row>
             <div
               style={{
@@ -46,13 +49,17 @@ const Cart = () => {
             </div>
           </Row>
           {cartLists.map((item, id) => (
-            <MDBRow className="mb-4 d-flex justify-content-between align-items-center" key ={id}>
+            <MDBRow
+              className="mb-4 d-flex justify-content-between align-items-center"
+              key={id}
+            >
               <MDBCol md="2" lg="2" xl="2">
                 <MDBCardImage
                   src={item.imgaeProduct}
                   fluid
                   className="rounded-3"
                   alt="Cotton T-shirt"
+                  style={{width:"50%"}}
                 />
               </MDBCol>
               <MDBCol md="3" lg="3" xl="3">
@@ -90,7 +97,7 @@ const Cart = () => {
                 </a>
               </MDBCol>
               <MDBCol md="1" lg="1" xl="1" className="text-end">
-                <button>
+                <button onClick={() => dispatch(DeleteCart(item))}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -106,21 +113,22 @@ const Cart = () => {
               <hr className="my-3" />
             </MDBRow>
           ))}
-          <Button variant="success" onClick={() => navigate("/")}>Tiếp Tục Mua Hàng</Button>&emsp;
-          
-        </Col>
-        <Col className="sumanry">
-        <Row style={{marginTop:"50%"}}>
-          <h3>Thanh Toán</h3>
+          <div>
             <div>
-                <div  style={{display:"flex", justifyContent:"space-around", alignItems:"center"}}>
-                  <h5>Tổng sản phẩm: <b>{cartLists.length}</b></h5>
-                </div>
+              Tổng sản phẩm: <b>{cartLists.length}</b>
             </div>
-            <h5>
-              <b>Tổng thành tiền :</b> {convertPriceListProduct.reduce((a, b) => a + b, 0)} VND</h5>
-          </Row>
-          <Button variant="success" onClick={handlePay}>Thanh Toán<ToastContainer /></Button>&emsp;
+            <b>Tổng thành tiền :</b>{" "}
+            {convertPriceListProduct.reduce((a, b) => a + b, 0)} VND
+          </div>
+          <Button variant="success" onClick={() => navigate("/")}>
+            Tiếp Tục Mua Hàng
+          </Button>
+          &emsp;
+          <Button variant="success" onClick={handlePay}>
+            Thanh Toán
+            <ToastContainer />
+          </Button>
+          &emsp;
         </Col>
       </Row>
     </Container>
