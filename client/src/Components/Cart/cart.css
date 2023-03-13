@@ -6,3 +6,29 @@
     justify-content: center;
     padding: 10px;
 }
+.returnHomepage {
+    /* background-color: "white",
+    color: "black",
+    display: "flex",
+    alignItems: "center", */
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+.returnHomepage:hover {
+    color: #4ec85e;
+}
+.paymentTable {
+    border-collapse: collapse;
+}
+.paymentTable tr td {
+    border: 1px solid;
+
+}
+
+.quantity {
+    background: none;
+    color: black;
+}

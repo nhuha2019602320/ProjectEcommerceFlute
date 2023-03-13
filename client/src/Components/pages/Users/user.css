@@ -5,7 +5,7 @@
 .handleBtn:hover {
     transition: 0.6s;
     transform: scale(1.2);
-    background-color: rgb(139, 121, 121);
+    background-color: #198754;
 }
 .inforUser:hover {
     transition: 0.7s;

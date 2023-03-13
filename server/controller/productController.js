@@ -54,8 +54,10 @@ const productController = {
   getProduct: async (req, res) => {
     try {
       const product = await productModel.find({
-        productCode: req.body.productCode.toString(),
+        // productCode: req.body.productCode.toString(),
+        _id: req.params.id.toString()
       });
+      console.log("xxxxxxx", product);
       res.send(product);
     } catch (error) {
       res.send("error");

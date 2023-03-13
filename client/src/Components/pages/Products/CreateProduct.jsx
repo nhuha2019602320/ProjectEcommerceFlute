@@ -1,8 +1,12 @@
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { NewProduct } from "../../../services/product";
+import MenuBar from "../../MenuBar/MenuBar";
+import TipTap from "../../TipTap/TipTap";
 const CreateProduct = () => {
   const [show, setShow] = useState(false);
   const [productCode, setProductCode] = useState("");
@@ -12,8 +16,10 @@ const CreateProduct = () => {
   const [imgProduct, setImgProduct] = useState(null);
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("")
+  const [category, setCategory] = useState("");
+
   const handleClose = () => setShow(false);
+
   const handleShow = () => {
     setShow(true);
   };
@@ -32,6 +38,20 @@ const CreateProduct = () => {
     console.log(urlImg);
   };
 
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: `
+        <p>Nhập nội dung</p>
+        <p>
+        Mô tả sản phẩm
+      </p>
+    `,
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML()
+      setDescription(html)
+  }
+  })
+
   const createProduct = () => {
     const product = {
       productCode: productCode,
@@ -40,24 +60,24 @@ const CreateProduct = () => {
       imgaeProduct: urlImg,
       quantity: quantity,
       description: description,
-      category: category
+      // category: category,
     };
     NewProduct(product);
   };
 
   const [options, setOptions] = useState([]);
   const onOptionChangeHandler = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     console.log("User Selected Value - ", event.target.value);
-    setCategory(event.target.value)
+    setCategory(event.target.value);
   };
   // console.log("option", options.map(item => item._id))
-  const listCategories = options.map(item => item.categroyName)
+  const listCategories = options.map((item) => item.categroyName);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory`)
       .then((res) => {
-        setOptions(res.data)
+        setOptions(res.data);
       });
   }, []);
   return (
@@ -102,11 +122,17 @@ const CreateProduct = () => {
             <label htmlFor="">Số lượng</label>
             <input type="text" onChange={(e) => setQuantity(e.target.value)} />
             <label htmlFor="">Mô tả</label>
-            <input
+            {/* <input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
-            />
-            <label htmlFor="">Danh Mục</label><br />
+            /> */}
+            {/* <TipTap /> */}
+            <div>
+            <MenuBar editor={editor} />
+            <EditorContent editor={editor} />
+            </div>
+            <label htmlFor="">Danh Mục</label>
+            <br />
             <select onChange={onOptionChangeHandler}>
               <option>Please choose one option</option>
               {listCategories.map((option, index) => {

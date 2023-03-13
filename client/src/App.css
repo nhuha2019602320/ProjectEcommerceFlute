@@ -22,8 +22,9 @@ body,
   font-family: "Inter", sans-serif;
   background-color: #ffffff;
 } */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto:wght@300&display=swap');
-body,
+
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto&display=swap');
+
 .App {
   font-family: 'Open Sans', sans-serif;
   font-family: 'Roboto', sans-serif;

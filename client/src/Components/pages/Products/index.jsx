@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import NavBar from "../../NavBar/NavBar";
 // import { Pagination } from "antd";
-
+import parse from "html-react-parser";
 const Index = () => {
   const [products, setProducts] = useState([]);
   const [productCode, setProductCode] = useState("");
@@ -141,7 +141,7 @@ const Index = () => {
                   <img src={product.imgaeProduct} width="80px" alt="" />
                 </th>
                 <th>{product.quantity}</th>
-                {/* <th>{product.category}</th> */}
+                {/* <th>{parse(product.description)}</th> */}
                 <th>
                   <button
                     className="handleBtn"

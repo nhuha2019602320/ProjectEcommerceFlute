@@ -7,7 +7,7 @@ const userMiddleWare = require('../middleware/userMiddleware');
 // productRouter.post('/createProduct' ,productController.addProduct);
 productRouter.post('/createProduct' ,productController.createProduct);
 
-productRouter.get('/getProduct', productController.getProduct);
+productRouter.get('/getProduct/:id', productController.getProduct);
 
 productRouter.get('/getAllProducts', productController.getAllProducts);
 
