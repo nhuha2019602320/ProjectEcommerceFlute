@@ -11,7 +11,7 @@ userRouter.post('/login', userController.loginUser);
 // userRouter.get('/getAllUsers',userMiddleWare.verifyToken ,userController.getAllUsers);
 userRouter.get('/getAllUsers' ,userController.getAllUsers);
 
-userRouter.get('/getOneUser', userController.getOneUser);
+userRouter.get('/getOneUser/:id', userController.getOneUser);
 
 // userRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin  ,userController.deleteUser);
 userRouter.delete('/:id' ,userController.deleteUser);

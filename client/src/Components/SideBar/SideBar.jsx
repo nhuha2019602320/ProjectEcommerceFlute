@@ -24,9 +24,9 @@ const SideBar = () => {
     <Col xs md="3" className="gg">
     <div style={{border:"1px solid #f0f0f0"}}>
         {
-          itemServices.map((service) => (
-            <ul className="service">
-                <li style={{display:"flex"}}>
+          itemServices.map((service,index) => (
+            <ul className="service" key ={index}>
+                <li style={{display:"flex"}} >
                   <img src={service.urlImg} alt="" style={{width:"50px"}}/>
                   <div>
                     <p>{service.title}</p>

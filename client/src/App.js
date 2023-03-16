@@ -13,9 +13,10 @@ import { useSelector } from "react-redux";
 import Introduction from "./Components/Introduction/Introduction";
 import Cart from "./Components/Cart/Cart";
 import DetailProduct from "./Components/DetailProduct/DetailProduct";
+import Order from "./Components/Order/Order";
 
 function App() {
-  const { login } = useSelector((state) => state.auth);
+  // const { login } = useSelector((state) => state.auth);
   return (
     <Router>
       {/* <NavBar /> */}
@@ -33,6 +34,7 @@ function App() {
           <Route path="/categories" element={<Caterories />} />
           <Route path="/introduction" element={<Introduction />} />
           <Route path="/detailProduct/:id" element={<DetailProduct/>}/>
+          <Route path="/checkout" element={<Order/>}></Route>
 
         </Routes>
       </div>

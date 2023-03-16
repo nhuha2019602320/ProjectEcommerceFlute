@@ -21,29 +21,6 @@ const Index = () => {
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
 
-  ////////////////////////////////
-  // const [total, setTotal] = useState("");
-  // const [page, setPage] = useState(1);
-  // const [postPerPage, setPostPerPage] = useState(10);
-  // /////////////////////////
-
-  // const indexOfLastPage = page + postPerPage;
-  // const indexOfFirstPage = indexOfLastPage - postPerPage;
-  // const currentPosts = products.slice(indexOfFirstPage, indexOfLastPage);
-
-  // const onShowSizeChange = (curent, pageSize) => {
-  //   setPostPerPage(pageSize);
-  // };
-
-  // const itemRender = (curent, type, originnalElement) => {
-  //   if (type === "prev") return <a>Previous</a>;
-  //   if (type === "next") return <a>Next</a>;
-
-  //   return originnalElement;
-  // };
-
-  /////////////////////
-
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
     setShow(true);

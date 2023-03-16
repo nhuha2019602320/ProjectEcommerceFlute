@@ -36,11 +36,12 @@ const userController = {
         return jwt.sign(
             {
                 id: user.id,
-                admin: user.admin
+                admin: user.admin,
+                username: user.userName,
             },
             process.env.JWT_ACCESS_KEY,
             {
-                expiresIn: "30d"
+                expiresIn: "1d"
             }
         )
     },
@@ -52,7 +53,7 @@ const userController = {
             },
             process.env.JWT_ACCESS_KEY,
             {
-                expiresIn: "30d"
+                expiresIn: "1d"
             }
         )
     },
@@ -107,7 +108,7 @@ const userController = {
     },
     getOneUser : async (req, res) => {
         try {
-            const user = await userModel.find({email: req.body.email.toString()}).exec();
+            const user = await userModel.find({_id: req.params.id}).exec();
             res.status(200).send(user)
         } catch (error) {
             res.status(500).send(error)

@@ -2,14 +2,7 @@ import { Container, Row, Col, Button, Table } from "react-bootstrap";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  MDBBtn,
-  MDBCardImage,
-  MDBCol,
-  MDBIcon,
-  MDBRow,
-  MDBTypography,
-} from "mdb-react-ui-kit";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./cart.css";
@@ -21,6 +14,8 @@ import SideBar from "../SideBar/SideBar";
 const Cart = () => {
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const {login} = useSelector((state) => state.auth)
+  console.log("login", login.currectUser)
   const cartLists = cart.cartlists;
   console.log("carts/cart", cartLists);
   const dispatch = useDispatch();
@@ -30,114 +25,27 @@ const Cart = () => {
   const convertPriceListProduct = priceListProduct.map((str) => {
     return parseInt(str, 10);
   });
-  convertPriceListProduct.reduce((a, b) => a + b, 0);
-
+    // convertPriceListProduct.reduce((a, b) => a + b, 0);
+    var totalBill = convertPriceListProduct.reduce((a, b) => a + b, 0);
+    var discount = 0;
+    if(totalBill<500000){
+      discount = 0;
+    }
+    else if(totalBill>=500000 && totalBill<=1000000) {
+      discount = 20
+      totalBill = totalBill *0.8
+    } else {
+      discount = 40;
+      totalBill = totalBill*0.6
+    }
+    localStorage.setItem("totalBill", totalBill.toString());
+  console.log(convertPriceListProduct.reduce((a, b) => a + b, 0))
   const handlePay = () => {
-    toast.success(
-      "Thanh toán thành công. Cảm ơn quý khách đã tin tưởng của hàng!"
-    );
+    if(!login.currectUser) 
+      navigate("/login")
+    else
+      navigate("/checkout")
   };
-  // return (
-  //   <Container style={{ marginTop: "30px", width: "100%", textAlign: "center" }} fluid>
-  //     <Row>
-  //       <Col style={{ backgroundColor: "white", borderRight: "1px" }}>
-  //         <Row>
-  //           <div
-  //             style={{
-  //               display: "flex",
-  //               justifyContent: "center",
-  //               alignItems: "center",
-  //             }}
-  //           >
-  //             <h3>Giỏ Hàng Của bạn</h3>
-  //           </div>
-  //         </Row>
-  //         {cartLists.map((item, id) => (
-  //           <MDBRow
-  //             className="mb-4 d-flex justify-content-between align-items-center"
-  //             key={id}
-  //           >
-  //             <MDBCol md="2" lg="2" xl="2">
-  //               <MDBCardImage
-  //                 src={item.imgaeProduct}
-  //                 fluid
-  //                 className="rounded-3"
-  //                 alt="Cotton T-shirt"
-  //                 style={{width:"50%"}}
-  //               />
-  //             </MDBCol>
-  //             <MDBCol md="3" lg="3" xl="3">
-  //               <MDBTypography tag="h6" className="text-muted">
-  //                 {item.productCode}
-  //               </MDBTypography>
-  //               <MDBTypography tag="h6" className="text-black mb-0">
-  //                 {item.nameProduct}
-  //               </MDBTypography>
-  //             </MDBCol>
-  //             <MDBCol
-  //               md="3"
-  //               lg="3"
-  //               xl="3"
-  //               className="d-flex align-items-center"
-  //             >
-  //               <div style={{display:"flex", alignItems:"center"}}>
-
-  //               <Button onClick={() => setCount(count - 1)}>-</Button>
-  //               <p> {count}</p>
-  //               <Button onClick={() => setCount(count + 1)}>+</Button>
-  //               </div>
-
-  //               <MDBBtn color="link" className="px-2">
-  //                 <MDBIcon fas icon="plus" />
-  //               </MDBBtn>
-  //             </MDBCol>
-  //             <MDBCol md="3" lg="2" xl="2" className="text-end">
-  //               <MDBTypography tag="h6" className="mb-0">
-  //                 € {Number(item.price).toLocaleString()}
-  //               </MDBTypography>
-  //             </MDBCol>
-  //             <MDBCol md="1" lg="1" xl="1" className="text-end">
-  //               <a href="#!" className="text-muted">
-  //                 <MDBIcon fas icon="times" />
-  //               </a>
-  //             </MDBCol>
-  //             <MDBCol md="1" lg="1" xl="1" className="text-end">
-  //               <button onClick={() => dispatch(DeleteCart(item))}>
-  //                 <svg
-  //                   xmlns="http://www.w3.org/2000/svg"
-  //                   width="16"
-  //                   height="16"
-  //                   fill="currentColor"
-  //                   className="bi bi-x-lg"
-  //                   viewBox="0 0 16 16"
-  //                 >
-  //                   <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-  //                 </svg>
-  //               </button>
-  //             </MDBCol>
-  //             <hr className="my-3" />
-  //           </MDBRow>
-  //         ))}
-  //         <div>
-  //           <div>
-  //             Tổng sản phẩm: <b>{cartLists.length}</b>
-  //           </div>
-  //           <b>Tổng thành tiền :</b>{" "}
-  //           {convertPriceListProduct.reduce((a, b) => a + b, 0)} VND
-  //         </div>
-  //         <Button variant="success" onClick={() => navigate("/")}>
-  //           Tiếp Tục Mua Hàng
-  //         </Button>
-  //         &emsp;
-  //         <Button variant="success" onClick={handlePay}>
-  //           Thanh Toán
-  //           <ToastContainer />
-  //         </Button>
-  //         &emsp;
-  //       </Col>
-  //     </Row>
-  //   </Container>
-  // );
   return (
     <div>
       <Header />
@@ -154,9 +62,9 @@ const Cart = () => {
                   <th>Thành Tiền</th>
                   <th>Xóa</th>
                 </tr>
-              </thead>
-              <tbody>
                 {cartLists.map((item, index) => (
+                  
+
                   <tr
                     key={item._id.toString()}
                     style={{ textAlign: "center", alignItems: "center" }}
@@ -193,8 +101,11 @@ const Cart = () => {
                       </button>
                     </td>
                   </tr>
+                  
                 ))}
-              </tbody>
+              </thead>
+              
+              
             </Table>
             <Row>
               <Col>
@@ -226,18 +137,19 @@ const Cart = () => {
                     <td>30.000đ</td>
                   </tr>
                   <tr>
-                    <td>Tổng đơn</td>
+                    <td>Tổng đơn + {discount}% discount</td>
                     <td>
-                      {Number(convertPriceListProduct.reduce((a, b) => a + b, 0) + 30000).toLocaleString()}đ
+                      {Number(totalBill + 30000).toLocaleString()}đ
                     </td>
                   </tr>
                 </Table>
-                  <button style={{float:"right"}}>Thanh Toán</button>
+                  <button style={{float:"right"}} onClick={handlePay}>Thanh Toán</button>
               </Col>
             </Row>
           </Col>
           <SideBar />
         </Row>
+        
       </Container>
     </div>
   );

@@ -1,4 +1,12 @@
-import { Container, Row, Col, Navbar, Nav, Dropdown, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Navbar,
+  Nav,
+  Dropdown,
+  Button,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +15,6 @@ import { useState } from "react";
 export default function Header() {
   const navigate = useNavigate();
   const { login } = useSelector((state) => state.auth);
-
-  console.log("login", login.isFetching);
 
   return (
     <div>
@@ -28,7 +34,10 @@ export default function Header() {
             style={{ maxHeight: "100%" }}
             className="header__mobile-search"
           >
-            <Button variant="success" onClick={() => navigate("/login")}>Đăng Nhập</Button>&emsp;
+            <Button variant="success" onClick={() => navigate("/login")}>
+              Đăng Nhập
+            </Button>
+            &emsp;
             <Button variant="success" onClick={() => navigate("/cart")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -133,8 +142,28 @@ export default function Header() {
                             } */}
               {/* <button onClick={() => navigate("/login")}>Login</button>
                             <button onClick={() => navigate("/cart")}>Cart</button> */}
-              {/* <PersonCircle style={{fontSize: "1.5rem"}}/><p style={{margin: "0 0 0 10px", fontSize: "1rem"}}><button onClick={() => navigate("/login")}>Login</button></p>&ensp;
-                            <PersonCircle style={{fontSize: "1.5rem"}}/><p style={{margin: "0 0 0 10px", fontSize: "1rem"}}><button onClick={() => navigate("/cart")}>Cart</button></p>&ensp; */}
+              {/* <div style={{fontSize: "1.5rem"}}/><p style={{margin: "0 0 0 10px", fontSize: "1rem"}}><button onClick={() => navigate("/login")}>Login</button></p>&ensp;
+                            <div style={{fontSize: "1.5rem"}}/><p style={{margin: "0 0 0 10px", fontSize: "1rem"}}><button onClick={() => navigate("/cart")}>Cart</button></p>&ensp; */}
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fillRule="currentColor"
+                  className="bi bi-person-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
+                  />
+                </svg> &ensp;  
+                {/* {login.currectUser.userName} &ensp; 
+                {
+                  login.currectUser.userName ? <span>{login.currectUser.userName}</span>: <span>123</span>
+                } */}
+              </div>
             </div>
           </Col>
         </Row>
