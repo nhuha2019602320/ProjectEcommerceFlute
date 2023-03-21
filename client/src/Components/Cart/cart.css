@@ -32,3 +32,8 @@
     background: none;
     color: black;
 }
+
+button {
+    outline: none;
+    border: none;
+}

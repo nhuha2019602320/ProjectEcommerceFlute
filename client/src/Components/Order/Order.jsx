@@ -7,6 +7,7 @@ import "./Order.css";
 import { useSelector } from "react-redux";
 import axios from 'axios'
 import { CreateOrder } from "../../services/order";
+import { Grid, TextField } from "@mui/material";
 const Order = () => {
     const navigate = useNavigate();
     const {login} = useSelector((state) => state.auth)
@@ -21,12 +22,12 @@ const Order = () => {
       if(address === "" || note === "" || cartLists === []) {
         alert("Tạo đơn không thành công mời kiểm tra lại")
       } else {
-
         const order = {
           address: address,
           note: note,
+          phone: phone,
           productOrder: cartLists,
-          total: localStorage.getItem("totalBill") + 30000,
+          total:parseInt(localStorage.getItem("totalBill").toString()) + 30000,
           user: login.currectUser._id
         }
         CreateOrder(order)
@@ -39,7 +40,7 @@ const Order = () => {
       <Container>
         <Row style={{ marginTop: "20px" }}>
           <Col>
-            <Row style={{ display: "flex", justifyContent: "space-between" }}>
+            {/* <Row style={{ display: "flex", justifyContent: "space-between" }}>
               <input
                 type="text"
                 placeholder="Tên của bạn"
@@ -59,13 +60,55 @@ const Order = () => {
             </Row>
             <Row>
               <input type="text" placeholder="Ghi chú" onChange={(e) =>setNote(e.target.value)}/>
-            </Row>
-            {/* <Row>
-              <textarea name="" id="" cols="30" rows="10" value={text}></textarea>
             </Row> */}
-            <Row style={{border: "1px solid"}}>
-              <span>Sản phẩm đặt</span>
-              <div>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                 
+                  autoFocus
+                  value={userName}
+                  // onChange={(e) => setUserName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  autoComplete="family-name"
+                  value={phone}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="address"
+                  label="Địa chỉ"
+                  name="Địa chỉ"
+                  autoComplete="email"
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="note"
+                  label="Ghi chú"
+                  name="Ghi chú"
+                  autoComplete="email"
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <span style={{marginTop:"40px"}}>Sản phẩm đặt</span>
+              <div style={{border: "1px solid"}}>
                 {
                   cartLists.map((item) => (
                     <ul>
@@ -78,7 +121,9 @@ const Order = () => {
                   Number(parseInt(localStorage.getItem("totalBill").toString()) + 30000).toLocaleString()
                 }đ</li>
               </div>
-            </Row>
+            </Grid>
+            <div style={{marginTop:"20px"}}>
+              
             <Button variant="success"
                    style={{float:"right"}}
                   onClick={() => navigate("/")}
@@ -86,7 +131,8 @@ const Order = () => {
 
                   Tiếp Tục Mua Hàng
                 </Button>&emsp;
-          <Button variant="success" style={{float:"right"}} onClick={handelCreate}>Tạo đơn hàng</Button>
+          <Button variant="success" style={{float:"right", marginRight:"10px"}} onClick={handelCreate}>Tạo đơn hàng</Button>
+            </div>
           </Col>
           <SideBar />
         </Row>

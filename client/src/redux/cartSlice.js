@@ -22,13 +22,21 @@ const cartSlice = createSlice({
                 state.cartlists.push(tempvar)
                 console.log("state", state.cartlists)
             }
-
+            localStorage.setItem("cartList", JSON.stringify(state.cartlists))
         },
         DeleteCart: (state, action) => {
             const itemDelete = state.cartlists.filter(
                 (item) => item._id !== action.payload._id
             )
             state.cartlists = itemDelete;
+            
+            const itemCart = JSON.parse(localStorage.getItem("cartList"))
+
+            var indexDelete = action.payload._id;
+
+            itemCart.splice(indexDelete, 1)
+            localStorage.setItem("cartList", JSON.stringify(itemCart))
+            
         },
         IncreaseCart: (state, action) => {
             const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);

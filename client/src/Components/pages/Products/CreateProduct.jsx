@@ -2,6 +2,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { NewProduct } from "../../../services/product";
@@ -41,8 +42,6 @@ const CreateProduct = () => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: `
-        <p>Nhập nội dung</p>
-        <p>
         Mô tả sản phẩm
       </p>
     `,
@@ -88,20 +87,43 @@ const CreateProduct = () => {
           <Modal.Title>Thêm sản phẩm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="edit">
-            <label htmlFor="">Mã sản phẩm</label>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+
+         
+            {/* <label htmlFor="">Mã sản phẩm</label>
             <input
               type="text"
               onChange={(e) => setProductCode(e.target.value)}
-            />
-            <label>Tên sản phẩm</label>
+            /> */}
+                 <Form.Control
+                type="text"
+                placeholder="Mã Sản Phẩm"
+                autoFocus
+                floating
+                onChange={(e) => setProductCode(e.target.value)}
+              /><br></br>
+            {/* <label>Tên sản phẩm</label>
             <input
               type="text"
               onChange={(e) => setNameProduct(e.target.value)}
-            />
-            <label htmlFor="">Giá</label>
-            <input type="text" onChange={(e) => setPrice(e.target.value)} />
-            <label htmlFor="">Ảnh sản phẩm</label>
+            /> */}
+                 <Form.Control
+                type="text"
+                placeholder="Tên sản phẩm"
+                autoFocus
+                floating
+                onChange={(e) => setNameProduct(e.target.value)}
+              /><br></br>
+            {/* <label htmlFor="">Giá</label>
+            <input type="text" onChange={(e) => setPrice(e.target.value)} /> */}
+                 <Form.Control
+                type="text"
+                placeholder="Gia"
+                autoFocus
+                floating
+                onChange={(e) => setPrice(e.target.value)}
+              /><br></br>
+            {/* <label htmlFor="">Ảnh sản phẩm</label>
             <br></br>
             <input
               type="file"
@@ -114,19 +136,40 @@ const CreateProduct = () => {
               }}
               // onChange={(e) => upLoadImage(e)}
               style={{ width: "350px" }}
-            />
+            /> */}
+     <Form.Control
+                type="file"
+                autoFocus
+                floating
+                // defaultValue={JSON.parse(localStorage.getItem("user"))?.email ?? ""}
+                onChange={(event) => {
+                  setImgProduct(event.target.files[0]);
+                  // const formData = new FormData();
+                  // formData.append("file", imgProduct);
+                  // formData.append("upload_preset", "rahh7f3b");
+                  // await axios.post('https://api.cloudinary.com/v1_1/uploadimgvvv/image/upload',formData).then((res) => console.log(res))
+                }}
+              /><br></br>            
             <button type="submit" onClick={upLoadImage}>
               Gửi ảnh
             </button>
             <br></br>
-            <label htmlFor="">Số lượng</label>
-            <input type="text" onChange={(e) => setQuantity(e.target.value)} />
+            {/* <label htmlFor="">Số lượng</label>
+            <input type="text" onChange={(e) => setQuantity(e.target.value)} /> */}
+            <Form.Control
+                type="text"
+                placeholder="Số Lượng"
+                autoFocus
+                floating
+                onChange={(e) => setQuantity(e.target.value)}
+              /><br></br>
             <label htmlFor="">Mô tả</label>
             {/* <input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
             /> */}
             {/* <TipTap /> */}
+            <br></br>
             <div>
             <MenuBar editor={editor} />
             <EditorContent editor={editor} />
@@ -139,7 +182,8 @@ const CreateProduct = () => {
                 return <option key={index}>{option}</option>;
               })}
             </select>
-          </div>
+          
+        </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary">Close</Button>

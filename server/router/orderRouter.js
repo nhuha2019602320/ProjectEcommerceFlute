@@ -9,5 +9,7 @@ orderRouter.put('/updateOrder/:id', orderController.editOrder)
 orderRouter.delete('/deleteOrder/:id', orderController.deleteOrder)
 
 orderRouter.get('/getAllOrder', orderController.getAllOrder)
+orderRouter.get('/getOrder/:id', orderController.getOrder)
+
 
 module.exports = orderRouter;

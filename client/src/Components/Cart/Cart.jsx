@@ -12,13 +12,30 @@ import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
 
 const Cart = () => {
+  const [error, setError] = useState();
+
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const {login} = useSelector((state) => state.auth)
   console.log("login", login.currectUser)
-  const cartLists = cart.cartlists;
+  // const cartLists = cart.cartlists;
+  const cartLists = JSON.parse(localStorage.getItem("cartList"))
+
   console.log("carts/cart", cartLists);
   const dispatch = useDispatch();
+
+
+
+  if (error || !Array.isArray(cartLists)) {
+    return (
+        <div style={{textAlign:"center"}}>
+          <h3>Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</h3>
+          <Button onClick={() => navigate("/")}>Tiếp Túc Mua Hàng</Button>
+        </div>
+    )
+  }
+
+
 
   const priceListProduct = cartLists.map((a) => a.price*a.quantity);
   console.log("cartList", cartLists)
@@ -27,6 +44,7 @@ const Cart = () => {
   });
     // convertPriceListProduct.reduce((a, b) => a + b, 0);
     var totalBill = convertPriceListProduct.reduce((a, b) => a + b, 0);
+
     var discount = 0;
     if(totalBill<500000){
       discount = 0;
@@ -46,6 +64,11 @@ const Cart = () => {
     else
       navigate("/checkout")
   };
+
+  const handleDeleteCart = () => {
+    localStorage.removeItem("cartList")
+    navigate("/")
+  }
   return (
     <div>
       <Header />
@@ -62,54 +85,57 @@ const Cart = () => {
                   <th>Thành Tiền</th>
                   <th>Xóa</th>
                 </tr>
-                {cartLists.map((item, index) => (
-                  
-
-                  <tr
-                    key={item._id.toString()}
-                    style={{ textAlign: "center", alignItems: "center" }}
-                    className="inforUser"
-                  >
-                    <td>
-                      <img src={item.imgaeProduct} width="80px" alt="" />
-                    </td>
-                    <td>{item.nameProduct}</td>
-                    <td>{Number(item.price).toLocaleString()}đ</td>
-                    <td>
-                        <button className="quantity" onClick={() => dispatch(DecreaseCart(item))}>-</button>
-                        <span>{item.quantity}</span>
-                        <button className="quantity" onClick={() => dispatch(IncreaseCart(item))}>+</button>
-     
-                    </td>
-                    <td>{Number(item.quantity * item.price).toLocaleString()}đ</td>
-                    <td>
-                      <button
-                        className="handleBtn"
-                        style={{ backgroundColor: "#198754" }}
-                        onClick={() => dispatch(DeleteCart(item))}
+                {   
+                    cartLists?.map((item, index) => (                 
+                      <tr
+                        key={item._id.toString()}
+                        style={{ textAlign: "center", alignItems: "center" }}
+                        className="inforUser"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="14"
-                          height="14"
-                          fill="currentColor"
-                          className="bi bi-x"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                  
-                ))}
+                        <td>
+                          <img src={item.imgaeProduct} width="80px" alt="" />
+                        </td>
+                        <td>{item.nameProduct}</td>
+                        <td>{Number(item.price).toLocaleString()}đ</td>
+                        <td>
+                            <button className="quantity" onClick={() => dispatch(DecreaseCart(item))}>-</button>
+                            <span>{item.quantity}</span>
+                            <button className="quantity" onClick={() => dispatch(IncreaseCart(item))}>+</button>
+         
+                        </td>
+                        <td>{Number(item.quantity * item.price).toLocaleString()}đ</td>
+                        <td>
+                          <button
+                            className="handleBtn"
+                            style={{ backgroundColor: "initial" }}
+                            onClick={() => dispatch(DeleteCart(item))}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="14"
+                              height="14"
+                              fill="currentColor"
+                              className="bi bi-x"
+                              viewBox="0 0 16 16"
+                            >
+                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                      
+                    ))
+                  }            
+                
+
               </thead>
               
               
             </Table>
             <Row>
               <Col>
-                <button
+        
+              <button
                   className="returnHomepage"
                   onClick={() => navigate("/")}
                 >
@@ -125,7 +151,11 @@ const Cart = () => {
                   </svg>
                   Tiếp Tục Mua Hàng
                 </button>
+
+           
+
               </Col>
+
               <Col>
                 <Table className="paymentTable">
                   <tr>
@@ -143,7 +173,8 @@ const Cart = () => {
                     </td>
                   </tr>
                 </Table>
-                  <button style={{float:"right"}} onClick={handlePay}>Thanh Toán</button>
+                  <Button variant="success" style={{float:"right"}} onClick={handlePay}>Thanh Toán</Button>
+                  <Button variant="success" style={{float:"right", marginRight:"10px"}} onClick={handleDeleteCart}>Xóa giỏ hàng</Button>
               </Col>
             </Row>
           </Col>

@@ -22,6 +22,10 @@ const ProductSchema = new Schema({
     type: Number,
     require: true,
   },
+  status: {
+    type : String,
+    default: "Còn Hàng"
+  },
   description: {
     type: String,
     require: true,

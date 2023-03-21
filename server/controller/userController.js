@@ -24,6 +24,7 @@ const userController = {
         newUser.email = req.body.email;
         newUser.password = hashed;
         newUser.phoneNumber = req.body.phoneNumber;
+        console.log("ress", req.body)
         try {
             const user = await newUser.save();
             res.send(user)

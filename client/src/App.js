@@ -14,6 +14,8 @@ import Introduction from "./Components/Introduction/Introduction";
 import Cart from "./Components/Cart/Cart";
 import DetailProduct from "./Components/DetailProduct/DetailProduct";
 import Order from "./Components/Order/Order";
+import Account from "./Components/Account/Account";
+import MyPurchase from "./Components/MyPurchase/MyPurchase";
 
 function App() {
   // const { login } = useSelector((state) => state.auth);
@@ -35,6 +37,8 @@ function App() {
           <Route path="/introduction" element={<Introduction />} />
           <Route path="/detailProduct/:id" element={<DetailProduct/>}/>
           <Route path="/checkout" element={<Order/>}></Route>
+          <Route path="/account" element={<Account/>}></Route>
+          <Route path="/purchase" element={<MyPurchase/>}></Route>
 
         </Routes>
       </div>

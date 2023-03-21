@@ -34,6 +34,7 @@ const productController = {
       newProduct.price = req.body.price;
       newProduct.imgaeProduct = req.body.imgaeProduct;
       newProduct.quantity = req.body.quantity;
+      // newProduct.status = req.body.status;
       newProduct.description = req.body.description;
       newProduct.category = req.body.category;
 

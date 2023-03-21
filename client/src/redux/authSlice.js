@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { Navigate } from "react-router-dom";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -22,10 +22,15 @@ const authSlice = createSlice({
         state.login.isFetching = false;
         state.login.currectUser = action.payload;
         state.login.error = false
+        localStorage.setItem("user", JSON.stringify(action.payload));
     },
     loginFailed: (state) => {
         state.login.isFetching=false;
         state.login.error=true
+    },
+    logout: () => {
+        localStorage.removeItem("user")
+        localStorage.removeItem("totalBill")
     },
     registerStart:(state) => {
       state.register.isFetching = false;
@@ -47,7 +52,8 @@ export const {
     loginFailed,
     registerStart,
     registerSuccess,
-    registerFailed
+    registerFailed,
+    logout
 } = authSlice.actions;
 
 export default authSlice.reducer;
