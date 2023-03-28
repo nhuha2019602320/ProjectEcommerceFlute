@@ -16,7 +16,7 @@ const Cart = () => {
 
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const {login} = useSelector((state) => state.auth)
+  const login = JSON.parse(localStorage.getItem("user"))
   console.log("login", login.currectUser)
   // const cartLists = cart.cartlists;
   const cartLists = JSON.parse(localStorage.getItem("cartList"))
@@ -58,8 +58,9 @@ const Cart = () => {
     }
     localStorage.setItem("totalBill", totalBill.toString());
   console.log(convertPriceListProduct.reduce((a, b) => a + b, 0))
+  
   const handlePay = () => {
-    if(!login.currectUser) 
+    if(!login) 
       navigate("/login")
     else
       navigate("/checkout")

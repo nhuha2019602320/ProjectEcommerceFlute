@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import Header from "../Header/Header";
-import SideBar from "../SideBar/SideBar";
+import Header from "../../Components/Header/Header";
+import SideBar from "../../Components/SideBar/SideBar";
 import { useNavigate } from "react-router-dom";
 import "./Order.css";
 import { useSelector } from "react-redux";
@@ -12,8 +12,6 @@ const Order = () => {
     const navigate = useNavigate();
     // const {login} = useSelector((state) => state.auths)
     const login = JSON.parse(localStorage.getItem("user"))
-    console.log("123",JSON.parse(localStorage.getItem("user")))
-    const cart = useSelector((state) => state.cart);
     const cartLists = JSON.parse(localStorage.getItem("cartList"))
     const [userName, setUserName] = useState(login.userName ?? "null");
     const [phone, setPhone] = useState(login.phoneNumber ?? "null");
@@ -30,11 +28,10 @@ const Order = () => {
           phone: phone,
           productOrder: cartLists,
           total:parseInt(localStorage.getItem("totalBill").toString()) + 30000,
-          user: login.currectUser._id
+          user: login._id
         }
         CreateOrder(order)
         alert("Tạo đơn thành công cảm ơn quý khách")
-        localStorage.removeItem("cartList")
         navigate("/orderdetail")
       }
     }

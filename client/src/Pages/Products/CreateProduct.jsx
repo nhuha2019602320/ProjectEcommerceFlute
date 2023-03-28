@@ -77,11 +77,8 @@ const CreateProduct = () => {
   const onOptionChangeHandler = (event) => {
     event.preventDefault();
     setCategory(event.target.value)
-    // console.log("User Selected Value - ", event.target.value);
   };
-  // console.log("123xxxxx", options)
-  // console.log("option", options.map(item => item._id))
-  const listCategories = options.map((item) => item.categroyName);
+  // const listCategories = options.map((item) => item.categroyName);
 
   useEffect(() => {
     axios

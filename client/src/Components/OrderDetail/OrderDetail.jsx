@@ -5,26 +5,22 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
 import "./OrderDetail.css"
-const Test = () => {
+const OrderDetail = () => {
   const [list, setList] = useState([]);
   const [show, setShow] = useState(false);
   const[orderDetail, setOrderDetail] = useState()
+  
   const handleClose = () => setShow(false);
 
   const handleShow = (item) => {
     setShow(true);
     console.log("item", item._id)
-    // console.log("orderDetail", orderDetail[])
     const itemOrder = list.find((i) => i._id === item._id)
     console.log("itemOrder", itemOrder)
     setOrderDetail(itemOrder?.productOrder)
   };
+
   const navigate = useNavigate();
-  // axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder`, {id: JSON.parse(localStorage.getItem("user"))._id})
-  // .then((res) =>{
-  // //   setList(res.data)
-  //   console.log(res.data)
-  // } )
   useEffect(() => {
     axios
       .get(
@@ -34,8 +30,6 @@ const Test = () => {
       )
       .then((res) => {
         setList(res.data);
-        // setOrderDetail("order detail", res.data.map(({productOrder})=>productOrder))
-        // console.log(res.data);
       });
   }, []);
   return (
@@ -122,4 +116,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default OrderDetail;

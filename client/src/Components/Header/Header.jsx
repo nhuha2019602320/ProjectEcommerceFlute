@@ -333,6 +333,7 @@ function ResponsiveAppBar() {
             }}
             image="https://res.cloudinary.com/uploadimgvvv/image/upload/v1677085248/vjqoro1nzshossf8nebz.png"
             alt="random"
+            onClick={() => navigate("/")}
           />
           <Typography
             variant="h6"

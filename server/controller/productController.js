@@ -116,6 +116,30 @@ const productController = {
       }
     );
   },
+  searchProduct : async (req, res) => {
+    try {
+      const valueSearch = req.params.key;
+      const arr = valueSearch.split(" ");
+      for (var i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+        
+      }
+      const str2 = arr.join(" ");
+      console.log("value",str2);
+  
+        const result = await productModel.find({
+          "$or" : [
+            {
+              nameProduct: {$regex: str2}
+            }
+          ]
+        })
+        res.send(result)     
+    } catch (error) {
+      res.send(error)
+    }
+    // console.log("key", req.params.key.toUpperCase())
+  }
 };
 
 module.exports = productController;

@@ -11,10 +11,13 @@ productRouter.get('/getProduct/:id', productController.getProduct);
 
 productRouter.get('/getAllProducts', productController.getAllProducts);
 
+productRouter.get('/search/:key', productController.searchProduct)
 // productRouter.delete('/:id',userMiddleWare.verifyTokenFromAdmin,  productController.deleteProduct);
 productRouter.delete('/:id', productController.deleteProduct);
 
 // productRouter.put('/:id',userMiddleWare.verifyTokenFromAdmin,  productController.editProduct);
 productRouter.put('/:id', productController.editProduct);
+
+
 
 module.exports = productRouter;
