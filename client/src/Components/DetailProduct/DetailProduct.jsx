@@ -11,10 +11,10 @@ import SideBar from "../SideBar/SideBar";
 
 const DetailProduct = () => {
   const params = useParams();
-  console.log("dddđ", params.id);
+  // console.log("dddđ", params.id);
   const [detailProduct, setDetailProduct] = useState([]);
   const dispatch = useDispatch();
-  console.log(detailProduct.productCode);
+  console.log(detailProduct);
 
   const itemServices = [
     {
@@ -56,7 +56,7 @@ const DetailProduct = () => {
                 <Row style={{marginTop:"20px"}}>
                   <Col>
                   
-                        <img src={item.imgaeProduct} alt=""  style={{width:"400px"}}/>
+                        <img src={item.imageProduct} alt=""  style={{width:"400px"}}/>
                   </Col>
                     <Col>
 

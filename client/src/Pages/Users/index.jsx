@@ -1,31 +1,31 @@
 import React, { useEffect, useState } from "react";
-import AdminPage from "../../Admin/AdminPage";
+import AdminPage from "../../Pages/Admin/AdminPage"
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import "./user.css";
-import Navigate from "../../Navigate/Navigate";
-import { DeleteUser, EditUser } from "../../../services/user";
-
+import Navigate from "../../Components/Navigate/Navigate";
+import { DeleteUser, EditUser } from "../../services/user";
+import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import NavBar from "../../NavBar/NavBar";
-
+import NavBar from "../../Components/NavBar/NavBar"
 const Index = () => {
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = (id) => {
-    setShow(true);
-    console.log("idnay", id);
-    localStorage.setItem("idUser", id);
-  };
-
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumberone, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [idUserUpdate, setIdUserUpdate] = useState("");
+
+  const handleClose = () => setShow(false);
+
+  const handleShow = (user) => {
+    setShow(true);
+    console.log("idnay", user._id);
+    setIdUserUpdate(user._id)
+    localStorage.setItem("idUser", user._id);
+    localStorage.setItem("userNeedManager", JSON.stringify(user))
+  };
 
   const handleDelete = (e, id, index, navigate) => {
     e.preventDefault();
@@ -38,23 +38,28 @@ const Index = () => {
     const idUser = localStorage.getItem("idUser");
     if (
       userName === "" ||
-      email === "" ||
-      password === "" ||
-      password !== confirmPassword
+      email === ""
     ) {
       alert("Vui lòng kiểm tra lại thông tin");
     } else {
       const editUser = {
         userName: userName,
         email: email,
-        password: password,
-        phoneNumber: phoneNumberone,
+        phoneNumber: phoneNumber
       };
-
+      console.log("edit", editUser)
       EditUser(idUser, editUser);
       localStorage.clear();
     }
   };
+  useEffect(() => {
+    if(idUserUpdate)
+      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getOneUser/${idUserUpdate}`).then((res) => {
+        setUserName(res.data.userName)
+        setEmail(res.data.email)
+        setPhoneNumber(res.data.phoneNumber)
+      })
+  },[idUserUpdate])
 
   useEffect(() => {
     axios
@@ -114,7 +119,8 @@ const Index = () => {
                   </button>
                   <button
                     className="handleBtn"
-                    onClick={() => handleShow(user._id)}
+                    // onClick={() => handleShow(user._id)}
+                    onClick={() => handleShow(user)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -145,32 +151,34 @@ const Index = () => {
           <Modal.Title>Thay đổi thông tin</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="edit">
-            <label htmlFor="">Tên tài khoản</label>
-            <input type="text" onChange={(e) => setUserName(e.target.value)} />
-            <label>Email</label>
-            <input type="email" onChange={(e) => setEmail(e.target.value)} />
-            <label htmlFor="">Số điện thoại</label>
-            <input
-              type="text"
-              onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <label htmlFor="">Mật khẩu</label>
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <label htmlFor="">Nhập lại mật khẩu</label>
-            <input
-              type="password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            {/* <label htmlFor="">Quyền truy cập</label>
-            <select name="cars" id="cars">
-              <option value="volvo">Admin</option>
-              <option value="saab">User</option>
-            </select> */}
-          </div>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Control
+                type="text"
+                placeholder="Tên tài khoản"
+                autoFocus
+                floating
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              /><br></br>           
+          <Form.Control
+                type="email"
+                placeholder="Email"
+                autoFocus
+                floating
+                value={email}
+                // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.email ?? ""}
+                onChange={(e) => setEmail(e.target.value)}
+              /><br></br>           
+          <Form.Control
+                type="text"
+                placeholder="Số điện thoại"
+                autoFocus
+                floating
+                value={phoneNumber}
+                // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.phoneNumber ?? ""}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              /><br></br>                              
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

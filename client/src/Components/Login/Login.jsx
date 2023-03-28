@@ -120,7 +120,7 @@ export default function Login() {
         >
 
           <Typography component="h1" variant="h5">
-            Sign in
+            Đăng nhập vào hệ thống
           </Typography>
           <Box component="form"  noValidate sx={{ mt: 1 }}>
             <TextField
@@ -145,10 +145,7 @@ export default function Login() {
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+ 
             <Button
               type="submit"
               fullWidth
@@ -156,7 +153,7 @@ export default function Login() {
               sx={{ mt: 3, mb: 2 }}
               onClick={handleSubmit}
             >
-              Sign In
+              Đăng nhập
             </Button>
             <Grid container>
               <Grid item xs>
@@ -166,13 +163,13 @@ export default function Login() {
               </Grid>
               <Grid item>
                 <Link href="/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Bạn chưa có tài khoản?Đăng ký"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+      
       </Container>
     </ThemeProvider>
   );

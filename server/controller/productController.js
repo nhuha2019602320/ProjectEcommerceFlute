@@ -32,9 +32,9 @@ const productController = {
       newProduct.productCode = req.body.productCode;
       newProduct.nameProduct = req.body.nameProduct;
       newProduct.price = req.body.price;
-      newProduct.imgaeProduct = req.body.imgaeProduct;
+      newProduct.imageProduct = req.body.imageProduct;
       newProduct.quantity = req.body.quantity;
-      // newProduct.status = req.body.status;
+      newProduct.status = req.body.status;
       newProduct.description = req.body.description;
       newProduct.category = req.body.category;
 
@@ -54,11 +54,11 @@ const productController = {
   },
   getProduct: async (req, res) => {
     try {
-      const product = await productModel.find({
+      const product = await productModel.findById({
         // productCode: req.body.productCode.toString(),
-        _id: req.params.id.toString()
+        _id: req.params.id
       });
-      console.log("xxxxxxx", product);
+
       res.send(product);
     } catch (error) {
       res.send("error");
@@ -90,7 +90,7 @@ const productController = {
         req.body.productCode === undefined ||
         req.body.nameProduct === undefined ||
         req.body.price === undefined || 
-        req.body.imgaeProduct === undefined ||
+        req.body.imageProduct === undefined ||
         req.body.quantity === undefined ||
         req.body.description === undefined
       )
@@ -102,7 +102,7 @@ const productController = {
           productCode: req.body.productCode,
           nameProduct: req.body.nameProduct,
           price: req.body.price,
-          imgaeProduct: req.body.imgaeProduct,
+          imageProduct: req.body.imageProduct,
           quantity: req.body.quantity,
           description: req.body.description,
         },

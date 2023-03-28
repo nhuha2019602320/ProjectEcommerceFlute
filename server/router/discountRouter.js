@@ -8,4 +8,8 @@ discountRouter.get('/getDiscount/:id', discountController.getDiscount)
 
 discountRouter.get('/getAllDiscount', discountController.getAllDiscount)   
 
+discountRouter.put('/updateDiscount/:id', discountController.updateDiscount)   
+
+discountRouter.delete('/deleteDisCount/:id', discountController.deleteDiscount)   
+
 module.exports = discountRouter

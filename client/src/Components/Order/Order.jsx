@@ -10,7 +10,7 @@ import { CreateOrder } from "../../services/order";
 import { Grid, TextField } from "@mui/material";
 const Order = () => {
     const navigate = useNavigate();
-    const {login} = useSelector((state) => state.auth)
+    const {login} = useSelector((state) => state.auths)
     const cart = useSelector((state) => state.cart);
     const cartLists = cart.cartlists;
     const [userName, setUserName] = useState(login.currectUser.userName ?? "null");
@@ -32,6 +32,7 @@ const Order = () => {
         }
         CreateOrder(order)
         alert("Tạo đơn thành công cảm ơn quý khách")
+        navigate("/test")
       }
     }
   return (

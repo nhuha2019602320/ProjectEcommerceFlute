@@ -93,7 +93,7 @@ const Cart = () => {
                         className="inforUser"
                       >
                         <td>
-                          <img src={item.imgaeProduct} width="80px" alt="" />
+                          <img src={item.imageProduct} width="80px" alt="" />
                         </td>
                         <td>{item.nameProduct}</td>
                         <td>{Number(item.price).toLocaleString()}đ</td>

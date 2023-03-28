@@ -36,20 +36,40 @@ const cartSlice = createSlice({
 
             itemCart.splice(indexDelete, 1)
             localStorage.setItem("cartList", JSON.stringify(itemCart))
-            
         },
         IncreaseCart: (state, action) => {
-            const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);
-            if(state.cartlists[indexItem].quantity >=1)
-            state.cartlists[indexItem].quantity += 1
+            // const itemCart = JSON.parse(localStorage.getItem("cartList"))
+            // console.log("itemCart", itemCart.map((item) => item.quantity))
+            // const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);
+            // console.log("itemindex", indexItem)
+            // if(state.cartlists[indexItem].quantity >=1)
+            // state.cartlists[indexItem].quantity += 1
+            // console.log("comein")
+            const itemCart = JSON.parse(localStorage.getItem("cartList"))
+            const indexItem = itemCart.findIndex(item=>item._id === action.payload._id); 
+            console.log("itemCart", itemCart[indexItem].quantity)
+            console.log("index", indexItem)
+            if(itemCart[indexItem].quantity >=1)
+            itemCart[indexItem].quantity +=1
+            localStorage.setItem("cartList",JSON.stringify(itemCart))
+            state.cartlists = [...state.cartlists, itemCart[indexItem]]
         },
         DecreaseCart: (state, action) => {
-            const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);         
-            if(state.cartlists[indexItem].quantity >1)
-                state.cartlists[indexItem].quantity -= 1
+            // const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);         
+            // if(state.cartlists[indexItem].quantity >1)
+            //     state.cartlists[indexItem].quantity -= 1
+            // else
+            //     state.cartlists.splice(indexItem, 1)
+            const itemCart = JSON.parse(localStorage.getItem("cartList"))
+            const indexItem = itemCart.findIndex(item=>item._id === action.payload._id); 
+            console.log("itemCart", itemCart[indexItem].quantity)
+            console.log("index", indexItem)
+            if(itemCart[indexItem].quantity >1)
+                itemCart[indexItem].quantity -=1
             else
-                state.cartlists.splice(indexItem, 1)
-
+                itemCart.splice(indexItem, 1)
+            localStorage.setItem("cartList",JSON.stringify(itemCart))
+            state.cartlists = [...state.cartlists, itemCart[indexItem]]
         }
     }
 })

@@ -109,7 +109,7 @@ const userController = {
     },
     getOneUser : async (req, res) => {
         try {
-            const user = await userModel.find({_id: req.params.id}).exec();
+            const user = await userModel.findById({_id: req.params.id}).exec();
             res.status(200).send(user)
         } catch (error) {
             res.status(500).send(error)
@@ -131,14 +131,14 @@ const userController = {
     },
     editUser : async (req, res) => {
         const _id = req.params.id;
-        const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash(req.body.password, salt);
+        // const salt = await bcrypt.genSalt(10);
+        // const hashed = await bcrypt.hash(req.body.password, salt);
         const userNeededUpdate = userModel.findByIdAndUpdate(_id, 
             {
                 $set: {
                     userName : req.body.userName,
                     email : req.body.email,
-                    password : hashed,
+                    // password : hashed,
                     phoneNumber : req.body.phoneNumber                
                 }
             },

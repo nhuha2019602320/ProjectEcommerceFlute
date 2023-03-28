@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import AdminPage from "../../Admin/AdminPage";
+import AdminPage from "../../Pages/Admin/AdminPage"
 import Table from "react-bootstrap/Table";
 import axios from "axios";
+import StarterKit from "@tiptap/starter-kit";
 import "./product.css";
-import { DeleteProduct, UpdateProduct } from "../../../services/product";
+import { DeleteProduct, UpdateProduct } from "../../services/product";
 import CreateProduct from "./CreateProduct";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import NavBar from "../../NavBar/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
+import MenuBar from "../../Components/MenuBar/MenuBar";
+import { Form, Toast } from "react-bootstrap";
+import { EditorContent, useEditor } from "@tiptap/react";
 // import { Pagination } from "antd";
 import parse from "html-react-parser";
 const Index = () => {
@@ -20,11 +24,13 @@ const Index = () => {
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
+  const [idproduct,setIDProduct] = useState("");
+  const idProductUpdate = localStorage.getItem("idProductUpdate")
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
     setShow(true);
-    console.log("idnay", id);
+    setIDProduct(id)
     localStorage.setItem("idProductUpdate", id);
   };
 
@@ -36,7 +42,6 @@ const Index = () => {
   };
 
   const handleUpdateProduct = () => {
-    const idProductUpdate = localStorage.getItem("idProductUpdate")
 
     const product = {
       productCode: productCode,
@@ -46,11 +51,21 @@ const Index = () => {
       quantity: quantity,
       description: description
   }
-    console.log("13123123", product);
+  
     UpdateProduct(product, idProductUpdate)
-    localStorage.clear();
+    // localStorage.clear();
   }
-
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: `
+        Mô tả sản phẩm
+      </p>
+    `,
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML()
+      setDescription(html)
+  }
+  })
   const upLoadImage =  (e) => {
     // setImgProduct(e.target.files[0]);
     console.log("img ", imgProduct);
@@ -64,9 +79,21 @@ const Index = () => {
       )
       .then((res) => setUrlImg(res.data.url));
       console.log(urlImg);
-      //   console.log(productCode, nameProduct, price, quantity, description);
     };
     
+    useEffect(() => {
+      if(idproduct)
+      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${idproduct}`)
+            .then((res) => {
+              console.log("daa", res.data)
+              setProductCode(res.data.productCode);
+              setNameProduct(res.data.nameProduct);
+              setPrice(res.data.price);
+              setQuantity(res.data.quantity);
+              setUrlImg(res.data.imageProduct);
+              setDescription(res.data.description);
+            })
+    },[idProductUpdate])
 
   useEffect(() => {
     axios
@@ -166,41 +193,58 @@ const Index = () => {
           <Modal.Title>Sửa thông tin sản phẩm</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="edit">
-            <label htmlFor="">Mã sản phẩm</label>
-            <input
-              type="text"
-              onChange={(e) => setProductCode(e.target.value)}
-            />
-            <label>Tên sản phẩm</label>
-            <input
-              type="text"
-              onChange={(e) => setNameProduct(e.target.value)}
-            />
-            <label htmlFor="">Giá</label>
-            <input type="text" onChange={(e) => setPrice(e.target.value)} />
-            <label htmlFor="">Ảnh sản phẩm</label><br></br>
-            <input
-              type="file"
-              onChange={ (event) => {
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Form.Control
+                    type="text"
+                    placeholder="Mã Sản Phẩm"
+                    autoFocus
+                    floating
+                    value={productCode}
+                    onChange={(e) => setProductCode(e.target.value)}
+                  /><br></br> 
+              <Form.Control
+                type="text"
+                placeholder="Tên sản phẩm"
+                autoFocus
+                floating
+                value={nameProduct}
+                onChange={(e) => setNameProduct(e.target.value)}
+              /><br></br>
+                <Form.Control
+                type="text"
+                placeholder="Gia"
+                autoFocus
+                floating
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              /><br></br>
+               <Form.Control
+                type="file"
+                autoFocus
+                floating
+                onChange={ (event) => {
                   setImgProduct(event.target.files[0])
-                  // const formData = new FormData();
-                  // formData.append("file", imgProduct);
-                  // formData.append("upload_preset", "rahh7f3b");
-                  // await axios.post('https://api.cloudinary.com/v1_1/uploadimgvvv/image/upload',formData).then((res) => console.log(res))
               }}
-              // onChange={(e) => upLoadImage(e)}
-              style={{width: "350px"}}
-            />
-            <button type="submit" onClick={upLoadImage}>Gửi ảnh</button><br></br>
-            <label htmlFor="">Số lượng</label>
-            <input type="text" onChange={(e) => setQuantity(e.target.value)} />
-            <label htmlFor="">Mô tả</label>
-            <input
-              type="text"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+              /><br></br> 
+              <button type="submit" onClick={upLoadImage}>Gửi ảnh</button><br></br>
+              <Form.Control
+                type="text"
+                placeholder="Số Lượng"
+                autoFocus
+                floating
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              /><br></br>
+              <MenuBar editor={editor} />
+              <EditorContent editor={editor} />
+              {/* <Form.Control
+                type="text"
+                placeholder="Mô tả"
+                autoFocus
+                floating
+                onChange={(e) => setDescription(e.target.value)}
+              /><br></br> */}
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary">Close</Button>

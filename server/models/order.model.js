@@ -13,8 +13,8 @@ const OrderSchema = new Schema(
       require: true,
     },
     status: {
-        type: Boolean,
-        default: false
+        type: String,
+        default: "Chờ gói hàng"
     },
     productOrder: [
 
@@ -23,13 +23,13 @@ const OrderSchema = new Schema(
       type: String,
       require: true
     },
-    user:[
+    user:
       {
         type: Schema.Types.ObjectId,
         ref: "Users",
         require: true
       },
-    ] 
+    
       
   },
   {

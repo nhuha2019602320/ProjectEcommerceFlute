@@ -5,41 +5,44 @@ import Header from "../Header/Header";
 import NavAccount from "../NavAccount/NavAccount";
 
 const MyPurchase = () => {
-  const [listOrder, setListOrder] = useState([
-    // JSON.parse(localStorage.getItem("user")).order
+
+  const [per, setPer] = useState({})
+  const[listPurchase, setListPurchase] = useState([])
+  const orders = JSON.parse(localStorage.getItem("user").toString()).order
+  // const id = JSON.parse(localStorage.getItem("user"))._id
+  // console.log("id", id)
+
+  // console.log("listpre", listPurchase)
+  const handleCheck =  (item) => {
+    // let result = per.map(({ productOrder }) => productOrder)
+    // console.log("result", result)
+    // // console.log(result)
+    // // setListPurchase(result)
+    // // const x = listPurchase[0].map(({productCode, nameProduct}) => ({productCode, nameProduct}))
+    // // console.log("ListPurchase",x)
+    // console.log(item)
     
-  ]);
-  const [per, setPer] = useState([])
-  const[listPurchase, setListPurchase] = useState()
-  // const [productOrders, setProductOrdes] = useState([]);
-  console.log("listPurchase", listPurchase)
-  const id = JSON.parse(localStorage.getItem("user"))._id
-  console.log("id", id)
-
-  const handleCheck = async (item) => {
-
-
-    console.log(item)
-    await axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder/${item}`)
-      .then((res) => setPer(res.data))
-      // console.log("order", per.map((p) => p.productOrder))
-      // setProductOrdes(per.map((p) => p.productOrder))
-      // console.log("productOrders", productOrders)
-      // let result = per.map(({ productOrder }) => productOrder)
-      // console.log("result", result)
-      // console.log(result)
-      // setListPurchase(result)
-      // const x = listPurchase[0].map(({productCode, nameProduct}) => ({productCode, nameProduct}))
-      // console.log("ListPurchase",x)
-
-
+     axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder`, {id: JSON.parse(localStorage.getItem("user"))._id})
+      .then((res) =>{
+        // setPer(res.data)
+        console.log(res.data)
+      } )
     }
+    // console.log(per)
+    // per.map(item =>{
+    //   item.productOrder.map(i =>{
+    //     setListPurchase(i)
+    //   })
+    // })
+    //     console.log(listPurchase)
 
-
-
-    useEffect(() => {
-       axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getOneUser/${id}`).then((res) => setListPurchase(res.data.map((item) => item.order)))
-    },[])
+    // useEffect(() => {
+    //   axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder/6419e40351585e518c05613d`)
+    //   .then((res) =>{
+    //     // setPer(res.data)
+    //     console.log(res.data)
+    //   } )
+    // },[])
   return (
     <>
       <Header></Header>
@@ -50,7 +53,7 @@ const MyPurchase = () => {
           </Col>
           <Col>
             {
-              listPurchase[0].map((item, index) => (
+              orders.map((item, index) => (
                 <div key = {index}>
                   <p>ma don</p> <>{item}</>
                   <button onClick={() => handleCheck(item)}>Chi tiết</button>
@@ -60,7 +63,14 @@ const MyPurchase = () => {
 
           </Col>
           <Col>
-
+{/* {
+  per?.productOrder.map((item) => (
+    <div>
+      <p>{item.productCode}</p>
+      <p>{item.nameProduct}</p>
+    </div>
+  ))
+} */}
           </Col>
         </Row>
       </Container>

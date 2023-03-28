@@ -31,6 +31,7 @@ const authSlice = createSlice({
     logout: () => {
         localStorage.removeItem("user")
         localStorage.removeItem("totalBill")
+        localStorage.removeItem("cartList")
     },
     registerStart:(state) => {
       state.register.isFetching = false;

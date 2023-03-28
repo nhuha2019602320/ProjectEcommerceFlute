@@ -2,12 +2,13 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Toast } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { NewProduct } from "../../../services/product";
-import MenuBar from "../../MenuBar/MenuBar";
-import TipTap from "../../TipTap/TipTap";
+import { NewProduct } from "../../services/product";
+import MenuBar from "../../Components/MenuBar/MenuBar";
+import TipTap from "../../Components/TipTap/TipTap";
+import { ToastContainer, toast } from 'react-toastify';
 const CreateProduct = () => {
   const [show, setShow] = useState(false);
   const [productCode, setProductCode] = useState("");
@@ -18,6 +19,8 @@ const CreateProduct = () => {
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+
+  const notify = () => toast("Wow so easy!");
 
   const handleClose = () => setShow(false);
 
@@ -59,28 +62,38 @@ const CreateProduct = () => {
       imageProduct: urlImg,
       quantity: quantity,
       description: description,
-      // category: category,
+      category: category,
     };
     NewProduct(product);
+    toast.success('Success Notification !', {
+      position: toast.POSITION.TOP_RIGHT
+  });
+  setShow(false)
+  window.location.reload(false);
   };
 
   const [options, setOptions] = useState([]);
+
   const onOptionChangeHandler = (event) => {
     event.preventDefault();
-    console.log("User Selected Value - ", event.target.value);
-    setCategory(event.target.value);
+    setCategory(event.target.value)
+    // console.log("User Selected Value - ", event.target.value);
   };
+  // console.log("123xxxxx", options)
   // console.log("option", options.map(item => item._id))
   const listCategories = options.map((item) => item.categroyName);
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory`)
+      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
       .then((res) => {
-        setOptions(res.data);
+        setOptions(res.data)
+        console.log("category", res.data)
       });
   }, []);
   return (
     <div>
+       <ToastContainer />
       <button onClick={handleShow}>Thêm sản phẩm</button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -154,8 +167,6 @@ const CreateProduct = () => {
               Gửi ảnh
             </button>
             <br></br>
-            {/* <label htmlFor="">Số lượng</label>
-            <input type="text" onChange={(e) => setQuantity(e.target.value)} /> */}
             <Form.Control
                 type="text"
                 placeholder="Số Lượng"
@@ -163,7 +174,6 @@ const CreateProduct = () => {
                 floating
                 onChange={(e) => setQuantity(e.target.value)}
               /><br></br>
-            <label htmlFor="">Mô tả</label>
             {/* <input
               type="text"
               onChange={(e) => setDescription(e.target.value)}
@@ -178,8 +188,8 @@ const CreateProduct = () => {
             <br />
             <select onChange={onOptionChangeHandler}>
               <option>Please choose one option</option>
-              {listCategories.map((option, index) => {
-                return <option key={index}>{option}</option>;
+              {options.map((option, index) => {
+                return <option key={index} value={option._id}>{option.categroyName}</option>;
               })}
             </select>
           
@@ -192,6 +202,7 @@ const CreateProduct = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+         
     </div>
   );
 };

@@ -1,10 +1,27 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import MyAccount from "../MyAccount/MyAccount";
 import NavAccount from "../NavAccount/NavAccount";
 const Account = () => {
+    const userLogin = JSON.parse(localStorage.getItem("user"))
+    const navigate = useNavigate();
+    if(userLogin === null || userLogin === undefined) {
+      return (
+        <>
+          <h5>Bạn chưa đăng nhập vào hệ thống</h5>
+          <Button onClick={() => navigate("/")}>Quay lại trang chủ</Button>
+        </>
+      )
+    }
+
+    const orders = JSON.parse(localStorage.getItem("user").toString()).order
+    console.log(orders)
+  
+    console.log(typeof orders)
+
   return (
     <>
       <Header></Header>

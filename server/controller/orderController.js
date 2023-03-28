@@ -73,9 +73,10 @@ const orderController = {
     },
     getOrder: async (req, res) => {
         try {
-            const _id = req.body;
-            console.log("first", _id)
-            const order = await orderModel.find({_id: req.params.id.toString()}).exec();
+            const id = req.params.id
+            console.log("id", id)
+            const order = await orderModel.find({user: id})
+            console.log("orderzz", order)
             res.send(order)
         } catch (error) {
             res.send(error)

@@ -26,9 +26,25 @@ const discountController = {
       res.send(error);
     }
   },
+  updateDiscount: async (req, res) => {
+      const discountUpdate = discountModel.findByIdAndUpdate(await {_id: req.params.id},
+        {
+          $set: {
+            discountCode: req.body.discountCode,
+            percentDiscount: req.body.percentDiscount 
+          }
+        }, (err) => {
+          if(err) {
+            res.send(err)
+          }else {
+            res.send("update successfully")
+          }
+        }
+      )
+  },
   getDiscount: async (req, res) => {
     try {
-      const discount = await discountModel.find({_id: req.params.id}).exec()
+      const discount = await discountModel.findById({_id: req.params.id})
       res.send(discount)
       console.log("discount", discount)  
     } catch (error) {
@@ -39,6 +55,19 @@ const discountController = {
     try {
       const allDiscount = await discountModel.find({}).exec();
       res.send(allDiscount)
+    } catch (error) {
+      res.send(error)
+    }
+  },
+  deleteDiscount: async (req, res) => {
+    try {
+      const discountNeedDelete =  discountModel.findByIdAndDelete(await {_id: req.params.id}, (err) => {
+        if(err) {
+          res.send("delete discout failed");
+        } else {
+          res.send("delte discount successfully");
+        }
+      })
     } catch (error) {
       res.send(error)
     }

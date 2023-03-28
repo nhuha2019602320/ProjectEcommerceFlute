@@ -1,11 +1,11 @@
 import "./home.css";
-import Header from "../Header/Header";
-import ListProducts from "../ListProducts/ListProducts";
-import Slider from "../Slider/Slider";
+import Header from "../../Components/Header/Header";
+import ListProducts from "../../Components/ListProducts/ListProducts";
+import Slider from "../../Components/Slider/Slider";
 import { Container } from "react-bootstrap";
-import Footer from "../Footer/Footer"
+import Footer from "../../Components/Footer/Footer"
 import { useSelector } from "react-redux";
-import Menu from "../Menu/Menu";
+import Menu from "../../Components/Menu/Menu";
 const HomePage = () => {
   const { login } = useSelector((state) => state.auth);
   console.log("homePage")

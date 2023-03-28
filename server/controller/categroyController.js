@@ -29,9 +29,9 @@ const categoryController = {
     // console.log( await req.body._id.toString(),)
     try {
       const category = await categoryModel.find({
-        _id: req.body.id.toString(),
+        _id: req.params.id,
       });
-      res.send(category.map(i => i.categroyName));
+      res.send(category);
     } catch (error) {
       res.send("error");
     }
@@ -54,6 +54,7 @@ const categoryController = {
          await {_id: req.params.id},
          {
             $set: {
+              categoryCode: req.body.categoryCode,
                categroyName: req.body.categroyName
             }
          },

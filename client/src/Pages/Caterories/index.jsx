@@ -1,24 +1,64 @@
 import React, { useState } from "react";
-import AdminPage from '../../Admin/AdminPage'
+import AdminPage from "../../Pages/Admin/AdminPage"
 import Container from "react-bootstrap/esm/Container";
+import { Form, Toast } from "react-bootstrap";
 import axios from "axios";
 import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import NavBar from "../../NavBar/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
 import Table from "react-bootstrap/Table";
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listCategories, setListCategories] = useState([]);
+  const [categoryCode, setCategoryCode] = useState("")
+  const [categroyName, setNameCategory] = useState("")
   const handleClose = () => setShow(false);
+
   const handleShow = (id) => {
     setShow(true);
-    console.log("idnay", id);
-    localStorage.setItem("idProductUpdate", id);
-  };
+     console.log("id", id)
+     localStorage.setItem("idCategory", id)
+  }
+
+  const handleDelete = (id, index) => {
+      axios.delete(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/deleteCategory/${id}`)
+      setListCategories(listCategories.filter((o, i) => index !== i));
+  }
+
+  const handleUpdate = () => {
+      const category = {
+        categoryCode: categoryCode,
+        categroyName: categroyName
+      }
+      if(categoryCode === "" || categroyName ==="")
+        return alert("Bạn chưa điền thông tin")
+      axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/updateCategory/${localStorage.getItem("idCategory")}`,category)
+      window.location.reload(false);
+  }
+
+  const handleCreate = () => {
+    document.getElementById("hehe").style.display ="none"
+    setCategoryCode("");
+    setNameCategory("")
+    const update = {
+      categoryCode: categoryCode,
+      categroyName: categroyName
+    }
+    axios.post(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/createCategory`,update)
+    window.location.reload(false);
+  }
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory`)
+    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory/${localStorage.getItem("idCategory")}`)
+      .then((res) => {
+        setCategoryCode(res.data[0].categoryCode);
+        setNameCategory(res.data[0].categroyName)
+      })
+  },[localStorage.getItem("idCategory")])
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
      .then((res) => {
        console.log("list",res.data)
        setListCategories(res.data)
@@ -29,6 +69,7 @@ const Index = () => {
     <AdminPage />
     <div style={{ maxWidth: "100%" }} className="col-10">
     <NavBar/>
+    <button onClick={handleShow}>Tạo danh mục</button>
       <Table striped style={{ marginTop: "30px" }}>
         <thead>
           <tr
@@ -59,6 +100,7 @@ const Index = () => {
                 <th>
                   <button
                     className="handleBtn"
+                    onClick={() => handleDelete(category._id, index)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -103,20 +145,29 @@ const Index = () => {
         <Modal.Title>Sửa thông tin danh mục</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="edit">
-          <label htmlFor="">Mã danh mục</label>
-          <input
-            type="text"
-          />
-          <label>Tên danh mục</label>
-          <input
-            type="text"
-          />
-        </div>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+          <Form.Control
+                    type="text"
+                    placeholder="Mã Danh Mục"
+                    autoFocus
+                    floating
+                    value={categoryCode}
+                    onChange={(e) => setCategoryCode(e.target.value)}
+                    /><br></br>
+          <Form.Control
+                    type="text"
+                    placeholder="Tên Danh mục"
+                    autoFocus
+                    floating
+                    value={categroyName}
+                    onChange={(e) => setNameCategory(e.target.value)}
+                  /><br></br>
+          </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary">Close</Button>
-        <Button variant="primary">Save Changes</Button>
+        <Button variant="primary" onClick={handleCreate}>Tạo danh mục</Button>
+        <Button variant="primary" id="hehe" onClick={handleUpdate}>Sửa danh mục</Button>
           
       </Modal.Footer>
     </Modal>

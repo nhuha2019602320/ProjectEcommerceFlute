@@ -180,7 +180,8 @@ export default function Menu() {
 
                 <Nav.Link
                   style={{ paddingLeft: "0" }}
-                  href="/"
+                  as={Link}
+                  to="/"
                   className="nav-link-btn"
                 >
                   TRANG CHỦ
@@ -194,7 +195,7 @@ export default function Menu() {
                 <Nav.Link as={Link} to="/introduction" className="nav-link-btn">
                   GIỚI THIỆU
                 </Nav.Link>
-                <Nav.Link as={Link} to="/" className="nav-link-btn">
+                <Nav.Link as={Link} to="/contact" className="nav-link-btn">
                   LIÊN HỆ
                 </Nav.Link>
               </Nav>
