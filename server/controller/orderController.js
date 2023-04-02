@@ -76,7 +76,6 @@ const orderController = {
             const id = req.params.id
             console.log("id", id)
             const order = await orderModel.find({user: id})
-            console.log("orderzz", order)
             res.send(order)
         } catch (error) {
             res.send(error)
@@ -110,7 +109,7 @@ const orderController = {
                     res.send("delete successed");
                 }
             })
-
+            res.send(orderNeedDelete)
                 const userOrder =  await userModel.findOneAndUpdate(
                     {_id: req.body.id},
                     {
@@ -119,6 +118,22 @@ const orderController = {
                         }
                     }
                 )
+                let transporter = nodemailer.createTransport({
+                    service : "gmail",
+                    auth: {
+                        user: "anh123vvv@gmail.com",
+                        pass: "dralbidqghhmlmqo"
+                    }
+                })
+                await transporter.sendMail({
+                    from: "anh123vvv@gmail.com",
+                    to : "nhuhai17072106@gmail.com",
+                    subject: "HỦY ĐƠN HÀNG", // Subject line
+                    text: "HỦY ĐƠN HÀNG", // plain text body
+                    html: `Tôi muốn hủy đơn hàng này
+                    `,
+                })
+
         } catch (error) {
             res.send(error)
         }

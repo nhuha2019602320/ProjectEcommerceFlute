@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AdminPage from "../../Pages/Admin/AdminPage"
+import AdminPage from "../../Pages/Admin/AdminPage";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import StarterKit from "@tiptap/starter-kit";
@@ -12,7 +12,7 @@ import NavBar from "../../Components/NavBar/NavBar";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import { Form, Toast } from "react-bootstrap";
 import { EditorContent, useEditor } from "@tiptap/react";
-// import { Pagination } from "antd";
+import Paginator from "react-hooks-paginator";
 import parse from "html-react-parser";
 const Index = () => {
   const [products, setProducts] = useState([]);
@@ -24,13 +24,21 @@ const Index = () => {
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
-  const [idproduct,setIDProduct] = useState("");
-  const idProductUpdate = localStorage.getItem("idProductUpdate")
+  const [idproduct, setIDProduct] = useState("");
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPage = 5;
+  const lastIndex = currentPage * recordsPage;
+  const firstIndex = lastIndex - recordsPage;
+  const records = products.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(products.length / recordsPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
 
+  const idProductUpdate = localStorage.getItem("idProductUpdate");
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
     setShow(true);
-    setIDProduct(id)
+    setIDProduct(id);
     localStorage.setItem("idProductUpdate", id);
   };
 
@@ -42,19 +50,17 @@ const Index = () => {
   };
 
   const handleUpdateProduct = () => {
-
     const product = {
       productCode: productCode,
       nameProduct: nameProduct,
       price: price,
       imageProduct: urlImg,
       quantity: quantity,
-      description: description
-  }
-  
-    UpdateProduct(product, idProductUpdate)
-    // localStorage.clear();
-  }
+      description: description,
+    };
+
+    UpdateProduct(product, idProductUpdate);
+  };
   const editor = useEditor({
     extensions: [StarterKit],
     content: `
@@ -62,38 +68,54 @@ const Index = () => {
       </p>
     `,
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML()
-      setDescription(html)
-  }
-  })
-  const upLoadImage =  (e) => {
+      const html = editor.getHTML();
+      setDescription(html);
+    },
+  });
+  const upLoadImage = (e) => {
     // setImgProduct(e.target.files[0]);
     console.log("img ", imgProduct);
     const formData = new FormData();
     formData.append("file", imgProduct);
     formData.append("upload_preset", "rahh7f3b");
-      axios
-    .post(
-      "https://api.cloudinary.com/v1_1/uploadimgvvv/image/upload",
-      formData
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/uploadimgvvv/image/upload",
+        formData
       )
       .then((res) => setUrlImg(res.data.url));
-      console.log(urlImg);
-    };
-    
-    useEffect(() => {
-      if(idproduct)
-      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${idproduct}`)
-            .then((res) => {
-              console.log("daa", res.data)
-              setProductCode(res.data.productCode);
-              setNameProduct(res.data.nameProduct);
-              setPrice(res.data.price);
-              setQuantity(res.data.quantity);
-              setUrlImg(res.data.imageProduct);
-              setDescription(res.data.description);
-            })
-    },[idProductUpdate])
+    console.log(urlImg);
+  };
+
+  const prePage = () => {
+    if(currentPage !== firstIndex)
+        setCurrentPage(currentPage -1)
+  }
+
+  const nextPage = () => {
+    if(currentPage !== lastIndex)
+        setCurrentPage(currentPage +1)    
+  }
+
+  const changePage = (id) => {
+      setCurrentPage(id)
+  }
+  useEffect(() => {
+    if (idproduct)
+      axios
+        .get(
+          `${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${idproduct}`
+        )
+        .then((res) => {
+          console.log("daa", res.data);
+          setProductCode(res.data.productCode);
+          setNameProduct(res.data.nameProduct);
+          setPrice(res.data.price);
+          setQuantity(res.data.quantity);
+          setUrlImg(res.data.imageProduct);
+          setDescription(res.data.description);
+        });
+  }, [idProductUpdate]);
 
   useEffect(() => {
     axios
@@ -101,7 +123,6 @@ const Index = () => {
       .then((res) => {
         console.log("product", res.data);
         setProducts(res.data);
-
       });
   }, []);
 
@@ -109,8 +130,8 @@ const Index = () => {
     <div style={{ display: "flex" }}>
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
-      <NavBar/>
-        <CreateProduct/>
+        <NavBar />
+        <CreateProduct />
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr
@@ -131,7 +152,7 @@ const Index = () => {
             </tr>
           </thead>
           <tbody className="ffsd">
-            {products.map((product, index) => (
+            {records.map((product, index) => (
               <tr
                 key={product._id.toString()}
                 className="inforProduct"
@@ -187,6 +208,35 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
+        <div style={{textAlign:"center"}}>
+
+        <nav>
+          <ul className="pagination">
+            <li className="page-item">
+              <a href="#" className="page-link" onClick={prePage}>
+                prve
+              </a>
+            </li>
+            {numbers.map((n, i) => (
+              <li className={`page-item ${currentPage === n ? "active" : ""}`}>
+                <a
+                  href="#"
+                  className="page-link"
+                  key={i}
+                  onClick={() => changePage(n)}
+                >
+                  {n}
+                </a>
+              </li>
+            ))}
+            <li className="page-item">
+              <a href="#" className="page-link" onClick={nextPage}>
+                next
+              </a>
+            </li>
+          </ul>
+        </nav>
+        </div>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -194,50 +244,58 @@ const Index = () => {
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-              <Form.Control
-                    type="text"
-                    placeholder="Mã Sản Phẩm"
-                    autoFocus
-                    floating
-                    value={productCode}
-                    onChange={(e) => setProductCode(e.target.value)}
-                  /><br></br> 
-              <Form.Control
-                type="text"
-                placeholder="Tên sản phẩm"
-                autoFocus
-                floating
-                value={nameProduct}
-                onChange={(e) => setNameProduct(e.target.value)}
-              /><br></br>
-                <Form.Control
-                type="text"
-                placeholder="Gia"
-                autoFocus
-                floating
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              /><br></br>
-               <Form.Control
-                type="file"
-                autoFocus
-                floating
-                onChange={ (event) => {
-                  setImgProduct(event.target.files[0])
+            <Form.Control
+              type="text"
+              placeholder="Mã Sản Phẩm"
+              autoFocus
+              floating
+              value={productCode}
+              onChange={(e) => setProductCode(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="text"
+              placeholder="Tên sản phẩm"
+              autoFocus
+              floating
+              value={nameProduct}
+              onChange={(e) => setNameProduct(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="text"
+              placeholder="Gia"
+              autoFocus
+              floating
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="file"
+              autoFocus
+              floating
+              onChange={(event) => {
+                setImgProduct(event.target.files[0]);
               }}
-              /><br></br> 
-              <button type="submit" onClick={upLoadImage}>Gửi ảnh</button><br></br>
-              <Form.Control
-                type="text"
-                placeholder="Số Lượng"
-                autoFocus
-                floating
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-              /><br></br>
-              <MenuBar editor={editor} />
-              <EditorContent editor={editor} />
-              {/* <Form.Control
+            />
+            <br></br>
+            <button type="submit" onClick={upLoadImage}>
+              Gửi ảnh
+            </button>
+            <br></br>
+            <Form.Control
+              type="text"
+              placeholder="Số Lượng"
+              autoFocus
+              floating
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+            <br></br>
+            <MenuBar editor={editor} />
+            <EditorContent editor={editor} />
+            {/* <Form.Control
                 type="text"
                 placeholder="Mô tả"
                 autoFocus

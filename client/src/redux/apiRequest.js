@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { loginStart, loginSuccess, loginFailed, registerStart, registerFailed, registerSuccess } from './authSlice';
-
+import { ToastContainer, toast } from 'react-toastify';
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
@@ -12,6 +12,7 @@ export const loginUser = async (user, dispatch, navigate) => {
             navigate("/admin")
         else
             navigate("/")
+        
             
     } catch (error) {
         dispatch(loginFailed())

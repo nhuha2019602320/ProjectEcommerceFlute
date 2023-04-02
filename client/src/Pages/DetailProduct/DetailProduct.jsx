@@ -8,47 +8,31 @@ import "./Detail.css"
 import { useDispatch } from "react-redux";
 import SideBar from "../../Components/SideBar/SideBar"
 import { AddCard } from "../../redux/cartSlice";
-
+import ListProduct from "../../Components/ListProducts/ListProducts"
+import Footer from "../../Components/Footer/Footer"
 const DetailProduct = () => {
   const params = useParams();
-  const detailProduct = JSON.parse(localStorage.getItem("pr"))
-  console.log(detailProduct)
+  const [detailProduct, setDetailProduct] = useState()
   const dispatch = useDispatch();
-  const itemServices = [
-    {
-      urlImg:  "https://res.cloudinary.com/uploadimgvvv/image/upload/v1678631170/jxmrtpp1ovwjpu1edbqp.png",
-      title: "Miễn phí vận chuyển",
-      content: "Giao hàng tại nhà trong bán kính 10km"
-    },
-    {
-      urlImg:  "https://res.cloudinary.com/uploadimgvvv/image/upload/v1678631172/nzmjhs7ugq16s9nvypyx.png",
-      title: "Hoàn tiền 100%",
-      content: "Nếu sản phẩm lỗi hoặc hư hỏng"
-    },
-    {
-      urlImg:  "https://res.cloudinary.com/uploadimgvvv/image/upload/v1678631172/zfyh8bxnbpyqgtryjtg3.png",
-      title: "Thanh toán tận nhà ",
-      content: "Không cần cọc trước"
-    },
-    
-  ]
 
   const getProduct = async () => {
     await axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${params.id}`)
-      .then(res => localStorage.setItem("pr",JSON.stringify(res.data)))
+      .then(res => {
+        setDetailProduct(res.data)
+      })
   }
 
   useEffect(() => {
     getProduct()
   },[])
+  if(detailProduct)
   return (
     <div>
       <Header />
       <Container>
         <Row style={{marginTop:"20px"}}>
           <Col>
-            {/* {detailProduct?.map((item) => (
-                <>  */}
+              <>
                 <Row style={{borderTop:"1px solid #f0f0f0", height:"100px", borderBottom:"1px solid #f0f0f0"}}>
                     <h1 style={{color:"#212121", fontSize:"30px", display:"flex", alignItems:"center"}}>{detailProduct.nameProduct}</h1>
                 </Row>
@@ -56,6 +40,11 @@ const DetailProduct = () => {
                   <Col>
                   
                         <img src={detailProduct.imageProduct} alt=""  style={{width:"400px"}}/>
+                        <img
+                src="https://res.cloudinary.com/uploadimgvvv/image/upload/v1680424035/gq1ev2vwzhhewxpje7bk.jpg"
+                className="img-fluid rounded"
+                style={{ marginTop: "40px" }}
+              />
                   </Col>
                     <Col>
 
@@ -70,31 +59,14 @@ const DetailProduct = () => {
                       </div>
                     </Col>       
                 </Row>
-                {/* </>
-
-            ))} */}
+              </> 
+            
           </Col>
-          {/* <Col xs md="3" className="gg">
-            <div className="fg">
-                {
-                  itemServices.map((service) => (
-                    <ul className="service">
-                        <li>
-                          <img src={service.urlImg} alt="" />
-                          <div>
-                            <p>{service.title}</p>
-                              <span>{service.content}</span>
-                          </div>
-                        </li>
-                    </ul>
-                  ))
-                }
-            </div>
-          </Col> */}
           <SideBar/>
         </Row>
+        {/* <ListProduct/> */}
       </Container>
-      {/* <Footer></Footer> */}
+      {/* <Footer/> */}
     </div>
   );
 };

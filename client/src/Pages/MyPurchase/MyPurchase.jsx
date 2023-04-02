@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import Header from "../Header/Header";
-import NavAccount from "../NavAccount/NavAccount";
+import Header from "../../Components/Header/Header";
+import NavAccount from "../../Components/NavAccount/NavAccount";
 
 const MyPurchase = () => {
 

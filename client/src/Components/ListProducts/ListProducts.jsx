@@ -1,198 +1,236 @@
-// import React, { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
-// import { AddCard } from "../../redux/cartSlice";
-// import { useNavigate } from "react-router-dom";
-// import './List.css'
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
 
-// import { Button, Container } from "react-bootstrap";
-// import { GetAllProduct } from "../../services/product";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
 
-// const ListProducts = () => {
-//   const [ListProducts, setListProducts] = useState([]);
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   useEffect(() => {
-//     GetAllProduct().then((res) => {
-//       setListProducts(res.data);
-//     });
-//     console.log(
-//       "list",
-//       ListProducts.map((product) => product.nameProduct.toString())
-//     );
-//   }, []);
-//   return (
-//     <Container>
-//       <div fluid="true" className="my-5 text-center">
-//         <h4 className="mt-4 mb-5">
-//           <strong>Sản phẩm bán chạy</strong>
-//         </h4>
-//         <input
-//           type="text"
-//           placeholder="Nhập sản phẩm cần tìm"
-//           style={{ maxWidth: "300px", textAlign: "center", border:"1px solid" }}
-//           className="search"
-//         />
-//         <button className="search">
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             width="16"
-//             height="16"
-//             fill="currentColor"
-//             className="bi bi-search"
-//             viewBox="0 0 16 16"
-//           >
-//             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-//           </svg>
-//         </button>
-//         <div>
-//           {ListProducts.map((product, id) => (
-//             <div md="" lg="3" className="mb-4" key={id}>
-//               <div>
-//                 <Link
-//                   to={`detailProduct/${product._id}`}
-//                   className="bg-image rounded hover-zoom"
-//                 >
-//                   <img
-//                     src={product.imageProduct}
-//                     // fluid
-//                     className="w-100 imgProduct"
-//                   />
-//                 </Link>
-//                 <div>
-//                   <h3>
-
-//                   <a className="card-title mb-3" style={{fontSize:"14px", textDecoration:"none", color:"#333", fontFamily:"Roboto',Helvetica,Arial,sans-serif"}}>{product.nameProduct}</a>
-//                   </h3>
-
-//                   <h6 className="mb-3">
-//                     <span>Giá bán: </span>
-//                     <strong className="ms-2 text-danger">
-//                       {Number(product.price).toLocaleString()}đ
-//                     </strong>
-//                   </h6>
-
-//                   <Button
-//                     variant="success"
-//                     onClick={() => dispatch(AddCard(product))}
-//                   >
-//                     Thêm Vào Giỏ
-//                   </Button>
-
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </Container>
-//   );
-// };
-
-// export default ListProducts;
-
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useEffect, useState } from "react";
 import { GetAllProduct } from "../../services/product";
-import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AddCard } from "../../redux/cartSlice";
-const theme = createTheme();
+import axios from "axios";
+import "./List.css";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function ListProduct() {
   const [ListProducts, setListProducts] = useState([]);
-    const dispatch = useDispatch();
+  const [category, setCategory] = useState(null);
+  const [product, setProduct] = useState([]);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const hanndleShowProduct = (id) => {
+    const dataProduct = product.filter((item) => item.category === id);
+    setListProducts(dataProduct);
+    console.log("xxx", dataProduct);
+  };
+  const handleAllProduct = () => {
+    GetAllProduct().then((res) => {
+      setListProducts(res.data);
+    });
+  };
+
+  const handleAddCart = (item) => {
+    dispatch(AddCard(item));
+    toast.success("Sản Phẩm Đã Được Thêm Vào Giỏ Hàng", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
+
   useEffect(() => {
-      GetAllProduct().then((res) => {
-        setListProducts(res.data);
-      });
-      console.log(
-        "list",
-        ListProducts.map((product) => product.nameProduct.toString())
-      );
-    }, []);
+    axios
+      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
+      .then((res) => setCategory(res.data));
+  }, []);
+
+  useEffect(() => {
+    GetAllProduct().then((res) => {
+      setListProducts(res.data);
+      setProduct(res.data);
+    });
+  }, []);
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar position="relative">
-      </AppBar>
-      <main>
-  
-            <Typography variant="h5" align="center" color="text.secondary" sx={{marginTop:"40px"}}>
-                  <h2>Sản Phẩm Cửa Hàng</h2>
-            </Typography>
-        
-        <Container sx={{ py: 8 }} maxWidth="px">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {ListProducts.map((item,index) => (
-              <Grid item key={index} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+    <div className="App">
+      <ToastContainer />
+      <section className="section-content padding-y">
+        <div className="container">
+          <div className="row">
+            <Card
+              style={{ marginTop: "80px" }}
+              className="col-md-3"
+            >
+              <Card.Header style={{textAlign:"center"}}>DANH MỤC</Card.Header>
+              <ListGroup variant="flush">
+                <ListGroup.Item className="category" onClick={handleAllProduct}>
+                  TẤT CẢ SẢN PHẨM
+                </ListGroup.Item>
+                <ListGroup.Item className="category" onClick={handleAllProduct}>
+                  SẢN PHẨM BÁN CHẠY
+                </ListGroup.Item>
+                {category?.map((item, id) => (
+                  <ListGroup.Item
+                    className="category"
+                    key={item._id}
+                    onClick={() => hanndleShowProduct(item._id)}
+                  >
+                    {item.categroyName}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+              <img
+                src="https://res.cloudinary.com/uploadimgvvv/image/upload/v1680424035/gq1ev2vwzhhewxpje7bk.jpg"
+                className="img-fluid rounded"
+                style={{ marginTop: "40px" }}
+              />
+              <Card.Header style={{textAlign:"center"}}>SÁO TRÚC HẢI TRẦN</Card.Header>
+              <ListGroup variant="flush" className="listSong">
+                <ListGroup.Item>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-youtube"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                  </svg>
+                  <a href="https://www.youtube.com/watch?v=h4FOTmqX7jE">
+                    Về Quê - Sáo Trúc Hải Trần
+                  </a>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-youtube"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                  </svg>
+                  <a href="https://www.youtube.com/watch?v=7CcwKNVOkKg">
+                    Quê Hương - Sáo Trúc Hải Trần
+                  </a>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-youtube"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                  </svg>
+                  <a href="https://www.youtube.com/watch?v=nQpXzaYdW6o">
+                    Liên Khúc Về Quê - Sáo Trúc Hải Trần
+                  </a>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-youtube"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                  </svg>
+                  <a href="https://www.youtube.com/watch?v=nQpXzaYdW6o">
+                    Test Sáo C5 - Hải Trần
+                  </a>
+                  <video width="250" height="400" controls>
+
+                  <source src="https://res.cloudinary.com/uploadimgvvv/video/upload/v1680463716/yqzlf8oprq2rcjidfk2j.mp4"/>
+                  </video>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-youtube"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                  </svg>
+                  <a href="https://www.youtube.com/watch?v=nQpXzaYdW6o">
+                    Test Sáo BB4 - Hải Trần
+                  </a>
+                  <video width="250" height="400" controls>
+
+                  <source src="https://res.cloudinary.com/uploadimgvvv/video/upload/v1680464011/bdskzmyeiy8c7a1wgoys.mp4"/>
+                  </video>
+                </ListGroup.Item>
+              </ListGroup>
+            </Card>
+
+            <main className="col-md-9">
+              <header className="border-bottom mb-4 pb-3">
+                <div
+                  className="form-inline"
+                  style={{ textAlign: "center", marginTop: "20px" }}
                 >
-                 <NavLink
-                   to={`detailProduct/${item._id}`}
-                  className="bg-image rounded hover-zoom"
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      // 16:9
-                      // pt: '56.25%',
-                    }}
-                    image={item.imageProduct}
-                    alt="random"
-                  />
-                
-                </NavLink>           
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {item.nameProduct}
-                    </Typography>
-  
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" onClick={() => dispatch(AddCard(item))}>Thêm giỏ hàng</Button>
-                    <Button size="small"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fillRule="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
-  <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-</svg></Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-      </Box>
-      {/* End footer */}
-    </ThemeProvider>
+                  <h2 className="mr-md-auto">SẢN PHẨM CỬA HÀNG</h2>
+                </div>
+              </header>
+
+              <div className="row">
+                {ListProducts.map((item, index) => (
+                  <div className="col-md-3" key={item._id}>
+                    <figure className="card card-product-grid">
+                      <div className="img-wrap">
+                        <NavLink
+                          to={`detailProduct/${item._id}`}
+                          className="bg-image rounded hover-zoom"
+                        >
+                          <img
+                            src={item.imageProduct}
+                            className="img-fluid rounded imgItem"
+                          />
+                        </NavLink>
+                      </div>
+                      <figcaption
+                        className="info-wrap"
+                        style={{ textAlign: "center" }}
+                      >
+                        <div
+                          className="fix-height"
+                          style={{ marginTop: "20px" }}
+                        >
+                          <span className="title">{item.nameProduct}</span>
+                          <div className="price-wrap mt-2">
+                            <span
+                              className="price"
+                              style={{ fontSize: "15px", color: "#49b14d" }}
+                            >
+                              {Number(item.price).toLocaleString()} đ
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          size="small"
+                          // onClick={() => dispatch(AddCard(item))}
+                          onClick={() => handleAddCart(item)}
+                        >
+                          Thêm giỏ hàng
+                        </Button>
+                      </figcaption>
+                    </figure>
+                  </div>
+                ))}
+              </div>
+            </main>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

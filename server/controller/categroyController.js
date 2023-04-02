@@ -28,7 +28,7 @@ const categoryController = {
   getCategory: async (req, res) => {
     // console.log( await req.body._id.toString(),)
     try {
-      const category = await categoryModel.find({
+      const category = await categoryModel.findById({
         _id: req.params.id,
       });
       res.send(category);

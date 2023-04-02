@@ -6,66 +6,53 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Form, Toast } from "react-bootstrap";
-import CreateDiscount from "./CreateDiscount";
 const Index = () => {
   const [show, setShow] = useState(false);
-  const [listDiscounts, setListDiscount] = useState();
-  const [discountCode, setDiscountCode] = useState();
-  const [percentDiscount, setPercentDicount] = useState();
-  const [idDicount, setIDDiscount] = useState();
+  const [listOrders, setListOrders] = useState([])
+  const totalSales = listOrders.map((item) => item.total)
+
+  const arrOfNum = totalSales.map(str => {
+    return parseInt(str, 10);
+  });
+ 
+  const sumSale = arrOfNum.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+  console.log(sumSale);
+
   const handleClose = () => setShow(false);
-
-  const handleShow = (discount) => {
-    setIDDiscount(discount._id);
+  const handleShow = () => {
     setShow(true);
-    localStorage.setItem("discount", JSON.stringify(discount));
   };
 
-  const handleDeleteDiscount = (id, index) => {
-    if (window.confirm("Xác nhận xóa") === true) {
-      axios.delete(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/deleteDisCount/${id}`
-      );
-      setListDiscount(listDiscounts.filter((o, i) => index !== i));
-    }
-  };
 
-  const handleUpdateDiscount = () => {
-    const dataUpdate = {
-      discountCode: discountCode,
-      percentDiscount: percentDiscount,
-    };
-    if (idDicount)
-      axios.put(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/updateDiscount/${idDicount}`,
-        dataUpdate
-      );
-    window.location.reload(false);
-  };
 
+  // useEffect(() => {
+  //   if (idDicount)
+  //     axios
+  //       .get(
+  //         `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getDiscount/${idDicount}`
+  //       )
+  //       .then((res) => {
+  //         setDiscountCode(res.data.discountCode);
+  //         setPercentDicount(res.data.percentDiscount);
+  //       });
+  //   console.log(discountCode, percentDiscount);
+  // }, [idDicount]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getAllDiscount`)
+  //     .then((res) => setListDiscount(res.data));
+  // }, []);
   useEffect(() => {
-    if (idDicount)
-      axios
-        .get(
-          `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getDiscount/${idDicount}`
-        )
-        .then((res) => {
-          setDiscountCode(res.data.discountCode);
-          setPercentDicount(res.data.percentDiscount);
-        });
-    console.log(discountCode, percentDiscount);
-  }, [idDicount]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getAllDiscount`)
-      .then((res) => setListDiscount(res.data));
-  }, []);
+      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getAllOrder`)
+        .then((res) => setListOrders(res.data))
+  },[])
   return (
     <div style={{ display: "flex" }}>
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateDiscount/>
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr
@@ -76,25 +63,31 @@ const Index = () => {
               }}
             >
               <th>STT</th>
-              <th>Mã khuyến mãi</th>
-              <th>TỈ lệ khuyến mãi</th>
+              <th>Tình Trạng</th>
+              <th>Địa Chỉ Nhận Hàng</th>
+              <th>Ghi Chú</th>
+              <th>Mã Khách Hàng</th>
+              <th>Tổng Đơn</th>
               <th>Chức năng</th>
             </tr>
           </thead>
           <tbody>
-            {listDiscounts?.map((discount, index) => (
+            {listOrders?.map((order, index) => (
               <tr
-                key={discount._id.toString()}
+                key={order._id.toString()}
                 //   className="inforProduct"
                 //   id="product"
               >
                 <th>{index}</th>
-                <th>{discount.discountCode}</th>
-                <th>{discount.percentDiscount}</th>
+                <th>{order.status}</th>
+                <th>{order.address}</th>
+                <th>{order.note}</th>
+                <th>{order.user}</th>
+                <th>{order.total}</th>
                 <th>
                   <button
                     className="handleBtn"
-                    onClick={() => handleDeleteDiscount(discount._id, index)}
+                    // onClick={() => handleDeleteDiscount(order._id, index)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +108,7 @@ const Index = () => {
                       fillRule="currentColor"
                       className="bi bi-vector-pen"
                       viewBox="0 0 16 16"
-                      onClick={() => handleShow(discount)}
+                      onClick={() => handleShow(order)}
                     >
                       <path
                         fillRule="evenodd"
@@ -130,12 +123,13 @@ const Index = () => {
                 </th>
               </tr>
             ))}
+            <b>Tổng doanh thu: {Number(sumSale).toLocaleString()}</b>
           </tbody>
         </Table>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sửa thông tin danh mục</Modal.Title>
+          <Modal.Title>Sửa Thông Tin Đơn Hàng</Modal.Title>
         </Modal.Header>
         <Form.Group
           className="mb-3"
@@ -147,8 +141,8 @@ const Index = () => {
             placeholder="Mã Khuyến Mãi"
             autoFocus
             floating
-            value={discountCode}
-            onChange={(e) => setDiscountCode(e.target.value)}
+            // value={discountCode}
+            // onChange={(e) => setDiscountCode(e.target.value)}
           />
           <br></br>
           <Form.Control
@@ -156,12 +150,12 @@ const Index = () => {
             placeholder="Phần Trăm Khuyến Mãi"
             autoFocus
             floating
-            value={percentDiscount}
-            onChange={(e) => setPercentDicount(e.target.value)}
+            // value={percentDiscount}
+            // onChange={(e) => setPercentDicount(e.target.value)}
           />
           <br></br>
           <Button variant="secondary">Hủy</Button>
-          <Button variant="primary" onClick={handleUpdateDiscount}>
+          <Button variant="primary">
             Sửa Thông Tin
           </Button>
         </Modal.Footer>

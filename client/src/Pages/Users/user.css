@@ -27,7 +27,7 @@
       display: block;
     }
     AdminPage {
-        display: node;
+        display: none;
     }
     .inforUser td {
         font-size: 10px;

@@ -1,8 +1,8 @@
 import { Modal } from "@mui/material";
 import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import Footer from "../Footer/Footer";
-import Model from "../Modal/Model"
+import Footer from "../../Components/Footer/Footer";
+import Model from "../../Components/Modal/Model"
 const MyAccount = () => {
   return (
     <div style={{marginLeft:"40px"}}>

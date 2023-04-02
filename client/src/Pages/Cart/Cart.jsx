@@ -8,8 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "./cart.css";
 import { DecreaseCart, DeleteCart, IncreaseCart } from "../../redux/cartSlice";
 import { useDispatch } from "react-redux";
-import Header from "../Header/Header";
-import SideBar from "../SideBar/SideBar";
+import Header from "../../Components/Header/Header";
+import SideBar from "../../Components/SideBar/SideBar";
+import Footer from "../../Components/Footer/Footer";
 
 const Cart = () => {
   const [error, setError] = useState();
@@ -17,20 +18,30 @@ const Cart = () => {
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const login = JSON.parse(localStorage.getItem("user"))
-  console.log("login", login.currectUser)
+
   // const cartLists = cart.cartlists;
   const cartLists = JSON.parse(localStorage.getItem("cartList"))
 
   console.log("carts/cart", cartLists);
   const dispatch = useDispatch();
 
-
+  const handleDeteteItemCart = (item) => {
+    dispatch(DeleteCart(item))
+    toast.success(`Sản Phẩm ${item.nameProduct} đã xóa khỏi giỏ hàng`, {
+      position: toast.POSITION.TOP_RIGHT
+  });
+  }
 
   if (error || !Array.isArray(cartLists)) {
     return (
-        <div style={{textAlign:"center"}}>
-          <h3>Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</h3>
+        <div>
+          <Header/>
+          <div style={{textAlign:"center", marginTop:"50px"}}>
+
+          <h2>Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</h2>
           <Button onClick={() => navigate("/")}>Tiếp Túc Mua Hàng</Button>
+          </div>
+          
         </div>
     )
   }
@@ -46,16 +57,16 @@ const Cart = () => {
     var totalBill = convertPriceListProduct.reduce((a, b) => a + b, 0);
 
     var discount = 0;
-    if(totalBill<500000){
-      discount = 0;
-    }
-    else if(totalBill>=500000 && totalBill<=1000000) {
-      discount = 20
-      totalBill = totalBill *0.8
-    } else {
-      discount = 40;
-      totalBill = totalBill*0.6
-    }
+    // if(totalBill<500000){
+    //   discount = 0;
+    // }
+    // else if(totalBill>=500000 && totalBill<=1000000) {
+    //   discount = 20
+    //   totalBill = totalBill *0.8
+    // } else {
+    //   discount = 40;
+    //   totalBill = totalBill*0.6
+    // }
     localStorage.setItem("totalBill", totalBill.toString());
   console.log(convertPriceListProduct.reduce((a, b) => a + b, 0))
   
@@ -72,6 +83,7 @@ const Cart = () => {
   }
   return (
     <div>
+      <ToastContainer/>
       <Header />
       <Container>
         <Row style={{ marginTop: "20px" }}>
@@ -109,7 +121,8 @@ const Cart = () => {
                           <button
                             className="handleBtn"
                             style={{ backgroundColor: "initial" }}
-                            onClick={() => dispatch(DeleteCart(item))}
+                            // onClick={() => dispatch(DeleteCart(item))}
+                            onClick={() => handleDeteteItemCart(item)}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -181,8 +194,8 @@ const Cart = () => {
           </Col>
           <SideBar />
         </Row>
-        
       </Container>
+        <Footer/>
     </div>
   );
 };

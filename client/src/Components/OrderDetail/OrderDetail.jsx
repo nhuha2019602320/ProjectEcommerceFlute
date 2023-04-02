@@ -4,21 +4,27 @@ import { Button, Col, Container, Modal, Row, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
-import "./OrderDetail.css"
+import "./OrderDetail.css";
 const OrderDetail = () => {
   const [list, setList] = useState([]);
   const [show, setShow] = useState(false);
-  const[orderDetail, setOrderDetail] = useState()
-  
+  const [orderDetail, setOrderDetail] = useState();
+
   const handleClose = () => setShow(false);
 
   const handleShow = (item) => {
     setShow(true);
-    console.log("item", item._id)
-    const itemOrder = list.find((i) => i._id === item._id)
-    console.log("itemOrder", itemOrder)
-    setOrderDetail(itemOrder?.productOrder)
+    console.log("item", item._id);
+    const itemOrder = list.find((i) => i._id === item._id);
+    console.log("itemOrder", itemOrder);
+    setOrderDetail(itemOrder?.productOrder);
   };
+
+  const handleDeleteOrder = (id, index) => {
+    console.log(id)
+    axios.delete(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`)
+    setList(list.filter((o, i) => index !== i));
+  }
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -49,7 +55,7 @@ const OrderDetail = () => {
                   <th>Tổng đơn</th>
                   <th>Chức năng</th>
                 </tr>
-                {list?.map((item, id) => (
+                {list?.map((item, index) => (
                   <tr style={{ textAlign: "center" }} key={item._id}>
                     <td>{item._id}</td>
                     <td>{item.address}</td>
@@ -73,7 +79,7 @@ const OrderDetail = () => {
                           <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                         </svg>
                       </button>
-                      <button style={{ background: "none" }}>x</button>
+                      <button onClick={() => handleDeleteOrder(item._id, index)} style={{ background: "none" }}>x</button>
                     </td>
                   </tr>
                 ))}
@@ -92,7 +98,7 @@ const OrderDetail = () => {
             <Modal.Title>Chi tiết đơn hàng</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-              {
+            {/* {
                 orderDetail?.map((item, id) => (
                   <div>
                     {item.productCode}
@@ -100,7 +106,29 @@ const OrderDetail = () => {
                     
                   </div>
                 ))
-              }        
+              }  */}
+            <Table striped style={{ marginTop: "30px" }}>
+              <thead className="detailProduct">
+                <tr style={{ textAlign: "center" }}>
+                  <th>Ảnh Sản Phẩm</th>
+                  <th>Mã Sản Phẩm</th>
+                  <th>Tên Sản Phẩm</th>
+                  <th>Số Lượng Đặt</th>
+   
+                </tr>
+                {orderDetail?.map((item, id) => (
+                  <tr style={{ textAlign: "center" }} key={item._id}>
+                    <td>
+                      <img src={item.imageProduct} width="80px" alt="" />
+                    </td>
+                    <td>{item.productCode}</td>
+                    <td>{item.nameProduct}</td>
+                    <td>{item.quantity}</td>
+                
+                  </tr>
+                ))}
+              </thead>
+            </Table>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

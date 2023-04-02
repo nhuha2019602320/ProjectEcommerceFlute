@@ -17,7 +17,6 @@ const Index = () => {
 
   const handleShow = (id) => {
     setShow(true);
-     console.log("id", id)
      localStorage.setItem("idCategory", id)
   }
 

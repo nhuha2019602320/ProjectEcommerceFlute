@@ -275,222 +275,123 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { CardMedia } from "@mui/material";
 import { Dropdown } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink,createSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
-const pages = ["Trang Chủ", "Liên Hệ", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import MenuHeder from "../../Components/Menu/Menu";
+import axios from "axios";
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [productSearch, setProductSearch] = React.useState("")
+  const [ListProducts, setListProducts] = React.useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleLogout = (e) => {
-    e.preventDefault()
-    dispatch(logout())
+  const handleNavigate = () => {
     navigate("/")
   }
 
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
-    
     <AppBar position="static" sx={{ backgroundColor: "#49b14d" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{marginLeft:"90px", marginRight:"90px"}}>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+      <Container maxWidth="xl" sx={{ display: "flex", marginTop: "10px" }}>
+        <Toolbar
+          disableGutters
+          sx={{ marginLeft: "90px", marginRight: "90px", display:"flex", alignItems:"center" }}
+        >
           <CardMedia
             component="img"
             sx={{
-              width: "4%",
+              width: "7%",
             }}
             image="https://res.cloudinary.com/uploadimgvvv/image/upload/v1677085248/vjqoro1nzshossf8nebz.png"
             alt="random"
-            onClick={() => navigate("/")}
+            onClick={() => {
+              navigate("/");
+            }}
           />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          ></Typography>
+          <InputGroup className="mb-3" style={{display:"flex", alignItems:"center", marginTop:"20px", marginLeft:"80px"}}>
+            <Form.Control
+              placeholder="Nhập thông tin sản phẩm cần tìm kiếm"
+              aria-label="Recipient's username"
+              aria-describedby="basic-addon2"
+              onClick={handleNavigate}
+              onChange={(e) => {
+                setProductSearch(e.target.value)
+              }}
+            />
+             <NavLink
+                    to={`search/${productSearch}`}
+                    className="bg-image rounded hover-zoom"
+                  >
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
- 
-            </Menu>
-            
-          </Box>
-          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none", textAlign: "center" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-              textAlign: "center",
-            }}
-          >
-            SÁO TRÚC HẢI TRẦN <br></br>
-            CHUẨN ÂM TRÊN TỪNG PHÍM BÂM
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/* {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+            <Button to variant="outline-success" id="button-addon2">
+              Tìm Kiếm 
+            </Button>
+                  </NavLink>
+          </InputGroup>
+          <Box sx={{ marginRight: "10px" }}>
+            <a variant="success" onClick={() => navigate("/cart")}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fillRule="currentColor"
+                className="bi bi-cart4"
+                viewBox="0 0 16 16"
               >
-                {page}
-              </Button>
-            ))} */}
+                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
+              </svg>
+            </a>
           </Box>
-          <Box sx={{marginRight:"10px"}}>
-              
-              <a variant="success" onClick={() => navigate("/cart")}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fillRule="currentColor"
-              className="bi bi-cart4"
-              viewBox="0 0 16 16"
-            >
-              <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l.5 2H5V5H3.14zM6 5v2h2V5H6zm3 0v2h2V5H9zm3 0v2h1.36l.5-2H12zm1.11 3H12v2h.61l.5-2zM11 8H9v2h2V8zM8 8H6v2h2V8zM5 8H3.89l.5 2H5V8zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
-            </svg>
-          </a>
-            </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton sx={{ p: 0 }}>
-                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fillRule="currentColor"
-                      className="bi bi-person"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-                    </svg>
-                  </Dropdown.Toggle>
+            <Tooltip>
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fillRule="currentColor"
+                    className="bi bi-person"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+                  </svg>
+                </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => navigate("/login")}>
-                      Đăng Nhập
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => navigate("/register")}>
-                      Đăng Ký
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => navigate("/account")}>
-                      Tài Khoản
-                    </Dropdown.Item>
-                    <Dropdown.Item  onClick={handleLogout}>
-                      Đăng Xuất
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </IconButton>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => navigate("/login")}>
+                    Đăng Nhập
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate("/register")}>
+                    Đăng Ký
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => navigate("/account")}>
+                    Tài Khoản
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>
+                    Đăng Xuất
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+
           </Box>
         </Toolbar>
       </Container>
+      <MenuHeder/>
     </AppBar>
   );
 }

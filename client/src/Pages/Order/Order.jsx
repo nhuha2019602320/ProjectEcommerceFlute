@@ -32,6 +32,7 @@ const Order = () => {
         }
         CreateOrder(order)
         alert("Tạo đơn thành công cảm ơn quý khách")
+        localStorage.removeItem("cartList")
         navigate("/orderdetail")
       }
     }
