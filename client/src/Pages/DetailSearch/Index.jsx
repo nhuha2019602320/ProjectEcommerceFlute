@@ -24,7 +24,7 @@ const Index = () => {
     const navigate = useNavigate();
     const [productSearch, setProductSearch] = useState("")
     const parms = useParams();
-    console.log(parms)
+
 
 
   useEffect(() => {

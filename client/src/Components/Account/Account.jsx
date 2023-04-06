@@ -11,16 +11,18 @@ const Account = () => {
     if(userLogin === null || userLogin === undefined) {
       return (
         <>
+          <Header/>
+          <Container style={{textAlign:"center", marginTop:"30px"}}>
+
           <h5>Bạn chưa đăng nhập vào hệ thống</h5>
-          <Button onClick={() => navigate("/")}>Quay lại trang chủ</Button>
+          <Button  onClick={() => navigate("/")}>Quay lại trang chủ</Button>
+          </Container>
         </>
       )
     }
 
     const orders = JSON.parse(localStorage.getItem("user").toString()).order
-    console.log(orders)
-  
-    console.log(typeof orders)
+
 
   return (
     <>

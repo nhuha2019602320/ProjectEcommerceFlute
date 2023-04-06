@@ -59,7 +59,6 @@ const Index = () => {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
      .then((res) => {
-       console.log("list",res.data)
        setListCategories(res.data)
      })
  },[])

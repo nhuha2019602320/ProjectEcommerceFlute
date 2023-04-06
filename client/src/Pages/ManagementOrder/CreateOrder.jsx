@@ -19,6 +19,7 @@ const CreateDiscount = () => {
             discountCode: discountCode,
             percentDiscount: percentDiscount
         }
+       
         if(discountCode === "" || percentDiscount === "")
         toast.error('Kiểm tra lại thông tin  !', {
             position: toast.POSITION.TOP_RIGHT
@@ -29,10 +30,10 @@ const CreateDiscount = () => {
   return (
     <div>
         <ToastContainer/>
-        <Button onClick={handleShow}>Tạo Khuyến mãi</Button>
+        <Button onClick={handleShow}>Tạo Đơn Hàng</Button>
               <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Sửa thông tin danh mục</Modal.Title>
+          <Modal.Title>Tạo Đơn Hàng Mới</Modal.Title>
         </Modal.Header>
         <Form.Group
           className="mb-3"

@@ -16,10 +16,10 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <App />
-    <div> 
+    {/* <div> 
 
     <Footer/>
-    </div>
+    </div> */}
   </Provider>
 );
 

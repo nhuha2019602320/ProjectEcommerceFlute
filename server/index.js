@@ -6,6 +6,7 @@ const productRouter = require('./router/productRouter');
 const categoryRouter = require('./router/categoryRouter');
 const discountRouter = require('./router/discountRouter')
 const orderRouter = require("./router/orderRouter");
+const newRouter = require("./router/newRouter")
 const cors = require('cors');
 const dotenv = require("dotenv");
 dotenv.config();
@@ -32,6 +33,8 @@ app.use('/api/category', categoryRouter)
 app.use('/api/discount', discountRouter)
 
 app.use('/api/order', orderRouter)
+
+app.use('/api/new', newRouter)
 
 app.listen(process.env.PORT, () => {
   console.log(`Example app listening on port ${process.env.PORT}`)

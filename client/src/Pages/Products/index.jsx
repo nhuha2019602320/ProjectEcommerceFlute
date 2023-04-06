@@ -25,7 +25,7 @@ const Index = () => {
   const [description, setDescription] = useState("");
   const [show, setShow] = useState(false);
   const [idproduct, setIDProduct] = useState("");
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPage = 5;
   const lastIndex = currentPage * recordsPage;
@@ -74,7 +74,7 @@ const Index = () => {
   });
   const upLoadImage = (e) => {
     // setImgProduct(e.target.files[0]);
-    console.log("img ", imgProduct);
+
     const formData = new FormData();
     formData.append("file", imgProduct);
     formData.append("upload_preset", "rahh7f3b");
@@ -84,22 +84,19 @@ const Index = () => {
         formData
       )
       .then((res) => setUrlImg(res.data.url));
-    console.log(urlImg);
   };
 
   const prePage = () => {
-    if(currentPage !== firstIndex)
-        setCurrentPage(currentPage -1)
-  }
+    if (currentPage !== firstIndex) setCurrentPage(currentPage - 1);
+  };
 
   const nextPage = () => {
-    if(currentPage !== lastIndex)
-        setCurrentPage(currentPage +1)    
-  }
+    if (currentPage !== lastIndex) setCurrentPage(currentPage + 1);
+  };
 
   const changePage = (id) => {
-      setCurrentPage(id)
-  }
+    setCurrentPage(id);
+  };
   useEffect(() => {
     if (idproduct)
       axios
@@ -107,7 +104,6 @@ const Index = () => {
           `${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${idproduct}`
         )
         .then((res) => {
-          console.log("daa", res.data);
           setProductCode(res.data.productCode);
           setNameProduct(res.data.nameProduct);
           setPrice(res.data.price);
@@ -121,7 +117,6 @@ const Index = () => {
     axios
       .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getAllProducts`)
       .then((res) => {
-        console.log("product", res.data);
         setProducts(res.data);
       });
   }, []);
@@ -208,34 +203,35 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
-        <div style={{textAlign:"center"}}>
-
-        <nav>
-          <ul className="pagination">
-            <li className="page-item">
-              <a href="#" className="page-link" onClick={prePage}>
-                prve
-              </a>
-            </li>
-            {numbers.map((n, i) => (
-              <li className={`page-item ${currentPage === n ? "active" : ""}`}>
-                <a
-                  href="#"
-                  className="page-link"
-                  key={i}
-                  onClick={() => changePage(n)}
-                >
-                  {n}
+        <div style={{ textAlign: "center" }}>
+          <nav>
+            <ul className="pagination">
+              <li className="page-item">
+                <a href="#" className="page-link" onClick={prePage}>
+                  prve
                 </a>
               </li>
-            ))}
-            <li className="page-item">
-              <a href="#" className="page-link" onClick={nextPage}>
-                next
-              </a>
-            </li>
-          </ul>
-        </nav>
+              {numbers.map((n, i) => (
+                <li
+                  className={`page-item ${currentPage === n ? "active" : ""}`}
+                >
+                  <a
+                    href="#"
+                    className="page-link"
+                    key={i}
+                    onClick={() => changePage(n)}
+                  >
+                    {n}
+                  </a>
+                </li>
+              ))}
+              <li className="page-item">
+                <a href="#" className="page-link" onClick={nextPage}>
+                  next
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
       <Modal show={show} onHide={handleClose}>

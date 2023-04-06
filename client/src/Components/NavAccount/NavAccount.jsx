@@ -7,7 +7,6 @@ const NavAccount = () => {
     axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder/${JSON.parse(localStorage.getItem("user"))._id}`)
     .then((res) =>{
       // setPer(res.data)
-      console.log(res.data)
     } )
   }
   return (

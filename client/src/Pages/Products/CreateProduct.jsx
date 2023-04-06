@@ -29,7 +29,7 @@ const CreateProduct = () => {
   };
 
   const upLoadImage = (e) => {
-    console.log("img ", imgProduct);
+    
     const formData = new FormData();
     formData.append("file", imgProduct);
     formData.append("upload_preset", "rahh7f3b");
@@ -39,7 +39,7 @@ const CreateProduct = () => {
         formData
       )
       .then((res) => setUrlImg(res.data.url));
-    console.log(urlImg);
+    
   };
 
   const editor = useEditor({
@@ -85,7 +85,7 @@ const CreateProduct = () => {
       .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
       .then((res) => {
         setOptions(res.data)
-        console.log("category", res.data)
+        
       });
   }, []);
   return (

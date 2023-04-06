@@ -41,77 +41,89 @@
 
 // export default Footer
 
-import React from 'react';
-import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-import { Facebook, Instagram, Youtube } from 'react-bootstrap-icons';
+import React from "react";
+import {
+  MDBFooter,
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBIcon,
+} from "mdb-react-ui-kit";
+import { Facebook, Instagram, Youtube } from "react-bootstrap-icons";
+import { NavLink } from "react-router-dom";
 export default function Footer() {
   return (
-    <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
-      <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
+    <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
+      <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
         <div>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='facebook-f' />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='twitter' />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='google' />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='instagram' />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='linkedin' />
-          </a>
-          <a href='' className='me-4 text-reset'>
-            <MDBIcon color='secondary' fab icon='github' />
-          </a>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="facebook-f" />
+          </NavLink>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="twitter" />
+          </NavLink>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="google" />
+          </NavLink>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="instagram" />
+          </NavLink>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="linkedin" />
+          </NavLink>
+          <NavLink href="" className="me-4 text-reset">
+            <MDBIcon color="secondary" fab icon="github" />
+          </NavLink>
         </div>
       </section>
 
-      <section className=''>
-        <MDBContainer className='text-center text-md-start mt-5'>
-          <MDBRow className='mt-3'>
-            <MDBCol md='3' lg='4' xl='3' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>
-                <MDBIcon color='secondary' icon='gem' className='me-3' />
+      <section className="">
+        <MDBContainer className="text-center text-md-start mt-5">
+          <MDBRow className="mt-3">
+            <MDBCol md="3" lg="4" xl="3" className="mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">
+                <MDBIcon color="secondary" icon="gem" className="me-3" />
                 SÁO TRÚC HẢI TRẦN
               </h6>
               <p>
-                Tự hào là thương hiệu sáo trúc uy tín, trách nhiệm với khách hàng. <b><i>Cam kêt chuẩn âm trên từng phím bấm</i></b>
+                Tự hào là thương hiệu sáo trúc uy tín, trách nhiệm với khách
+                hàng.{" "}
+                <b>
+                  <i>Cam kêt chuẩn âm trên từng phím bấm</i>
+                </b>
               </p>
               <p>
-                Luôn luôn hỗ trợ khách hàng về sản phẩm tốt nhất, phù hợp với mục đích của khách hàng.
+                Luôn luôn hỗ trợ khách hàng về sản phẩm tốt nhất, phù hợp với
+                mục đích của khách hàng.
               </p>
             </MDBCol>
 
-            <MDBCol md='2' lg='2' xl='2' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>VỀ CHÚNG TÔI</h6>
+            <MDBCol md="2" lg="2" xl="2" className="mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">VỀ CHÚNG TÔI</h6>
               <p>
-                <a href='#!' className='text-reset'>
+                <NavLink href="#!" className="text-reset">
                   Trang Chủ
-                </a>
+                </NavLink>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <NavLink href="#!" className="text-reset">
                   Giới Thiệu
-                </a>
+                </NavLink>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <NavLink href="#!" className="text-reset">
                   Tin Tức
-                </a>
+                </NavLink>
               </p>
               <p>
-                <a href='#!' className='text-reset'>
+                <NavLink href="#!" className="text-reset">
                   Chính Sách
-                </a>
+                </NavLink>
               </p>
             </MDBCol>
 
-            <MDBCol md='3' lg='2' xl='2' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>LIÊN HỆ</h6>
+            <MDBCol md="3" lg="2" xl="2" className="mx-auto mb-4">
+              <h6 className="text-uppercase fw-bold mb-4">LIÊN HỆ</h6>
               {/* <p>
                 <a href='#!' className='text-reset'>
                   Pricing
@@ -132,9 +144,36 @@ export default function Footer() {
                   Help
                 </a>
               </p> */}
-                                  <p style={{padding: "0 10px"}}><a target="_blank" href="https://www.facebook.com/" style={{fontSize: "1.5rem", color:"black"}} rel="noreferrer"><Facebook/></a></p>
-                    <p style={{padding: "0 10px"}}><a target="_blank" href="https://www.facebook.com/" style={{fontSize: "1.5rem", color:"black"}} rel="noreferrer"><Instagram/></a></p>
-                    <p style={{padding: "0 10px"}}><a target="_blank" href="https://www.facebook.com/" style={{fontSize: "1.5rem", color:"black"}} rel="noreferrer"><Youtube/></a></p>
+              <p style={{ padding: "0 10px" }}>
+                <NavLink
+                  target="_blank"
+                  href="https://www.facebook.com/"
+                  style={{ fontSize: "1.5rem", color: "black" }}
+                  rel="noreferrer"
+                >
+                  <Facebook />
+                </NavLink>
+              </p>
+              <p style={{ padding: "0 10px" }}>
+                <NavLink
+                  target="_blank"
+                  href="https://www.facebook.com/"
+                  style={{ fontSize: "1.5rem", color: "black" }}
+                  rel="noreferrer"
+                >
+                  <Instagram />
+                </NavLink>
+              </p>
+              <p style={{ padding: "0 10px" }}>
+                <NavLink
+                  target="_blank"
+                  href="https://www.facebook.com/"
+                  style={{ fontSize: "1.5rem", color: "black" }}
+                  rel="noreferrer"
+                >
+                  <Youtube />
+                </NavLink>
+              </p>
             </MDBCol>
 
             {/* <MDBCol md='4' lg='3' xl='3' className='mx-auto mb-md-0 mb-4'>
@@ -158,10 +197,16 @@ export default function Footer() {
         </MDBContainer>
       </section>
 
-      <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        <a className='text-reset fw-bold' href='https://www.facebook.com/trannhu.hai.3'>
-            DESIGN BY: <b>Hai Tran</b>
-        </a>
+      <div
+        className="text-center p-4"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+      >
+        <NavLink
+          className="text-reset fw-bold"
+          href="https://www.facebook.com/trannhu.hai.3"
+        >
+          DESIGN BY: <b>Hai Tran</b>
+        </NavLink>
       </div>
     </MDBFooter>
   );

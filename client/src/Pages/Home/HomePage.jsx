@@ -14,7 +14,6 @@ const HomePage = () => {
         <Slider />    
       </Container>
           <ListProducts />
-      {/* <Footer/> */}
     </div>
   );
 };

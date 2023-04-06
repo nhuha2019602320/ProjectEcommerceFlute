@@ -17,7 +17,9 @@ const Order = () => {
     const [phone, setPhone] = useState(login.phoneNumber ?? "null");
     const [address, setAddress] = useState("")
     const [note, setNote] = useState("")
-
+    const totalBill = localStorage.getItem("totalBill");
+    const [discount, setDiscount] = useState(0);
+  
     const handelCreate = () => {
       if(address === "" || note === "" || cartLists === []) {
         alert("Tạo đơn không thành công mời kiểm tra lại")
@@ -36,8 +38,29 @@ const Order = () => {
         navigate("/orderdetail")
       }
     }
+    useEffect(() => {
+      console.log("vao deee")
+      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getAllDiscount`)
+        .then((res) => {
+
+            let valueDiscount = res.data.map((item) => item.percentDiscount);
+              console.log("dd", valueDiscount[0])
+
+              if(totalBill>=500000 && totalBill<=1000000)
+                setDiscount(valueDiscount[1]);
+              else if(totalBill > 1000000)
+                setDiscount(valueDiscount[2])
+              else 
+                setDiscount(0)
+            })
+            
+    },[])
+    useEffect(() => {
+      console.log(discount)
+    },[discount])
   return (
     <div>
+
       <Header />
       <Container>
         <Row style={{ marginTop: "20px" }}>
@@ -114,13 +137,14 @@ const Order = () => {
                 {
                   cartLists.map((item) => (
                     <ul>
-                      <li>Tên sản phẩm: {item.nameProduct} - Mã sản phẩm : {item.productCode}</li>
+                      <li><b>Tên sản phẩm:</b> {item.nameProduct} - <b> Mã sản phẩm :</b> {item.productCode} - <b> Đơn giá: </b> {Number(item.price*item.quantity).toLocaleString()}đ</li> 
                     </ul>
                   ))
                 }
-                <li>Phí vận chuyển: 30.000đ</li>
-                <li>Tổng thành tiền: {
-                  Number(parseInt(localStorage.getItem("totalBill").toString()) + 30000).toLocaleString()
+                <li><b>Phí vận chuyển:</b> 30.000đ</li>
+                <li><b>Khuyến mãi:</b> {discount}</li>
+                <li><b>Tổng thành tiền:</b> {
+                  Number(parseInt(localStorage.getItem("totalBill").toString()) + 30000 - parseInt(localStorage.getItem("totalBill").toString())*discount).toLocaleString()
                 }đ</li>
               </div>
             </Grid>

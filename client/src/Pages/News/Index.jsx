@@ -5,67 +5,56 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import CreateNew from "./CreateNew"
 import { Form, Toast } from "react-bootstrap";
-import CreateDiscount from "./CreateDiscount";
+import parse from "html-react-parser";
+
 const Index = () => {
   const [show, setShow] = useState(false);
-  const [listDiscounts, setListDiscount] = useState();
-  const [discountCode, setDiscountCode] = useState();
-  const [percentDiscount, setPercentDicount] = useState();
-  const [idDicount, setIDDiscount] = useState();
+  const [listNews, setListNews] = useState([])
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPage = 5;
+  const lastIndex = currentPage * recordsPage;
+  const firstIndex = lastIndex - recordsPage;
+  const records = listNews.slice(firstIndex, lastIndex);
+  const npage = Math.ceil(listNews.length / recordsPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
+
   const handleClose = () => setShow(false);
 
   const handleShow = (discount) => {
-    setIDDiscount(discount._id);
-    setShow(true);
-    localStorage.setItem("discount", JSON.stringify(discount));
+
   };
 
-  const handleDeleteDiscount = (id, index) => {
-    if (window.confirm("Xác nhận xóa") === true) {
-      axios.delete(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/deleteDisCount/${id}`
-      );
-      setListDiscount(listDiscounts.filter((o, i) => index !== i));
-    }
+  const handleDeleteNew = (id, index) => {
+    axios.delete(`${process.env.REACT_APP_URL_LOCALHOST}/api/new/deleteNew/${id}`)
+    setListNews(listNews.filter((o, i) => index !== i));
+  }
+
+  const prePage = () => {
+    if (currentPage !== firstIndex) setCurrentPage(currentPage - 1);
   };
 
-  const handleUpdateDiscount = () => {
-    const dataUpdate = {
-      discountCode: discountCode,
-      percentDiscount: percentDiscount,
-    };
-    if (idDicount)
-      axios.put(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/updateDiscount/${idDicount}`,
-        dataUpdate
-      );
-    window.location.reload(false);
+  const nextPage = () => {
+    if (currentPage !== lastIndex) setCurrentPage(currentPage + 1);
+  };
+
+  const changePage = (id) => {
+    setCurrentPage(id);
   };
 
   useEffect(() => {
-    if (idDicount)
-      axios
-        .get(
-          `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getDiscount/${idDicount}`
-        )
-        .then((res) => {
-          setDiscountCode(res.data.discountCode);
-          setPercentDicount(res.data.percentDiscount);
-        });
-  
-  }, [idDicount]);
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getAllDiscount`)
-      .then((res) => setListDiscount(res.data));
-  }, []);
+    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/new/allNews`)
+      .then((res) => setListNews(res.data))
+  },[])
+
   return (
     <div style={{ display: "flex" }}>
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateDiscount/>
+        <CreateNew/>
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr
@@ -76,25 +65,25 @@ const Index = () => {
               }}
             >
               <th>STT</th>
-              <th>Mã khuyến mãi</th>
-              <th>TỈ lệ khuyến mãi</th>
+              <th>Ảnh</th>
+              <th>Phản Hồi</th>
               <th>Chức năng</th>
             </tr>
           </thead>
           <tbody>
-            {listDiscounts?.map((discount, index) => (
-              <tr
-                key={discount._id.toString()}
-                //   className="inforProduct"
-                //   id="product"
-              >
+            {records?.map((item, index) => (
+              <tr key={item._id}>
                 <th>{index}</th>
-                <th>{discount.discountCode}</th>
-                <th>{discount.percentDiscount}</th>
+                <th>
+                  <img src={item.imageNew} width="80px" alt="" />
+                </th>
+                <th>
+                {parse(item.description)}
+                </th>
                 <th>
                   <button
                     className="handleBtn"
-                    onClick={() => handleDeleteDiscount(discount._id, index)}
+                    onClick={() => handleDeleteNew(item._id, index)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -115,7 +104,7 @@ const Index = () => {
                       fillRule="currentColor"
                       className="bi bi-vector-pen"
                       viewBox="0 0 16 16"
-                      onClick={() => handleShow(discount)}
+                      onClick={() => handleShow(item)}
                     >
                       <path
                         fillRule="evenodd"
@@ -132,6 +121,36 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
+        <div style={{ textAlign: "center" }}>
+          <nav>
+            <ul className="pagination">
+              <li className="page-item">
+                <a href="#" className="page-link" onClick={prePage}>
+                  prve
+                </a>
+              </li>
+              {numbers.map((n, i) => (
+                <li
+                  className={`page-item ${currentPage === n ? "active" : ""}`}
+                >
+                  <a
+                    href="#"
+                    className="page-link"
+                    key={i}
+                    onClick={() => changePage(n)}
+                  >
+                    {n}
+                  </a>
+                </li>
+              ))}
+              <li className="page-item">
+                <a href="#" className="page-link" onClick={nextPage}>
+                  next
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -147,8 +166,8 @@ const Index = () => {
             placeholder="Mã Khuyến Mãi"
             autoFocus
             floating
-            value={discountCode}
-            onChange={(e) => setDiscountCode(e.target.value)}
+            // value={discountCode}
+            // onChange={(e) => setDiscountCode(e.target.value)}
           />
           <br></br>
           <Form.Control
@@ -156,12 +175,12 @@ const Index = () => {
             placeholder="Phần Trăm Khuyến Mãi"
             autoFocus
             floating
-            value={percentDiscount}
-            onChange={(e) => setPercentDicount(e.target.value)}
+            // value={percentDiscount}
+            // onChange={(e) => setPercentDicount(e.target.value)}
           />
           <br></br>
           <Button variant="secondary">Hủy</Button>
-          <Button variant="primary" onClick={handleUpdateDiscount}>
+          <Button variant="primary">
             Sửa Thông Tin
           </Button>
         </Modal.Footer>

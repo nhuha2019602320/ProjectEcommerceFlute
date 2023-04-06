@@ -74,7 +74,15 @@ const orderController = {
     getOrder: async (req, res) => {
         try {
             const id = req.params.id
-            console.log("id", id)
+            const order = await orderModel.findById({_id: id})
+            res.send(order)
+        } catch (error) {
+            res.send(error)
+        }
+    },
+    getOrderByid: async (req, res) => {
+        try {
+            const id = req.params.id
             const order = await orderModel.find({user: id})
             res.send(order)
         } catch (error) {
@@ -86,6 +94,7 @@ const orderController = {
         const orderNeedUpdate = await orderModel.findByIdAndUpdate(_id,
             {
                 $set: {
+                    status: req.body.status,
                     address: req.body.address,
                     note: req.body.note
                 }
@@ -97,7 +106,7 @@ const orderController = {
                 }else {
                     res.send("update success");
                 }
-            })
+            }).clone().catch(function(err){ console.log(err)})
     },
     deleteOrder: async (req, res) => {
         try {
@@ -109,7 +118,6 @@ const orderController = {
                     res.send("delete successed");
                 }
             })
-            res.send(orderNeedDelete)
                 const userOrder =  await userModel.findOneAndUpdate(
                     {_id: req.body.id},
                     {
@@ -118,21 +126,6 @@ const orderController = {
                         }
                     }
                 )
-                let transporter = nodemailer.createTransport({
-                    service : "gmail",
-                    auth: {
-                        user: "anh123vvv@gmail.com",
-                        pass: "dralbidqghhmlmqo"
-                    }
-                })
-                await transporter.sendMail({
-                    from: "anh123vvv@gmail.com",
-                    to : "nhuhai17072106@gmail.com",
-                    subject: "HỦY ĐƠN HÀNG", // Subject line
-                    text: "HỦY ĐƠN HÀNG", // plain text body
-                    html: `Tôi muốn hủy đơn hàng này
-                    `,
-                })
 
         } catch (error) {
             res.send(error)

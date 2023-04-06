@@ -21,7 +21,6 @@ const Index = () => {
 
   const handleShow = (user) => {
     setShow(true);
-    console.log("idnay", user._id);
     setIdUserUpdate(user._id)
     localStorage.setItem("idUser", user._id);
     localStorage.setItem("userNeedManager", JSON.stringify(user))
@@ -29,7 +28,6 @@ const Index = () => {
 
   const handleDelete = (e, id, index, navigate) => {
     e.preventDefault();
-    console.log(id);
     DeleteUser(id.toString(), navigate);
     setUsers(users.filter((o, i) => index !== i));
   };
@@ -47,7 +45,6 @@ const Index = () => {
         email: email,
         phoneNumber: phoneNumber
       };
-      console.log("edit", editUser)
       EditUser(idUser, editUser);
       localStorage.clear();
     }
@@ -65,7 +62,6 @@ const Index = () => {
     axios
       .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getAllUsers`)
       .then((res) => {
-        console.log(res.data);
         setUsers(res.data);
       });
   }, []);

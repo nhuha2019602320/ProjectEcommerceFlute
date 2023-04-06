@@ -19,10 +19,8 @@ const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const login = JSON.parse(localStorage.getItem("user"))
 
-  // const cartLists = cart.cartlists;
   const cartLists = JSON.parse(localStorage.getItem("cartList"))
 
-  console.log("carts/cart", cartLists);
   const dispatch = useDispatch();
 
   const handleDeteteItemCart = (item) => {
@@ -49,7 +47,6 @@ const Cart = () => {
 
 
   const priceListProduct = cartLists.map((a) => a.price*a.quantity);
-  console.log("cartList", cartLists)
   const convertPriceListProduct = priceListProduct.map((str) => {
     return parseInt(str, 10);
   });
@@ -68,7 +65,6 @@ const Cart = () => {
     //   totalBill = totalBill*0.6
     // }
     localStorage.setItem("totalBill", totalBill.toString());
-  console.log(convertPriceListProduct.reduce((a, b) => a + b, 0))
   
   const handlePay = () => {
     if(!login) 

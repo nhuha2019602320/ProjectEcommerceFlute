@@ -10,17 +10,17 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         AddCard: (state, action) => {
-            console.log("action", action)
+           
             const find = state.cartlists.findIndex(item=>item._id === action.payload._id);
-            console.log("find", find)
+           
             if(find>=0)
                 state.cartlists[find].quantity += 1
             else {
 
                 const tempvar = {...action.payload, quantity:1}
-                console.log("tem", tempvar)
+               
                 state.cartlists.push(tempvar)
-                console.log("state", state.cartlists)
+               
             }
             localStorage.setItem("cartList", JSON.stringify(state.cartlists))
         },
@@ -36,6 +36,7 @@ const cartSlice = createSlice({
 
             itemCart.splice(indexDelete, 1)
             localStorage.setItem("cartList", JSON.stringify(itemCart))
+            state.cartlists.splice(itemDelete, 1);
         },
         IncreaseCart: (state, action) => {
             // const itemCart = JSON.parse(localStorage.getItem("cartList"))

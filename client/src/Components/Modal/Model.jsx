@@ -22,7 +22,6 @@ const Model = () => {
       phoneNumber: phoneNumber
   }
   const handleSave = () => {
-    console.log(email, username, password, confirmPass)
     UpdateUser(idUser, dataUserUpdate)
   }
   return (

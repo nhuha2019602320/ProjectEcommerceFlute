@@ -113,12 +113,11 @@ export default function Register() {
                 password: password,
                 phoneNumber: phoneNumber,
             }
-            console.log("first", newUser)
-            console.log(process.env.REACT_APP_REGEX);
+
             registerAccout(newUser, dispatch, navigate)
 
         } else {
-            console.log("infomation is not correct");
+            alert("infomation is not correct");
         }
 
     }

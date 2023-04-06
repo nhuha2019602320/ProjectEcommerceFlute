@@ -9,7 +9,7 @@ import Users from "./Pages/Users"
 import Products from "./Pages/Products"
 import Caterories from "./Pages/Caterories"
 import "bootstrap/dist/js/bootstrap.js";
-import Introduction from "./Components/Introduction/Introduction";
+import Introduction from "./Pages/Introduction/Introduction";
 import Cart from "./Pages/Cart/Cart";
 import DetailProduct from "./Pages/DetailProduct/DetailProduct";
 import Order from "./Pages/Order/Order";
@@ -18,6 +18,7 @@ import MyPurchase from "./Pages/MyPurchase/MyPurchase";
 import OrderDetail from "./Components/OrderDetail/OrderDetail"
 import Contact from "./Pages/Contact/Contact";
 import Discount from "./Pages/Discount/index"
+import New from "./Pages/News/Index"
 import ManagementOrder from "./Pages/ManagementOrder/Index"
 import DetailSearch from  "./Pages/DetailSearch/Index"
 import Footer from "./Components/Footer/Footer"
@@ -48,7 +49,10 @@ function App() {
           <Route path="/discount" element={<Discount/>}></Route>
           <Route path="/managementorder" element={<ManagementOrder/>}></Route>
           <Route path="/search/:key" element={<DetailSearch/>}></Route>
+          <Route path="/new" element={<New/>}></Route>
+
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );
