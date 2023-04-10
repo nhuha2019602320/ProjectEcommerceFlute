@@ -30,7 +30,7 @@ const CreateDiscount = () => {
   return (
     <div>
         <ToastContainer/>
-        <Button onClick={handleShow}>Tạo Đơn Hàng</Button>
+        <button onClick={handleShow}>Tạo Đơn Hàng</button>
               <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Tạo Đơn Hàng Mới</Modal.Title>

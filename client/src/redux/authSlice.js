@@ -24,9 +24,9 @@ const authSlice = createSlice({
         state.login.currectUser = action.payload;
         state.login.error = false
         localStorage.setItem("user", JSON.stringify(action.payload));
-        toast.success('Success Notification !', {
-          position: toast.POSITION.TOP_RIGHT
-      });
+      //   toast.success('Success Notification !', {
+      //     position: toast.POSITION.TOP_RIGHT
+      // });
     },
     loginFailed: (state) => {
         state.login.isFetching=false;

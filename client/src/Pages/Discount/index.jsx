@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Form, Toast } from "react-bootstrap";
 import CreateDiscount from "./CreateDiscount";
+import { DeleteDiscount, UpdateDisCount } from "../../services/discount";
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listDiscounts, setListDiscount] = useState();
@@ -23,9 +24,7 @@ const Index = () => {
 
   const handleDeleteDiscount = (id, index) => {
     if (window.confirm("Xác nhận xóa") === true) {
-      axios.delete(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/deleteDisCount/${id}`
-      );
+      DeleteDiscount(id);
       setListDiscount(listDiscounts.filter((o, i) => index !== i));
     }
   };
@@ -35,12 +34,10 @@ const Index = () => {
       discountCode: discountCode,
       percentDiscount: percentDiscount,
     };
-    if (idDicount)
-      axios.put(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/updateDiscount/${idDicount}`,
-        dataUpdate
-      );
-    window.location.reload(false);
+    if (idDicount) {
+      UpdateDisCount(idDicount, dataUpdate);
+      window.location.reload(false);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +50,6 @@ const Index = () => {
           setDiscountCode(res.data.discountCode);
           setPercentDicount(res.data.percentDiscount);
         });
-  
   }, [idDicount]);
   useEffect(() => {
     axios
@@ -65,7 +61,7 @@ const Index = () => {
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateDiscount/>
+        <CreateDiscount />
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr

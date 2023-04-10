@@ -15,3 +15,7 @@ export const UpdateProduct = async (product, id) => {
 export const GetAllProduct = async () => {
     return await axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getAllProducts`)
 }
+
+export const GetProduct = async (id) => {
+    return await axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${id}`)
+}

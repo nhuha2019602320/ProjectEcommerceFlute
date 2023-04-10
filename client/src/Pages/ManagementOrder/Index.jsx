@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "react-bootstrap";
+import { Row, Table } from "react-bootstrap";
 import AdminPage from "../../Pages/Admin/AdminPage";
 import NavBar from "../../Components/NavBar/NavBar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Form } from "react-bootstrap";
-import CreateOrder from './CreateOrder'
+import CreateOrder from "./CreateOrder";
 import { ToastContainer, toast } from "react-toastify";
-
+import { GetAllOrder, GetOrder, UpDateOrder } from "../../services/order";
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listOrders, setListOrders] = useState([]);
@@ -19,6 +19,9 @@ const Index = () => {
   const [note, setNote] = useState("");
   const [showProduct, setShowProduct] = useState(false);
   const [productOrders, setProductOrders] = useState();
+  const [orderItem, setOrderItem] = useState("");
+
+  const options = ['Chờ gói hàng', 'Đang vận chuyển', 'Giao hàng thành công']
 
   const arrOfNum = totalSales.map((str) => {
     return parseInt(str, 10);
@@ -31,15 +34,14 @@ const Index = () => {
   const handleClose = () => setShow(false);
   const handleShowProduct = (id) => {
     setIdOrder(id);
-    setShowProduct(true)
-  }
+    setShowProduct(true);
+  };
   const handleShow = (order) => {
     setShow(true);
     setIdOrder(order._id);
   };
 
   const handleDeleteOrder = (id, index) => {
-  
     axios.delete(
       `${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`
     );
@@ -47,7 +49,7 @@ const Index = () => {
   };
 
   const handleUpdateOrder = () => {
-    if(status === "" || address === "" || note === "") {
+    if (status === "" || address === "" || note === "") {
       toast.error("Kiểm tra lại thông tin", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -55,21 +57,44 @@ const Index = () => {
     const dataUpdate = {
       status: status,
       address: address,
-      note: note
-    }
-    axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/updateOrder/${idOrder}`,dataUpdate)
+      note: note,
+    };
+    
+    UpDateOrder(idOrder, dataUpdate)
     toast.success("Cập nhập thành công", {
       position: toast.POSITION.TOP_RIGHT,
     });
     window.location.reload();
+
+    axios.post(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/orderSuccess`, {idOrder})
+  };
+
+  const handleSearchItemOrder = () => {
+    if (orderItem) {
+      GetOrder(orderItem)
+        .then((res) => {
+          console.log("hihi", [res.data]);
+          setListOrders([res.data]);
+
+        });
+    } else {
+      alert("Đơn hàng không tồn tại!");
+    }
+  };
+
+  const handleGetAllOrder = () => {
+    GetAllOrder().then((res) => setListOrders(res.data));
   }
+
+  const onOptionChangeHandler = (e) => {
+    e.preventDefault();
+    // setCategory(event.target.value)
+    setStatus(e.target.value)
+  };
 
   useEffect(() => {
     if (idOrder)
-      axios
-        .get(
-          `${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrder/${idOrder}`
-        )
+    GetOrder(idOrder)
         .then((res) => {
           setStatus(res.data.status);
           setAddress(res.data.address);
@@ -79,9 +104,7 @@ const Index = () => {
   }, [idOrder]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/getAllOrder`)
-      .then((res) => setListOrders(res.data));
+    GetAllOrder().then((res) => setListOrders(res.data));
   }, []);
   return (
     <div style={{ display: "flex" }}>
@@ -89,7 +112,16 @@ const Index = () => {
       <ToastContainer />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateOrder/>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+          <CreateOrder /><br />
+            <button onClick={handleGetAllOrder}>Danh Sách Đơn</button>
+          </div>
+          <div>
+            <input type="text" onChange={(e) => setOrderItem(e.target.value)} />
+            <button onClick={handleSearchItemOrder}>search</button>
+          </div>
+        </div>
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr
@@ -191,14 +223,27 @@ const Index = () => {
           controlId="exampleForm.ControlInput1"
         ></Form.Group>
         <Modal.Footer>
-          <Form.Control
+          {/* <Form.Control
             type="text"
             placeholder="Tình Trạng"
             autoFocus
             floating
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-          />
+          /><br></br> */}
+       
+       <div class="col-xs-2">
+
+            <select onChange={onOptionChangeHandler} style={{width:"auto"}}>
+              <option>Tình Trạng</option>
+              {
+                options.map((item) => (
+                     <option>{item}</option>
+                ))
+              }
+            </select>
+       </div>
+      
           <br></br>
           <Form.Control
             type="text"
@@ -219,7 +264,9 @@ const Index = () => {
           />
           <br></br>
           <Button variant="secondary">Hủy</Button>
-          <Button variant="primary" onClick={handleUpdateOrder}>Sửa Thông Tin</Button>
+          <Button variant="primary" onClick={handleUpdateOrder}>
+            Sửa Thông Tin
+          </Button>
         </Modal.Footer>
       </Modal>
       <Modal
@@ -236,40 +283,38 @@ const Index = () => {
         </Modal.Header>
         <Modal.Body>
           <Table striped style={{ marginTop: "30px" }}>
-          <thead>
-            <tr
-              style={{
-                textAlign: "center",
-                fontWeight: "bold",
-                fontSize: "18px",
-              }}
+            <thead>
+              <tr
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "18px",
+                }}
               >
-              <th>STT</th>
-              <th>Ảnh Sản Phẩm</th>
-              <th>Tên Sản Phẩm</th>
-              <th>Số Lượng</th>
-              <th>Đơn Giá</th>
-              <th>Thành Tiền</th>
-            </tr>
-          </thead>    
-          <tbody>
-              {
-                productOrders?.map((item, index) =>(
-                  <tr key={item._id}
-                  style={{ textAlign: "center" }}
-                  >
-                    <td>{index}</td>
-                    <td>
-                      <img src={item.imageProduct} width="80px" alt="" />
-                    </td>  
-                    <td>{item.nameProduct}</td>
-                    <td>{item.quantity}</td>
-                    <td>{Number(item.price).toLocaleString()}đ</td>  
-                    <td>{Number(item.quantity*item.price).toLocaleString()}đ</td>                  
-                  </tr>
-                ))
-              }
-            </tbody>        
+                <th>STT</th>
+                <th>Ảnh Sản Phẩm</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Số Lượng</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productOrders?.map((item, index) => (
+                <tr key={item._id} style={{ textAlign: "center" }}>
+                  <td>{index}</td>
+                  <td>
+                    <img src={item.imageProduct} width="80px" alt="" />
+                  </td>
+                  <td>{item.nameProduct}</td>
+                  <td>{item.quantity}</td>
+                  <td>{Number(item.price).toLocaleString()}đ</td>
+                  <td>
+                    {Number(item.quantity * item.price).toLocaleString()}đ
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </Table>
         </Modal.Body>
       </Modal>

@@ -10,13 +10,14 @@ import SideBar from "../../Components/SideBar/SideBar"
 import { AddCard } from "../../redux/cartSlice";
 import ListProduct from "../../Components/ListProducts/ListProducts"
 import Footer from "../../Components/Footer/Footer"
+import { GetProduct } from "../../services/product";
 const DetailProduct = () => {
   const params = useParams();
   const [detailProduct, setDetailProduct] = useState()
   const dispatch = useDispatch();
 
-  const getProduct = async () => {
-    await axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/product/getProduct/${params.id}`)
+  const getProduct = () => {
+     GetProduct(params.id)
       .then(res => {
         setDetailProduct(res.data)
       })

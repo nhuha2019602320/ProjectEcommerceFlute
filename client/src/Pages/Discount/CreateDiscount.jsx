@@ -29,7 +29,7 @@ const CreateDiscount = () => {
   return (
     <div>
         <ToastContainer/>
-        <Button onClick={handleShow}>Tạo Khuyến mãi</Button>
+        <button onClick={handleShow}>Tạo Khuyến mãi</button>
               <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sửa thông tin danh mục</Modal.Title>

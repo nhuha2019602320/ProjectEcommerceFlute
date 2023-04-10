@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
 import SideBar from "../SideBar/SideBar";
 import "./OrderDetail.css";
+import { DeleteOrder, GetOrderById } from "../../services/order";
 const OrderDetail = () => {
   const [list, setList] = useState([]);
   const [show, setShow] = useState(false);
@@ -19,21 +20,14 @@ const OrderDetail = () => {
 
   const handleDeleteOrder = (id, index) => {
     if (window.confirm(`Bạn có xác nhận xóa đơn hàng ${id}`) == true) {
-      axios.delete(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`
-      );
+      DeleteOrder(id)
       setList(list.filter((o, i) => index !== i));
     }
   };
 
   const navigate = useNavigate();
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_URL_LOCALHOST}/api/order/getOrderByID/${
-          JSON.parse(localStorage.getItem("user"))._id
-        }`
-      )
+      GetOrderById(JSON.parse(localStorage.getItem("user"))._id)
       .then((res) => {
         setList(res.data);
       });

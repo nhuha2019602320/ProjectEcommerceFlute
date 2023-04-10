@@ -70,7 +70,7 @@ const Introduction = () => {
       `${process.env.REACT_APP_URL_LOCALHOST}/api/new/createNew`,
       dataNew
       );
-      toast.error('Không để trống comment', {
+      toast.success('Không để trống comment', {
         position: toast.POSITION.TOP_RIGHT
     });
     window.location.reload()
@@ -161,7 +161,7 @@ const Introduction = () => {
                 <div className="d-flex flex-start">
                   <MDBCardImage
                     className="rounded-circle shadow-1-strong me-3"
-                    src="https://res.cloudinary.com/uploadimgvvv/image/upload/v1680623424/hprbxl363fydyw07zgge.jpg"
+                    src="https://res.cloudinary.com/uploadimgvvv/image/upload/v1680894189/rtpqn98uzznnjmtnd6zv.jpg"
                     alt="avatar"
                     width="60"
                     height="60"

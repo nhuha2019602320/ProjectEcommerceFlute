@@ -13,6 +13,7 @@ import { AddCard } from "../../redux/cartSlice";
 import axios from "axios";
 import "./List.css";
 import { ToastContainer, toast } from "react-toastify";
+import { GetAllCategory } from "../../services/category";
 const db = require("../../db.json");
 export default function ListProduct() {
   const [ListProducts, setListProducts] = useState([]);
@@ -41,8 +42,7 @@ export default function ListProduct() {
   };
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
+      GetAllCategory()
       .then((res) => setCategory(res.data));
   }, []);
 

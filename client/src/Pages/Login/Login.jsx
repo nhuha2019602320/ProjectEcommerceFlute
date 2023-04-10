@@ -29,7 +29,7 @@ export default function Login() {
       password: password,
     };
     loginUser(userLogin, dispatch, navigate);
-    toast.success('Success Notification !', {
+    toast.success('Bạn Đã Đăng Nhập Thành Công', {
       position: toast.POSITION.TOP_RIGHT
   });
   };

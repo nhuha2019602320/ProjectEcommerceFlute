@@ -8,6 +8,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import NavBar from "../../Components/NavBar/NavBar";
 import Table from "react-bootstrap/Table";
+import { CreateCategory, DeleteCategory, GetAllCategory, UpdateCategory } from "../../services/category";
+ import CreateNewCategory from './CreateNewCategory'
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listCategories, setListCategories] = useState([]);
@@ -21,8 +23,10 @@ const Index = () => {
   }
 
   const handleDelete = (id, index) => {
-      axios.delete(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/deleteCategory/${id}`)
-      setListCategories(listCategories.filter((o, i) => index !== i));
+      if (window.confirm(`Bạn có xác nhận xóa danh mục`) === true) {
+        DeleteCategory(id)
+        setListCategories(listCategories.filter((o, i) => index !== i));
+      }
   }
 
   const handleUpdate = () => {
@@ -32,32 +36,34 @@ const Index = () => {
       }
       if(categoryCode === "" || categroyName ==="")
         return alert("Bạn chưa điền thông tin")
-      axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/updateCategory/${localStorage.getItem("idCategory")}`,category)
+      // axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/updateCategory/${localStorage.getItem("idCategory")}`,category)
+      UpdateCategory(localStorage.getItem("idCategory"), category)
       window.location.reload(false);
   }
 
-  const handleCreate = () => {
-    document.getElementById("hehe").style.display ="none"
-    setCategoryCode("");
-    setNameCategory("")
-    const update = {
-      categoryCode: categoryCode,
-      categroyName: categroyName
-    }
-    axios.post(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/createCategory`,update)
-    window.location.reload(false);
-  }
+  // const handleCreate = () => {
+  //   document.getElementById("hehe").style.display ="none"
+  //   setCategoryCode("");
+  //   setNameCategory("")
+  //   const newCategory = {
+  //     categoryCode: categoryCode,
+  //     categroyName: categroyName
+  //   }
+
+  //   CreateCategory(newCategory)
+  //   window.location.reload(false);
+  // }
+
+  // useEffect(() => {
+  //   axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory/${localStorage.getItem("idCategory")}`)
+  //     .then((res) => {
+  //       setCategoryCode(res.data[0].categoryCode);
+  //       setNameCategory(res.data[0].categroyName)
+  //     })
+  // },[localStorage.getItem("idCategory")])
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory/${localStorage.getItem("idCategory")}`)
-      .then((res) => {
-        setCategoryCode(res.data[0].categoryCode);
-        setNameCategory(res.data[0].categroyName)
-      })
-  },[localStorage.getItem("idCategory")])
-
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getAllCategory`)
+    GetAllCategory()
      .then((res) => {
        setListCategories(res.data)
      })
@@ -67,7 +73,7 @@ const Index = () => {
     <AdminPage />
     <div style={{ maxWidth: "100%" }} className="col-10">
     <NavBar/>
-    <button onClick={handleShow}>Tạo danh mục</button>
+    <CreateNewCategory/>
       <Table striped style={{ marginTop: "30px" }}>
         <thead>
           <tr
@@ -149,7 +155,7 @@ const Index = () => {
                     placeholder="Mã Danh Mục"
                     autoFocus
                     floating
-                    value={categoryCode}
+                    // value={categoryCode}
                     onChange={(e) => setCategoryCode(e.target.value)}
                     /><br></br>
           <Form.Control
@@ -157,14 +163,13 @@ const Index = () => {
                     placeholder="Tên Danh mục"
                     autoFocus
                     floating
-                    value={categroyName}
+                    // value={categroyName}
                     onChange={(e) => setNameCategory(e.target.value)}
                   /><br></br>
           </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary">Close</Button>
-        <Button variant="primary" onClick={handleCreate}>Tạo danh mục</Button>
         <Button variant="primary" id="hehe" onClick={handleUpdate}>Sửa danh mục</Button>
           
       </Modal.Footer>
