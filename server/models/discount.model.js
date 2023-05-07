@@ -10,7 +10,6 @@ const DiscountSchema = new Schema({
         type: Number,
         require: true,
     },
-
 });
 
 module.exports = mongoose.model("Discounts", DiscountSchema);

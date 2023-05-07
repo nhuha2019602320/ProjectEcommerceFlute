@@ -240,7 +240,7 @@ export default function ListProduct() {
                           // onClick={() => dispatch(AddCard(item))}
                           onClick={() => handleAddCart(item)}
                         >
-                          Thêm giỏ hàng
+                          Mua Hàng
                         </Button>
                       </figcaption>
                     </figure>

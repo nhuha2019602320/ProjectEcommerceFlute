@@ -31,40 +31,25 @@ const cartSlice = createSlice({
             state.cartlists = itemDelete;
             
             const itemCart = JSON.parse(localStorage.getItem("cartList"))
-
+                console.log("itemcart", itemCart)
             var indexDelete = action.payload._id;
-
+                console.log("index", indexDelete)
             itemCart.splice(indexDelete, 1)
+
             localStorage.setItem("cartList", JSON.stringify(itemCart))
-            state.cartlists.splice(itemDelete, 1);
+            // state.cartlists.splice(itemDelete, 1);
         },
         IncreaseCart: (state, action) => {
-            // const itemCart = JSON.parse(localStorage.getItem("cartList"))
-            // console.log("itemCart", itemCart.map((item) => item.quantity))
-            // const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);
-            // console.log("itemindex", indexItem)
-            // if(state.cartlists[indexItem].quantity >=1)
-            // state.cartlists[indexItem].quantity += 1
-            // console.log("comein")
             const itemCart = JSON.parse(localStorage.getItem("cartList"))
             const indexItem = itemCart.findIndex(item=>item._id === action.payload._id); 
-            console.log("itemCart", itemCart[indexItem].quantity)
-            console.log("index", indexItem)
             if(itemCart[indexItem].quantity >=1)
             itemCart[indexItem].quantity +=1
             localStorage.setItem("cartList",JSON.stringify(itemCart))
             state.cartlists = [...state.cartlists, itemCart[indexItem]]
         },
         DecreaseCart: (state, action) => {
-            // const indexItem = state.cartlists.findIndex(item=>item._id === action.payload._id);         
-            // if(state.cartlists[indexItem].quantity >1)
-            //     state.cartlists[indexItem].quantity -= 1
-            // else
-            //     state.cartlists.splice(indexItem, 1)
             const itemCart = JSON.parse(localStorage.getItem("cartList"))
             const indexItem = itemCart.findIndex(item=>item._id === action.payload._id); 
-            console.log("itemCart", itemCart[indexItem].quantity)
-            console.log("index", indexItem)
             if(itemCart[indexItem].quantity >1)
                 itemCart[indexItem].quantity -=1
             else

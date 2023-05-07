@@ -61,7 +61,7 @@ const Index = () => {
               style={{
                 textAlign: "center",
                 fontWeight: "bold",
-                fontSize: "18px",
+                fontSize: "15px",
               }}
             >
               <th>STT</th>
@@ -72,12 +72,12 @@ const Index = () => {
           </thead>
           <tbody>
             {records?.map((item, index) => (
-              <tr key={item._id}>
+              <tr key={item._id} style={{fontSize: "13px"}}>
                 <th>{index}</th>
                 <th>
                   <img src={item.imageNew} width="80px" alt="" />
                 </th>
-                <th>
+                <th className="col-md-4"> 
                 {parse(item.description)}
                 </th>
                 <th>

@@ -93,3 +93,7 @@
     margin-right:20px;
     align-items: center;
 }
+.xx:hover {
+    /* background-color: red; */
+    color: azure;
+}

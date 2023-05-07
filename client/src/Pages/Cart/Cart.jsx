@@ -14,72 +14,60 @@ import Footer from "../../Components/Footer/Footer";
 
 const Cart = () => {
   const [error, setError] = useState();
+  const [quantityItem, setQuantityItem] = useState();
 
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const login = JSON.parse(localStorage.getItem("user"))
+  const login = JSON.parse(localStorage.getItem("user"));
 
-  const cartLists = JSON.parse(localStorage.getItem("cartList"))
+  const cartLists = JSON.parse(localStorage.getItem("cartList"));
+  console.log("carList", cartLists)
 
   const dispatch = useDispatch();
 
   const handleDeteteItemCart = (item) => {
-    dispatch(DeleteCart(item))
+    dispatch(DeleteCart(item));
     toast.success(`Sản Phẩm ${item.nameProduct} đã xóa khỏi giỏ hàng`, {
-      position: toast.POSITION.TOP_RIGHT
-  });
-  }
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   if (error || !Array.isArray(cartLists)) {
     return (
-        <div>
-          <Header/>
-          <div style={{textAlign:"center", marginTop:"50px"}}>
-
+      <div>
+        <Header />
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
           <h2>Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</h2>
-          <Button onClick={() => navigate("/")}>Tiếp Túc Mua Hàng</Button>
-          </div>
-          
+          <Button variant="outline-success" onClick={() => navigate("/")}>
+            Tiếp Túc Mua Hàng
+          </Button>
         </div>
-    )
+      </div>
+    );
   }
 
-
-
-  const priceListProduct = cartLists.map((a) => a.price*a.quantity);
+  const priceListProduct = cartLists.map((a) => a.price * a.quantity);
   const convertPriceListProduct = priceListProduct.map((str) => {
     return parseInt(str, 10);
   });
-    // convertPriceListProduct.reduce((a, b) => a + b, 0);
-    var totalBill = convertPriceListProduct.reduce((a, b) => a + b, 0);
+  var totalBill = convertPriceListProduct.reduce((a, b) => a + b, 0);
 
-    var discount = 0;
-    // if(totalBill<500000){
-    //   discount = 0;
-    // }
-    // else if(totalBill>=500000 && totalBill<=1000000) {
-    //   discount = 20
-    //   totalBill = totalBill *0.8
-    // } else {
-    //   discount = 40;
-    //   totalBill = totalBill*0.6
-    // }
-    localStorage.setItem("totalBill", totalBill.toString());
-  
+  var discount = 0;
+
+  localStorage.setItem("totalBill", totalBill.toString());
+
   const handlePay = () => {
-    if(!login) 
-      navigate("/login")
-    else
-      navigate("/checkout")
+    if (!login) navigate("/login");
+    else navigate("/checkout");
   };
 
   const handleDeleteCart = () => {
-    localStorage.removeItem("cartList")
-    navigate("/")
-  }
+    localStorage.removeItem("cartList");
+    navigate("/");
+  };
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <Header />
       <Container>
         <Row style={{ marginTop: "20px" }}>
@@ -94,58 +82,68 @@ const Cart = () => {
                   <th>Thành Tiền</th>
                   <th>Xóa</th>
                 </tr>
-                {   
-                    cartLists?.map((item, index) => (                 
-                      <tr
-                        key={item._id.toString()}
-                        style={{ textAlign: "center", alignItems: "center" }}
-                        className="inforUser"
+                {cartLists?.map((item, index) => (
+                  <tr
+                    key={item._id.toString()}
+                    style={{ textAlign: "center", alignItems: "center" }}
+                    className="inforUser"
+                  >
+                    <td>
+                      <img src={item.imageProduct} width="80px" alt="" />
+                    </td>
+                    <td>{item.nameProduct}</td>
+                    <td>{Number(item.price).toLocaleString()}đ</td>
+                    <td>
+                      <button
+                        className="quantity"
+                        onClick={() => dispatch(DecreaseCart(item))}
                       >
-                        <td>
-                          <img src={item.imageProduct} width="80px" alt="" />
-                        </td>
-                        <td>{item.nameProduct}</td>
-                        <td>{Number(item.price).toLocaleString()}đ</td>
-                        <td>
-                            <button className="quantity" onClick={() => dispatch(DecreaseCart(item))}>-</button>
-                            <span>{item.quantity}</span>
-                            <button className="quantity" onClick={() => dispatch(IncreaseCart(item))}>+</button>
-         
-                        </td>
-                        <td>{Number(item.quantity * item.price).toLocaleString()}đ</td>
-                        <td>
-                          <button
-                            className="handleBtn"
-                            style={{ backgroundColor: "initial" }}
-                            // onClick={() => dispatch(DeleteCart(item))}
-                            onClick={() => handleDeteteItemCart(item)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="14"
-                              height="14"
-                              fill="currentColor"
-                              className="bi bi-x"
-                              viewBox="0 0 16 16"
-                            >
-                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-                      
-                    ))
-                  }            
-                
-
+                        -
+                      </button>
+                      {/* <span>{item.quantity}</span> */}
+                      <input
+                        type="text"
+                        value={item.quantity}
+                        // value={quantityItem}
+                        style={{ width: "30px" }}
+                        onChange={(e) => setQuantityItem(e.target.value)}
+                      />
+                      <button
+                        className="quantity"
+                        onClick={() => dispatch(IncreaseCart(item))}
+                      >
+                        +
+                      </button>
+                    </td>
+                    <td>
+                      {Number(item.quantity * item.price).toLocaleString()}đ
+                    </td>
+                    <td>
+                      <button
+                        className="handleBtn"
+                        style={{ backgroundColor: "initial" }}
+                        // onClick={() => dispatch(DeleteCart(item))}
+                        onClick={() => handleDeteteItemCart(item)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          fill="currentColor"
+                          className="bi bi-x"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </thead>
-              
-              
             </Table>
             <Row>
               <Col>
-        
-              <button
+                <button
                   className="returnHomepage"
                   onClick={() => navigate("/")}
                 >
@@ -161,16 +159,18 @@ const Cart = () => {
                   </svg>
                   Tiếp Tục Mua Hàng
                 </button>
-
-           
-
               </Col>
 
               <Col>
                 <Table className="paymentTable">
                   <tr>
                     <td>Giá</td>
-                    <td>{Number(convertPriceListProduct.reduce((a, b) => a + b, 0)).toLocaleString()}đ</td>
+                    <td>
+                      {Number(
+                        convertPriceListProduct.reduce((a, b) => a + b, 0)
+                      ).toLocaleString()}
+                      đ
+                    </td>
                   </tr>
                   <tr>
                     <td>Phí giao hàng</td>
@@ -178,20 +178,30 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>Tổng đơn + {discount}% discount</td>
-                    <td>
-                      {Number(totalBill + 30000).toLocaleString()}đ
-                    </td>
+                    <td>{Number(totalBill + 30000).toLocaleString()}đ</td>
                   </tr>
                 </Table>
-                  <Button variant="success" style={{float:"right"}} onClick={handlePay}>Thanh Toán</Button>
-                  <Button variant="success" style={{float:"right", marginRight:"10px"}} onClick={handleDeleteCart}>Xóa giỏ hàng</Button>
+                <Button
+                  variant="success"
+                  style={{ float: "right" }}
+                  onClick={handlePay}
+                >
+                  Thanh Toán
+                </Button>
+                <Button
+                  variant="success"
+                  style={{ float: "right", marginRight: "10px" }}
+                  onClick={handleDeleteCart}
+                >
+                  Xóa giỏ hàng
+                </Button>
               </Col>
             </Row>
           </Col>
           <SideBar />
         </Row>
       </Container>
-        <Footer/>
+      <Footer />
     </div>
   );
 };

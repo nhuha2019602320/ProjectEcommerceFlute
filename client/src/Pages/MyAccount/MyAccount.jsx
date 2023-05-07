@@ -19,9 +19,7 @@ const MyAccount = () => {
             <Col>{JSON.parse(localStorage.getItem("user"))?.email ?? ""}</Col></Row>
           <Row>
             <Col>Số điện thoại:</Col>
-            <Col>{
-              JSON.parse(localStorage.getItem("user"))?.phoneNumber ?? ""
-            }</Col>
+            <Col>{JSON.parse(localStorage.getItem("user"))?.phoneNumber ?? ""}</Col>
           </Row>
         </div>
         <Model/>

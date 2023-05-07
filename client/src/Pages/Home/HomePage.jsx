@@ -3,17 +3,17 @@ import Header from "../../Components/Header/Header";
 import ListProducts from "../../Components/ListProducts/ListProducts";
 import Slider from "../../Components/Slider/Slider";
 import { Col, Container, Row } from "react-bootstrap";
-import MenuCategory from "../../Components/MenuCategory/Index"
+import MenuCategory from "../../Components/MenuCategory/Index";
 import Footer from "../../Components/Footer/Footer";
 const HomePage = () => {
   return (
     <div>
       <Header />
-        {/* <Menu/> */}
+      {/* <Menu/> */}
       <Container>
-        <Slider />    
+        <Slider />
       </Container>
-          <ListProducts />
+      <ListProducts />
     </div>
   );
 };

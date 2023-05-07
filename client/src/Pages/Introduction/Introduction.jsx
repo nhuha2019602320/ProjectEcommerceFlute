@@ -66,13 +66,15 @@ const Introduction = () => {
       imageNew: urlImg,
       description: description,
     };
+    if(description === "")
+    return toast.success('Không để trống comment', {
+      position: toast.POSITION.TOP_RIGHT
+  });
+
     axios.post(
       `${process.env.REACT_APP_URL_LOCALHOST}/api/new/createNew`,
       dataNew
       );
-      toast.success('Không để trống comment', {
-        position: toast.POSITION.TOP_RIGHT
-    });
     window.location.reload()
   };
 
@@ -124,7 +126,7 @@ const Introduction = () => {
             </button>
             <EditorContent editor={editor} />
           </Row>
-          <Button onClick={handleSubmitReview}>Gửi Phản Hồi</Button>
+          <Button variant="outline-success" onClick={handleSubmitReview}>Gửi Phản Hồi</Button>
         </Container>
         <Container>
           {/* <MDBContainer fluid style={{ marginTop: "30px" }}>

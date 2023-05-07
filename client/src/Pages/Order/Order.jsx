@@ -13,13 +13,15 @@ const Order = () => {
     // const {login} = useSelector((state) => state.auths)
     const login = JSON.parse(localStorage.getItem("user"))
     const cartLists = JSON.parse(localStorage.getItem("cartList"))
-    const [userName, setUserName] = useState(login.userName ?? "null");
-    const [phone, setPhone] = useState(login.phoneNumber ?? "null");
+    const [userName, setUserName] = useState();
+    const [phone, setPhone] = useState();
+    // const [userName, setUserName] = useState(login.userName ?? "null");
+    // const [phone, setPhone] = useState(login.phoneNumber ?? "null");
     const [address, setAddress] = useState("")
     const [note, setNote] = useState("")
     const totalBill = localStorage.getItem("totalBill");
     const [discount, setDiscount] = useState(0);
-  
+    const cart = useSelector((state) => state.cart);
     const handelCreate = () => {
       if(address === "" || note === "" || cartLists === []) {
         alert("Tạo đơn không thành công mời kiểm tra lại")
@@ -39,24 +41,31 @@ const Order = () => {
       }
     }
     useEffect(() => {
-      console.log("vao deee")
+      if(login._id)
+      axios
+      .get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getOneUser/${login._id}`)
+        .then((res) => {
+          setUserName(res.data.userName);
+          setPhone(res.data.phoneNumber)
+        })
+    },[login._id])
+
+    useEffect(() => {
       axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/getAllDiscount`)
         .then((res) => {
 
             let valueDiscount = res.data.map((item) => item.percentDiscount);
-              console.log("dd", valueDiscount[0])
-
               if(totalBill>=500000 && totalBill<=1000000)
-                setDiscount(valueDiscount[1]);
+                setDiscount(valueDiscount[0]);
               else if(totalBill > 1000000)
-                setDiscount(valueDiscount[2])
+                setDiscount(valueDiscount[1])
               else 
                 setDiscount(0)
             })
             
     },[])
     useEffect(() => {
-      console.log(discount)
+      document.title ="checkout";
     },[discount])
   return (
     <div>
@@ -94,18 +103,19 @@ const Order = () => {
                   required
                   fullWidth
                   id="firstName"
-                 
                   autoFocus
                   value={userName}
-                  // onChange={(e) => setUserName(e.target.value)}
+                  onChange={(e) => setUserName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  type="text"
                   required
                   fullWidth
                   autoComplete="family-name"
                   value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>

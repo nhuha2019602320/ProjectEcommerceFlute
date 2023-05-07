@@ -1,4 +1,3 @@
-const { boolean } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -13,24 +12,19 @@ const OrderSchema = new Schema(
       require: true,
     },
     status: {
-        type: String,
-        default: "Chờ gói hàng"
+      type: String,
+      default: "Chờ gói hàng",
     },
-    productOrder: [
-
-    ],
+    productOrder: [],
     total: {
       type: String,
-      require: true
+      require: true,
     },
-    user:
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Users",
-        require: true
-      },
-    
-      
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "Users",
+      require: true,
+    },
   },
   {
     timestamps: true,

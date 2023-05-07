@@ -31,7 +31,7 @@ const CreateNew = () => {
   return (
     <div>
       <ToastContainer />
-      <Button onClick={handleShow}>Tạo Tin Tức</Button>
+      <Button variant="outline-success" onClick={handleShow}>Tạo bài viết</Button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Tạo Thông Tin Mới</Modal.Title>

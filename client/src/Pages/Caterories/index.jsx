@@ -80,7 +80,7 @@ const Index = () => {
             style={{
               textAlign: "center",
               fontWeight: "bold",
-              fontSize: "18px",
+              fontSize: "15px",
             }}
           >
             <th>STT</th>
@@ -96,6 +96,7 @@ const Index = () => {
                 key={category._id.toString()}
                 className="inforProduct"
                 id="product"
+                style={{fontSize: "13px",}}
               >
                 <th>{index}</th>
                 <th>{category.categoryCode}</th>

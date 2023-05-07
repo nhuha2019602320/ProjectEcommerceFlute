@@ -2,18 +2,6 @@
     [
         {
             "status": "Còn Hàng",
-            "_id": "6425a1569792406a202ecd45",
-            "productCode": "SP01",
-            "nameProduct": "Sáo Nứa Hun Luxury",
-            "price": "800000",
-            "imageProduct": "http://res.cloudinary.com/uploadimgvvv/image/upload/v1680187713/dfkinxeoowowskho0lg8.jpg",
-            "quantity": 100,
-            "description": "<p><strong>Tình trạng:</strong> Còn hàng <strong>Mã sản phẩm: </strong>SP01</p><p><br><strong>-</strong>&nbsp;<strong>Chất liệu:&nbsp;</strong>Nứa hun màu cà phê, già, tròn đẹp.<br><strong>- Màu sắc:&nbsp;</strong>Màu cà phê, nứa bóng đẹp tự nhiên.<br><strong>- Âm Thanh:&nbsp;</strong>Âm Chuẩn Beat, Lên Đủ 3 Quảng Nhẹ Nhàng.</p><p><strong>- Phụ Kiện:</strong>&nbsp; Túi Nhung và Hộp Gỗ<br></p><p>-&nbsp;<strong>Chọn Tone:&nbsp;</strong>Rê cao (D5), Đô (C5), Si bình (B4), Si giáng Bb4), La trầm (A4), Son trầm (G4), Fa trầm (F4), Son thăng (G4#), Đô thăng (C5#)&nbsp;</p><p><strong><em>Lưu ý: Khi đặt hàng các bạn nhớ ghi tone sáo&nbsp;muốn mua&nbsp;vào mục ghi chú nhé !</em></strong></p><p><br><br><strong>Mô tả:</strong><br>Sáo Nứa Hun Hàng Chọn Lọc Cao Cấp Luxury - Tặng Kèm Hộp Gỗ&nbsp;Phù hợp cho người những chơi sáo đã lâu cũng như những người mới chơi nhưng muốn sắm cho mình một cây sáo tuyệt vời, chế tác tỉ mỉ để làm cây sáo để đời hoặc dùng để đi biểu diễn cũng n...</p>",
-            "category": "6425a0899792406a202ecd31",
-            "__v": 0
-        },
-        {
-            "status": "Còn Hàng",
             "_id": "6425a28a9792406a202ecd4b",
             "productCode": "SP02",
             "nameProduct": "Sáo Nứa Hun Loại Vip",

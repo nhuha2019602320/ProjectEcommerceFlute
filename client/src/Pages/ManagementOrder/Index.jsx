@@ -21,7 +21,7 @@ const Index = () => {
   const [productOrders, setProductOrders] = useState();
   const [orderItem, setOrderItem] = useState("");
 
-  const options = ['Chờ gói hàng', 'Đang vận chuyển', 'Giao hàng thành công']
+  const options = ["Chờ gói hàng", "Đang vận chuyển", "Giao hàng thành công"];
 
   const arrOfNum = totalSales.map((str) => {
     return parseInt(str, 10);
@@ -42,10 +42,12 @@ const Index = () => {
   };
 
   const handleDeleteOrder = (id, index) => {
-    axios.delete(
-      `${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`
-    );
-    setListOrders(listOrders.filter((o, i) => index !== i));
+    if (window.confirm("Xác nhận xóa sản phẩm") == true) {
+      axios.delete(
+        `${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`
+      );
+      setListOrders(listOrders.filter((o, i) => index !== i));
+    }
   };
 
   const handleUpdateOrder = () => {
@@ -59,24 +61,24 @@ const Index = () => {
       address: address,
       note: note,
     };
-    
-    UpDateOrder(idOrder, dataUpdate)
+
+    UpDateOrder(idOrder, dataUpdate);
     toast.success("Cập nhập thành công", {
       position: toast.POSITION.TOP_RIGHT,
     });
     window.location.reload();
-
-    axios.post(`${process.env.REACT_APP_URL_LOCALHOST}/api/order/orderSuccess`, {idOrder})
+    if (status === "Giao hàng thành công")
+      axios.post(
+        `${process.env.REACT_APP_URL_LOCALHOST}/api/order/orderSuccess`,
+        { idOrder }
+      );
   };
 
   const handleSearchItemOrder = () => {
     if (orderItem) {
-      GetOrder(orderItem)
-        .then((res) => {
-          console.log("hihi", [res.data]);
-          setListOrders([res.data]);
-
-        });
+      GetOrder(orderItem).then((res) => {
+        setListOrders([res.data]);
+      });
     } else {
       alert("Đơn hàng không tồn tại!");
     }
@@ -84,23 +86,22 @@ const Index = () => {
 
   const handleGetAllOrder = () => {
     GetAllOrder().then((res) => setListOrders(res.data));
-  }
+  };
 
   const onOptionChangeHandler = (e) => {
     e.preventDefault();
     // setCategory(event.target.value)
-    setStatus(e.target.value)
+    setStatus(e.target.value);
   };
 
   useEffect(() => {
     if (idOrder)
-    GetOrder(idOrder)
-        .then((res) => {
-          setStatus(res.data.status);
-          setAddress(res.data.address);
-          setNote(res.data.note);
-          setProductOrders(res.data.productOrder);
-        });
+      GetOrder(idOrder).then((res) => {
+        setStatus(res.data.status);
+        setAddress(res.data.address);
+        setNote(res.data.note);
+        setProductOrders(res.data.productOrder);
+      });
   }, [idOrder]);
 
   useEffect(() => {
@@ -114,7 +115,8 @@ const Index = () => {
         <NavBar />
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
-          <CreateOrder /><br />
+            <CreateOrder />
+            <br />
             <button onClick={handleGetAllOrder}>Danh Sách Đơn</button>
           </div>
           <div>
@@ -128,13 +130,13 @@ const Index = () => {
               style={{
                 textAlign: "center",
                 fontWeight: "bold",
-                fontSize: "18px",
+                fontSize: "15px",
               }}
             >
               <th>STT</th>
               <th>Mã Đơn Hàng</th>
               <th>Tình Trạng</th>
-              <th>Địa Chỉ Nhận Hàng</th>
+              <th>Địa Chỉ Nhận</th>
               <th>Ghi Chú</th>
               <th>Mã Khách Hàng</th>
               <th>Sản Phẩm Đặt</th>
@@ -148,6 +150,7 @@ const Index = () => {
                 key={order._id.toString()}
                 //   className="inforProduct"
                 //   id="product"
+                style={{ fontSize: "13px" }}
               >
                 <th>{index}</th>
                 <th>{order._id}</th>
@@ -231,19 +234,16 @@ const Index = () => {
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           /><br></br> */}
-       
-       <div class="col-xs-2">
 
-            <select onChange={onOptionChangeHandler} style={{width:"auto"}}>
+          <div class="col-xs-2">
+            <select onChange={onOptionChangeHandler} style={{ width: "auto" }}>
               <option>Tình Trạng</option>
-              {
-                options.map((item) => (
-                     <option>{item}</option>
-                ))
-              }
+              {options.map((item) => (
+                <option>{item}</option>
+              ))}
             </select>
-       </div>
-      
+          </div>
+
           <br></br>
           <Form.Control
             type="text"

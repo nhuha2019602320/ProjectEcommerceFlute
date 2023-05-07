@@ -4,19 +4,19 @@ const { findByIdAndDelete } = require("../models/user.model");
 const { productValidate } = require("../validations/productValidation");
 
 const productController = {
-//   addProduct : async(req, res) => {
-//       const newProduct = new productModel(req.body);
-//       const saveProduct = await newProduct.save();
-//       if(req.body.category) {
-//           const categoryCode = categoryModel.findById(req.body.category);
-//           await categoryCode.updateOne({
-//               $push: {
-//                   products: saveProduct._id
-//               }
-//           })
-//           res.status(200).json(saveProduct);
-//       }
-//   },
+  //   addProduct : async(req, res) => {
+  //       const newProduct = new productModel(req.body);
+  //       const saveProduct = await newProduct.save();
+  //       if(req.body.category) {
+  //           const categoryCode = categoryModel.findById(req.body.category);
+  //           await categoryCode.updateOne({
+  //               $push: {
+  //                   products: saveProduct._id
+  //               }
+  //           })
+  //           res.status(200).json(saveProduct);
+  //       }
+  //   },
   createProduct: async (req, res) => {
     try {
       const { err } = productValidate(req.body);
@@ -38,16 +38,16 @@ const productController = {
       newProduct.description = req.body.description;
       newProduct.category = req.body.category;
 
-        const saveProduct = await newProduct.save();
-        if (req.body.category) {
-            const categoryCode = categoryModel.findById(req.body.category);
-            await categoryCode.updateOne({
-              $push: {
-                products: saveProduct._id,
-              },
-            });
-          }
-        res.send(saveProduct);
+      const saveProduct = await newProduct.save();
+      if (req.body.category) {
+        const categoryCode = categoryModel.findById(req.body.category);
+        await categoryCode.updateOne({
+          $push: {
+            products: saveProduct._id,
+          },
+        });
+      }
+      res.send(saveProduct);
     } catch (error) {
       res.status(400).json(error);
     }
@@ -55,8 +55,7 @@ const productController = {
   getProduct: async (req, res) => {
     try {
       const product = await productModel.findById({
-        // productCode: req.body.productCode.toString(),
-        _id: req.params.id
+        _id: req.params.id,
       });
 
       res.send(product);
@@ -86,15 +85,15 @@ const productController = {
     }
   },
   editProduct: async (req, res) => {
-    if(
-        req.body.productCode === undefined ||
-        req.body.nameProduct === undefined ||
-        req.body.price === undefined || 
-        req.body.imageProduct === undefined ||
-        req.body.quantity === undefined ||
-        req.body.description === undefined
-      )
-        return res.send("err")
+    if (
+      req.body.productCode === undefined ||
+      req.body.nameProduct === undefined ||
+      req.body.price === undefined ||
+      req.body.imageProduct === undefined ||
+      req.body.quantity === undefined ||
+      req.body.description === undefined
+    )
+      return res.send("err");
     productModel.findByIdAndUpdate(
       await { _id: req.params.id },
       {
@@ -116,30 +115,26 @@ const productController = {
       }
     );
   },
-  searchProduct : async (req, res) => {
+  searchProduct: async (req, res) => {
     try {
       const valueSearch = req.params.key;
       const arr = valueSearch.split(" ");
       for (var i = 0; i < arr.length; i++) {
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
-        
       }
       const str2 = arr.join(" ");
-      console.log("value",str2);
-  
-        const result = await productModel.find({
-          "$or" : [
-            {
-              nameProduct: {$regex: str2}
-            }
-          ]
-        })
-        res.send(result)     
+      const result = await productModel.find({
+        $or: [
+          {
+            nameProduct: { $regex: str2 },
+          },
+        ],
+      });
+      res.send(result);
     } catch (error) {
-      res.send(error)
+      res.send(error);
     }
-    // console.log("key", req.params.key.toUpperCase())
-  }
+  },
 };
 
 module.exports = productController;

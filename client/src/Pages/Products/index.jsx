@@ -44,9 +44,10 @@ const Index = () => {
 
   const handleDelete = (e, id, index) => {
     e.preventDefault();
-    DeleteProduct(id);
-
-    setProducts(products.filter((o, i) => index !== i));
+    if (window.confirm("Xác nhận xóa sản phẩm") == true) {
+      DeleteProduct(id);
+      setProducts(products.filter((o, i) => index !== i));
+    } 
   };
 
   const handleUpdateProduct = () => {
@@ -133,7 +134,7 @@ const Index = () => {
               style={{
                 textAlign: "center",
                 fontWeight: "bold",
-                fontSize: "18px",
+                fontSize: "15px",
               }}
             >
               <th>STT</th>
@@ -152,6 +153,7 @@ const Index = () => {
                 key={product._id.toString()}
                 className="inforProduct"
                 id="product"
+                style={{ fontSize: "13px" }}
               >
                 <th>{index}</th>
                 <th>{product.productCode}</th>
@@ -301,9 +303,9 @@ const Index = () => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary">Close</Button>
-          <Button variant="primary" onClick={handleUpdateProduct}>
-            Save Changes
+          <Button variant="secondary">Hủy</Button>
+          <Button variant="outline-success" onClick={handleUpdateProduct}>
+            Cập nhập
           </Button>
         </Modal.Footer>
       </Modal>

@@ -83,7 +83,7 @@ const Index = () => {
                         size="small"
                         onClick={() => dispatch(AddCard(item))}
                       >
-                        Thêm giỏ hàng
+                        Mua Hàng
                       </Button>
                       <Button size="small">
                         <svg

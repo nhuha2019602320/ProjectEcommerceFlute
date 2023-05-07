@@ -5,7 +5,6 @@ const nodemailer = require("nodemailer");
 const orderController = {
   createOrder: async (req, res) => {
     try {
-      // console.log("reqBody", req.body)
       if (req.body.user === undefined || req.body.address === undefined)
         return res.send("iscorrect");
       const email = await req.body.email;
@@ -17,11 +16,8 @@ const orderController = {
         (newOrder.user = req.body.user);
 
       await newOrder.save();
-      console.log("new", newOrder);
       res.send(newOrder);
       try {
-        console.log("newOrder", newOrder.productOrder);
-        // console.log("id", req.boy.)
         const userOrder = await userModel.findOneAndUpdate(
           { _id: req.body.user },
           {
@@ -30,7 +26,6 @@ const orderController = {
             },
           }
         );
-        console.log("first", userOrder);
 
         let transporter = nodemailer.createTransport({
           service: "gmail",
@@ -68,23 +63,6 @@ const orderController = {
     try {
       const allOrder = await orderModel.find({}).exec();
       res.send(allOrder);
-      //     const listOrderSuccess = await orderModel.find({status: 'Giao hàng thành công'}).exec();
-      //     const listOrderFinish =[]
-      //     const result = listOrderSuccess.map((item) => item.productOrder);
-
-      //     for(let i =0; i< result.length; i++) {
-      //         // console.log("bugvkl", result[i])
-      //         const x = result[i].map((item) => {
-      //             listOrderFinish.push(item);
-      //         })
-      //     }
-      //     console.log("itemAfterPush", listOrderFinish);
-      //     const products = await productModel.find({}).exec();
-      //     // console.log("xxx", products)
-      //    const findItem = products.filter((item) => {
-      //         return item._id === listOrderFinish.map((i) => i._id)
-      //     })
-      //     console.log("result", findItem)
     } catch (error) {
       res.send(error);
     }

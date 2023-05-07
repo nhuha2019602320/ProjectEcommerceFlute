@@ -3,7 +3,6 @@ const { discountValidate } = require("../validations/discountValidation");
 
 const discountController = {
   createDiscount: async (req, res) => {
-    console.log("req.body", req.body)
     const discountExist = await discountModel.findOne({
       percentDiscount: req.body.percentDiscount,
     });
@@ -13,7 +12,7 @@ const discountController = {
     const {err} = discountValidate(req.body.percentDiscount);
 
     if(err) {
-        console.log("lỗi rồi ối zời ơi")
+        console.log("err")
     }
 
     const newDiscount = new discountModel();
@@ -46,7 +45,6 @@ const discountController = {
     try {
       const discount = await discountModel.findById({_id: req.params.id})
       res.send(discount)
-      console.log("discount", discount)  
     } catch (error) {
       res.send("not existed in db")
     }

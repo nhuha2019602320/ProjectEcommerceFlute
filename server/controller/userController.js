@@ -59,12 +59,13 @@ const userController = {
         )
     },
     loginUser : async (req, res) =>  {
+        console.log("request", req.body)
         try {
             const user = await userModel.findOne({
                 email: req.body.email
             })
             if(!user) {
-                res.status(500).json("not exist in DB");
+              return  res.status(500).json("not exist in DB");
             }
 
                 const decodePassword = await bcrypt.compare(
@@ -139,7 +140,8 @@ const userController = {
                     userName : req.body.userName,
                     email : req.body.email,
                     // password : hashed,
-                    phoneNumber : req.body.phoneNumber                
+                    phoneNumber : req.body.phoneNumber,
+                    admin: req.body.admin               
                 }
             },
             {$upset: true},

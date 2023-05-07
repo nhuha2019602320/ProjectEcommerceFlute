@@ -30,7 +30,7 @@ const CreateNewCategory = () => {
         <button onClick={handleShow}>Tạo Danh Mục</button>
         <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Sửa thông tin danh mục</Modal.Title>
+        <Modal.Title>Tạo danh mục</Modal.Title>
       </Modal.Header>
       <Modal.Body>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
@@ -53,8 +53,8 @@ const CreateNewCategory = () => {
           </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary">Close</Button>
-        <Button variant="primary" onClick={handleCreate}>Tạo danh mục</Button>       
+        <Button variant="secondary">Hủy</Button>
+        <Button variant="outline-success" onClick={handleCreate}>Tạo danh mục</Button>       
       </Modal.Footer>
     </Modal>
     </div>

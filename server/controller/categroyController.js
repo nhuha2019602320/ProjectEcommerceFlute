@@ -26,7 +26,6 @@ const categoryController = {
     }
   },
   getCategory: async (req, res) => {
-    // console.log( await req.body._id.toString(),)
     try {
       const category = await categoryModel.findById({
         _id: req.params.id,
@@ -47,7 +46,6 @@ const categoryController = {
     }
   },
   editCaegory: async (req, res) => {
-   console.log("categoryName--", req.body.categroyName)
    if(req.body.categroyName === undefined)
       return res.send("err")
       categoryModel.findByIdAndUpdate(

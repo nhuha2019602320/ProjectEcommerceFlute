@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import "./Nav.css";
 const NavAccount = () => {
@@ -25,7 +25,7 @@ const NavAccount = () => {
             fillRule="evenodd"
             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
           />
-        </svg>
+        </svg>&ensp;
         {JSON.parse(localStorage.getItem("user"))?.userName ?? ""}
       </div>
       <ul>

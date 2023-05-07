@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AdminPage from "../../Pages/Admin/AdminPage"
+import AdminPage from "../../Pages/Admin/AdminPage";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
 import "./user.css";
@@ -8,7 +8,7 @@ import { DeleteUser, EditUser } from "../../services/user";
 import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import NavBar from "../../Components/NavBar/NavBar"
+import NavBar from "../../Components/NavBar/NavBar";
 const Index = () => {
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
@@ -16,47 +16,68 @@ const Index = () => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [idUserUpdate, setIdUserUpdate] = useState("");
+  const [role, setRole] = useState();
 
   const handleClose = () => setShow(false);
 
   const handleShow = (user) => {
     setShow(true);
-    setIdUserUpdate(user._id)
+    setIdUserUpdate(user._id);
     localStorage.setItem("idUser", user._id);
-    localStorage.setItem("userNeedManager", JSON.stringify(user))
+    localStorage.setItem("userNeedManager", JSON.stringify(user));
   };
 
   const handleDelete = (e, id, index, navigate) => {
     e.preventDefault();
-    DeleteUser(id.toString(), navigate);
-    setUsers(users.filter((o, i) => index !== i));
+    if (window.confirm("Xác nhận xóa") === true) {
+      DeleteUser(id.toString(), navigate);
+      setUsers(users.filter((o, i) => index !== i));
+    }
   };
 
   const handleEditUser = () => {
     const idUser = localStorage.getItem("idUser");
-    if (
-      userName === "" ||
-      email === ""
-    ) {
+    if (userName === "" || email === "") {
       alert("Vui lòng kiểm tra lại thông tin");
     } else {
       const editUser = {
         userName: userName,
         email: email,
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        admin: role,
       };
+      console.log(editUser);
+
       EditUser(idUser, editUser);
-      localStorage.clear();
+      // localStorage.clear();
+      window.location.reload();
     }
   };
+
+  const handleChangeRole = () => {
+    if (role === true) {
+      setRole(!role);
+      alert("Đã gỡ quyền truy cập của tài khoản này ");
+    } else {
+      setRole(!role);
+      alert("Đã cấp quyền truy cập của tài khoản này ");
+    }
+    console.log("first", role);
+  };
+
   useEffect(() => {
-    if(idUserUpdate)
-      axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/user/getOneUser/${idUserUpdate}`).then((res) => {
-        setUserName(res.data.userName)
-        setEmail(res.data.email)
-        setPhoneNumber(res.data.phoneNumber)
-      })
-  },[idUserUpdate])
+    if (idUserUpdate)
+      axios
+        .get(
+          `${process.env.REACT_APP_URL_LOCALHOST}/api/user/getOneUser/${idUserUpdate}`
+        )
+        .then((res) => {
+          setUserName(res.data.userName);
+          setEmail(res.data.email);
+          setPhoneNumber(res.data.phoneNumber);
+          setRole(res.data.admin);
+        });
+  }, [idUserUpdate]);
 
   useEffect(() => {
     axios
@@ -73,7 +94,7 @@ const Index = () => {
       </div>
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
-        <NavBar/>
+        <NavBar />
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr style={{ textAlign: "center" }}>
@@ -96,7 +117,8 @@ const Index = () => {
                 <td>{user.userName}</td>
                 <td>{user.email}</td>
                 <td>{user.phoneNumber}</td>
-                <td>{user.admin.toString()}</td>
+                {/* <td>{user.admin.toString()}</td> */}
+                {user.admin === true ? <td>Admin</td> : <td>Người dùng</td>}
                 <td>
                   <button
                     className="handleBtn"
@@ -148,40 +170,45 @@ const Index = () => {
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Control
-                type="text"
-                placeholder="Tên tài khoản"
-                autoFocus
-                floating
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              /><br></br>           
-          <Form.Control
-                type="email"
-                placeholder="Email"
-                autoFocus
-                floating
-                value={email}
-                // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.email ?? ""}
-                onChange={(e) => setEmail(e.target.value)}
-              /><br></br>           
-          <Form.Control
-                type="text"
-                placeholder="Số điện thoại"
-                autoFocus
-                floating
-                value={phoneNumber}
-                // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.phoneNumber ?? ""}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              /><br></br>                              
+            <Form.Control
+              type="text"
+              placeholder="Tên tài khoản"
+              autoFocus
+              floating
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="email"
+              placeholder="Email"
+              autoFocus
+              floating
+              value={email}
+              // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.email ?? ""}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="text"
+              placeholder="Số điện thoại"
+              autoFocus
+              floating
+              value={phoneNumber}
+              // defaultValue={JSON.parse(localStorage.getItem("userNeedManager"))?.phoneNumber ?? ""}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+            <br></br>
+
+            <button onClick={handleChangeRole}>Cấp quyền</button>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Hủy
           </Button>
-          <Button variant="primary" onClick={handleEditUser}>
-            Save Changes
+          <Button variant="outline-success" onClick={handleEditUser}>
+            Cập Nhập
           </Button>
         </Modal.Footer>
       </Modal>

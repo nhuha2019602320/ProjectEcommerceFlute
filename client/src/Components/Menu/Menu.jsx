@@ -63,7 +63,7 @@ export default function Menu() {
                       to="/introduction"
                       className="nav-dropdown-btn"
                     >
-                      GIỚI THIỆU
+                      PHẢN HỒI
                     </Dropdown.Item>
                     <Dropdown.Item
                       as={Link}
@@ -96,11 +96,11 @@ export default function Menu() {
                 <Nav.Link as={Link} to="/" className="nav-link-btn">
                   SẢN PHẨM
                 </Nav.Link>
+                <Nav.Link as={Link} to="/introduction" className="nav-link-btn">
+                  PHẢN HỒI
+                </Nav.Link>
                 <Nav.Link as={Link} to="/" className="nav-link-btn">
                   TIN TỨC
-                </Nav.Link>
-                <Nav.Link as={Link} to="/introduction" className="nav-link-btn">
-                  GIỚI THIỆU
                 </Nav.Link>
                 <Nav.Link as={Link} to="/contact" className="nav-link-btn">
                   LIÊN HỆ

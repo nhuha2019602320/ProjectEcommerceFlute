@@ -1,24 +1,25 @@
 import "./login.css";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/apiRequest";
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ToastContainer, toast } from 'react-toastify';
+import * as React from "react";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ToastContainer, toast } from "react-toastify";
+import Header from "../../Components/Header/Header";
 
 const theme = createTheme();
 
 export default function Login() {
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,36 +29,42 @@ export default function Login() {
       email: email,
       password: password,
     };
-    loginUser(userLogin, dispatch, navigate);
-    toast.success('Bạn Đã Đăng Nhập Thành Công', {
-      position: toast.POSITION.TOP_RIGHT
-  });
+    if (email === "" || password === "") {
+      toast.error("Bạn chưa điền thông tin", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    } else {
+      loginUser(userLogin, dispatch, navigate);
+      // toast.success("Bạn Đã Đăng Nhập Thành Công", {
+      //   position: toast.POSITION.TOP_RIGHT,
+      // });
+    }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
+      <Header />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-
           <Typography component="h1" variant="h5">
             Đăng nhập vào hệ thống
           </Typography>
-          <Box component="form"  noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -68,17 +75,18 @@ export default function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mật Khẩu"
               type="password"
               id="password"
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
- 
+
             <Button
               type="submit"
               fullWidth
-              variant="contained"
+              // variant="contained"
+              variant="outline-success"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleSubmit}
             >
@@ -98,7 +106,6 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-      
       </Container>
     </ThemeProvider>
   );

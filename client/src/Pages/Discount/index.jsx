@@ -5,7 +5,7 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import { Form, Toast } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import CreateDiscount from "./CreateDiscount";
 import { DeleteDiscount, UpdateDisCount } from "../../services/discount";
 const Index = () => {
@@ -68,7 +68,7 @@ const Index = () => {
               style={{
                 textAlign: "center",
                 fontWeight: "bold",
-                fontSize: "18px",
+                fontSize: "15px",
               }}
             >
               <th>STT</th>
@@ -83,6 +83,7 @@ const Index = () => {
                 key={discount._id.toString()}
                 //   className="inforProduct"
                 //   id="product"
+                style={{fontSize: "13px",}}
               >
                 <th>{index}</th>
                 <th>{discount.discountCode}</th>
@@ -157,7 +158,7 @@ const Index = () => {
           />
           <br></br>
           <Button variant="secondary">Hủy</Button>
-          <Button variant="primary" onClick={handleUpdateDiscount}>
+          <Button variant="outline-success" onClick={handleUpdateDiscount}>
             Sửa Thông Tin
           </Button>
         </Modal.Footer>
