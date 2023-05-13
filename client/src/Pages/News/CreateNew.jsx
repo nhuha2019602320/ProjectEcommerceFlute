@@ -61,7 +61,7 @@ const CreateNew = () => {
             <EditorContent editor={editor} />
           </div>
           <Button variant="secondary">Hủy</Button>
-          <Button variant="primary">Tạo Khuyến Mãi</Button>
+          <Button variant="success">Lưu</Button>
         </Modal.Footer>
       </Modal>
     </div>

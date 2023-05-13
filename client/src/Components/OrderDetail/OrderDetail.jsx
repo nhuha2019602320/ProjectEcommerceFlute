@@ -179,10 +179,10 @@ const OrderDetail = () => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Hủy
             </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
+            <Button variant="outline-success" onClick={handleClose}>
+              Sửa
             </Button>
           </Modal.Footer>
         </Modal>

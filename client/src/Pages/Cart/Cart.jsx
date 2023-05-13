@@ -177,7 +177,7 @@ const Cart = () => {
                     <td>30.000đ</td>
                   </tr>
                   <tr>
-                    <td>Tổng đơn + {discount}% discount</td>
+                    <td>Tổng đơn</td>
                     <td>{Number(totalBill + 30000).toLocaleString()}đ</td>
                   </tr>
                 </Table>

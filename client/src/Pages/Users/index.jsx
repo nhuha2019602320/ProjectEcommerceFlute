@@ -9,6 +9,7 @@ import { Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import NavBar from "../../Components/NavBar/NavBar";
+import CreateUser from "./CreateUser";
 const Index = () => {
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
@@ -95,6 +96,7 @@ const Index = () => {
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
+        <CreateUser/>
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr style={{ textAlign: "center" }}>

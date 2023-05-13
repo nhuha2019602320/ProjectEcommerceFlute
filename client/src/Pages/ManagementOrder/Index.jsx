@@ -9,6 +9,7 @@ import { Form } from "react-bootstrap";
 import CreateOrder from "./CreateOrder";
 import { ToastContainer, toast } from "react-toastify";
 import { GetAllOrder, GetOrder, UpDateOrder } from "../../services/order";
+import { getUserById } from "../../services/user";
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listOrders, setListOrders] = useState([]);
@@ -42,7 +43,7 @@ const Index = () => {
   };
 
   const handleDeleteOrder = (id, index) => {
-    if (window.confirm("Xác nhận xóa sản phẩm") == true) {
+    if (window.confirm("Xác nhận xóa đơn hàng") == true) {
       axios.delete(
         `${process.env.REACT_APP_URL_LOCALHOST}/api/order/deleteOrder/${id}`
       );
@@ -94,6 +95,8 @@ const Index = () => {
     setStatus(e.target.value);
   };
 
+  console.log(getUserById("6458bd52b7574a16c130b348")
+  )
   useEffect(() => {
     if (idOrder)
       GetOrder(idOrder).then((res) => {

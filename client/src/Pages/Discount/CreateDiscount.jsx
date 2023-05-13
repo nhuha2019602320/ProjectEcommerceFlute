@@ -1,36 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Form, Toast } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 const CreateDiscount = () => {
-    const [show, setShow] = useState(false);
-    const [discountCode, setDiscountCode] = useState();
-    const [percentDiscount, setPercentDicount] = useState();
-    const handleClose = () => setShow(false);
-  
-    const handleShow = () => {
-      setShow(true);
-    };
+  const [show, setShow] = useState(false);
+  const [discountCode, setDiscountCode] = useState();
+  const [percentDiscount, setPercentDicount] = useState();
+  const handleClose = () => setShow(false);
 
-    const handleCreateDiscount = () => {
-        const discount = {
-            discountCode: discountCode,
-            percentDiscount: percentDiscount
-        }
-        if(discountCode === "" || percentDiscount === "")
-        toast.error('Kiểm tra lại thông tin  !', {
-            position: toast.POSITION.TOP_RIGHT
-        });
-        axios.post(`${process.env.REACT_APP_URL_LOCALHOST}/api/discount/createDiscount`,discount)
-        window.location.reload(false);
-    }
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const handleCreateDiscount = () => {
+    const discount = {
+      discountCode: discountCode,
+      percentDiscount: percentDiscount,
+    };
+    if (discountCode === "" || percentDiscount === "")
+      toast.error("Kiểm tra lại thông tin  !", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    axios.post(
+      `${process.env.REACT_APP_URL_LOCALHOST}/api/discount/createDiscount`,
+      discount
+    );
+    window.location.reload(false);
+  };
   return (
     <div>
-        <ToastContainer/>
-        <button onClick={handleShow}>Tạo Khuyến mãi</button>
-              <Modal show={show} onHide={handleClose}>
+      <ToastContainer />
+      <button onClick={handleShow}>Tạo Khuyến mãi</button>
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sửa thông tin danh mục</Modal.Title>
         </Modal.Header>
@@ -64,7 +67,7 @@ const CreateDiscount = () => {
         </Modal.Footer>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default CreateDiscount
+export default CreateDiscount;
