@@ -68,21 +68,16 @@ const orderController = {
     }
   },
   orderSuccess: async (req, res) => {
-    console.log(req.body.idOrder);
-    console.log("idOrder", req.body.idOrder)
     const dataOrder = await orderModel.findById(req.body.idOrder);
-    console.log("dataOrder", dataOrder.productOrder);
-    dataOrder.productOrder.forEach( async (item) => {
-     const findProduct =  await productModel.findById(item._id)
-      console.log("huong", findProduct)
-        const updateProduct = await productModel.findByIdAndUpdate(
-            findProduct._id,
-            {
-                quantity: findProduct.quantity - item.quantity,
-            },
-            { new: true }
-        )
-      console.log("itemValue", item);
+    dataOrder.productOrder.forEach(async (item) => {
+      const findProduct = await productModel.findById(item._id);
+      const updateProduct = await productModel.findByIdAndUpdate(
+        findProduct._id,
+        {
+          quantity: findProduct.quantity - item.quantity,
+        },
+        { new: true }
+      );
     });
   },
   getOrder: async (req, res) => {

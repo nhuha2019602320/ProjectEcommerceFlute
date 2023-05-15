@@ -20,7 +20,6 @@ const CreateUser = () => {
   const handleChangeRole = () => {};
 
   const hanldeCreateUser = async () => {
-    console.log(userName, email, password, phoneNumber)
     if (
       !email.match(process.env.REACT_APP_REGEX) &&
       userName !== ""

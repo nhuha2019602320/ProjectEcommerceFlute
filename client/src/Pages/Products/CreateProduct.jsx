@@ -8,7 +8,7 @@ import Modal from "react-bootstrap/Modal";
 import { NewProduct } from "../../services/product";
 import MenuBar from "../../Components/MenuBar/MenuBar";
 import { ToastContainer, toast } from "react-toastify";
-const CreateProduct = () => {
+const CreateProduct = ({ products }) => {
   const [show, setShow] = useState(false);
   const [productCode, setProductCode] = useState("");
   const [nameProduct, setNameProduct] = useState("");
@@ -18,7 +18,6 @@ const CreateProduct = () => {
   const [urlImg, setUrlImg] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-
   const handleClose = () => setShow(false);
 
   const handleShow = () => {
@@ -50,21 +49,31 @@ const CreateProduct = () => {
   });
 
   const createProduct = () => {
-    const product = {
-      productCode: productCode,
-      nameProduct: nameProduct,
-      price: price,
-      imageProduct: urlImg,
-      quantity: quantity,
-      description: description,
-      category: category,
-    };
-    NewProduct(product);
-    toast.success("Success Notification !", {
-      position: toast.POSITION.TOP_RIGHT,
+    var checkProductCode = products.some((e) => {
+      return e.productCode === productCode;
     });
-    setShow(false);
-    window.location.reload(false);
+
+    if (!checkProductCode) {
+      const product = {
+        productCode: productCode,
+        nameProduct: nameProduct,
+        price: price,
+        imageProduct: urlImg,
+        quantity: quantity,
+        description: description,
+        category: category,
+      };
+      NewProduct(product);
+      toast.success("Tạo sản phẩm thành công !", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setShow(false);
+      window.location.reload(false);
+    } else {
+      toast.error("Tồn tại mã sản phẩm", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+    }
   };
 
   const [options, setOptions] = useState([]);

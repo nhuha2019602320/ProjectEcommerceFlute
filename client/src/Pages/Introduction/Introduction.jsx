@@ -114,10 +114,6 @@ const Introduction = () => {
               floating
               onChange={(event) => {
                 setImgProduct(event.target.files[0]);
-                // const formData = new FormData();
-                // formData.append("file", imgProduct);
-                // formData.append("upload_preset", "rahh7f3b");
-                // await axios.post('https://api.cloudinary.com/v1_1/uploadimgvvv/image/upload',formData).then((res) => console.log(res))
               }}
             />
             <br></br>{" "}

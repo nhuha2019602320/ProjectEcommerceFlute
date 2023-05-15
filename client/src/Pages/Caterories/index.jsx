@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AdminPage from "../../Pages/Admin/AdminPage"
+import AdminPage from "../../Pages/Admin/AdminPage";
 import Container from "react-bootstrap/esm/Container";
 import { Form, Toast } from "react-bootstrap";
 import axios from "axios";
@@ -8,95 +8,78 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import NavBar from "../../Components/NavBar/NavBar";
 import Table from "react-bootstrap/Table";
-import { CreateCategory, DeleteCategory, GetAllCategory, UpdateCategory } from "../../services/category";
- import CreateNewCategory from './CreateNewCategory'
+import {
+  CreateCategory,
+  DeleteCategory,
+  GetAllCategory,
+  UpdateCategory,
+} from "../../services/category";
+import CreateNewCategory from "./CreateNewCategory";
 const Index = () => {
   const [show, setShow] = useState(false);
   const [listCategories, setListCategories] = useState([]);
-  const [categoryCode, setCategoryCode] = useState("")
-  const [categroyName, setNameCategory] = useState("")
+  const [categoryCode, setCategoryCode] = useState("");
+  const [categroyName, setNameCategory] = useState("");
   const handleClose = () => setShow(false);
 
   const handleShow = (id) => {
     setShow(true);
-     localStorage.setItem("idCategory", id)
-  }
+    localStorage.setItem("idCategory", id);
+  };
 
   const handleDelete = (id, index) => {
-      if (window.confirm(`Bạn có xác nhận xóa danh mục`) === true) {
-        DeleteCategory(id)
-        setListCategories(listCategories.filter((o, i) => index !== i));
-      }
-  }
+    if (window.confirm(`Bạn có xác nhận xóa danh mục`) === true) {
+      DeleteCategory(id);
+      setListCategories(listCategories.filter((o, i) => index !== i));
+    }
+  };
 
   const handleUpdate = () => {
-      const category = {
-        categoryCode: categoryCode,
-        categroyName: categroyName
-      }
-      if(categoryCode === "" || categroyName ==="")
-        return alert("Bạn chưa điền thông tin")
-      // axios.put(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/updateCategory/${localStorage.getItem("idCategory")}`,category)
-      UpdateCategory(localStorage.getItem("idCategory"), category)
+    const category = {
+      categoryCode: categoryCode,
+      categroyName: categroyName,
+    };
+    if (categoryCode === "" || categroyName === "")
+      return alert("Bạn chưa điền thông tin");
+    else {
+      UpdateCategory(localStorage.getItem("idCategory"), category);
       window.location.reload(false);
-  }
-
-  // const handleCreate = () => {
-  //   document.getElementById("hehe").style.display ="none"
-  //   setCategoryCode("");
-  //   setNameCategory("")
-  //   const newCategory = {
-  //     categoryCode: categoryCode,
-  //     categroyName: categroyName
-  //   }
-
-  //   CreateCategory(newCategory)
-  //   window.location.reload(false);
-  // }
-
-  // useEffect(() => {
-  //   axios.get(`${process.env.REACT_APP_URL_LOCALHOST}/api/category/getCategory/${localStorage.getItem("idCategory")}`)
-  //     .then((res) => {
-  //       setCategoryCode(res.data[0].categoryCode);
-  //       setNameCategory(res.data[0].categroyName)
-  //     })
-  // },[localStorage.getItem("idCategory")])
-
+    }
+  };
   useEffect(() => {
-    GetAllCategory()
-     .then((res) => {
-       setListCategories(res.data)
-     })
- },[])
- return (
-  <div style={{ display: "flex" }}>
-    <AdminPage />
-    <div style={{ maxWidth: "100%" }} className="col-10">
-    <NavBar/>
-    <CreateNewCategory/>
-      <Table striped style={{ marginTop: "30px" }}>
-        <thead>
-          <tr
-            style={{
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: "15px",
-            }}
-          >
-            <th>STT</th>
-            <th>Mã danh mục</th>
-            <th>Tên danh mục</th>
-            <th>Số Lượng</th>
-            <th>Chức năng</th>
-          </tr>
-        </thead>
-        <tbody>
-        {listCategories.map((category, index) => (
+    GetAllCategory().then((res) => {
+      setListCategories(res.data);
+    });
+  }, []);
+  return (
+    <div style={{ display: "flex" }}>
+      <AdminPage />
+      <div style={{ maxWidth: "100%" }} className="col-10">
+        <NavBar />
+        <CreateNewCategory listCategories={listCategories}/>
+        <Table striped style={{ marginTop: "30px" }}>
+          <thead>
+            <tr
+              style={{
+                textAlign: "center",
+                fontWeight: "bold",
+                fontSize: "15px",
+              }}
+            >
+              <th>STT</th>
+              <th>Mã danh mục</th>
+              <th>Tên danh mục</th>
+              <th>Số Lượng</th>
+              <th>Chức năng</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listCategories.map((category, index) => (
               <tr
                 key={category._id.toString()}
                 className="inforProduct"
                 id="product"
-                style={{fontSize: "13px",}}
+                style={{ fontSize: "13px" }}
               >
                 <th>{index}</th>
                 <th>{category.categoryCode}</th>
@@ -141,42 +124,44 @@ const Index = () => {
                 </th>
               </tr>
             ))}
-        </tbody>
-      </Table>
-
-    </div>
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Sửa thông tin danh mục</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Control
-                    type="text"
-                    placeholder="Mã Danh Mục"
-                    autoFocus
-                    floating
-                    // value={categoryCode}
-                    onChange={(e) => setCategoryCode(e.target.value)}
-                    /><br></br>
-          <Form.Control
-                    type="text"
-                    placeholder="Tên Danh mục"
-                    autoFocus
-                    floating
-                    // value={categroyName}
-                    onChange={(e) => setNameCategory(e.target.value)}
-                  /><br></br>
+          </tbody>
+        </Table>
+      </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sửa thông tin danh mục</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+            <Form.Control
+              type="text"
+              placeholder="Mã Danh Mục"
+              autoFocus
+              floating
+              // value={categoryCode}
+              onChange={(e) => setCategoryCode(e.target.value)}
+            />
+            <br></br>
+            <Form.Control
+              type="text"
+              placeholder="Tên Danh mục"
+              autoFocus
+              floating
+              // value={categroyName}
+              onChange={(e) => setNameCategory(e.target.value)}
+            />
+            <br></br>
           </Form.Group>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary">Close</Button>
-        <Button variant="primary" id="hehe" onClick={handleUpdate}>Sửa danh mục</Button>
-          
-      </Modal.Footer>
-    </Modal>
-  </div>
-);
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary">Hủy</Button>
+          <Button variant="outline-success" id="hehe" onClick={handleUpdate}>
+            Sửa danh mục
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
 };
 
 export default Index;

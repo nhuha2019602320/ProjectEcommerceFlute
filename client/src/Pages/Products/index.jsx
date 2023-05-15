@@ -47,7 +47,7 @@ const Index = () => {
     if (window.confirm("Xác nhận xóa sản phẩm") == true) {
       DeleteProduct(id);
       setProducts(products.filter((o, i) => index !== i));
-    } 
+    }
   };
 
   const handleUpdateProduct = () => {
@@ -127,7 +127,7 @@ const Index = () => {
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateProduct />
+        <CreateProduct products={products} />
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr
@@ -216,6 +216,7 @@ const Index = () => {
               {numbers.map((n, i) => (
                 <li
                   className={`page-item ${currentPage === n ? "active" : ""}`}
+                  key={i}
                 >
                   <a
                     href="#"

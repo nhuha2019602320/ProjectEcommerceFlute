@@ -21,7 +21,6 @@ const Cart = () => {
   const login = JSON.parse(localStorage.getItem("user"));
 
   const cartLists = JSON.parse(localStorage.getItem("cartList"));
-  console.log("carList", cartLists)
 
   const dispatch = useDispatch();
 

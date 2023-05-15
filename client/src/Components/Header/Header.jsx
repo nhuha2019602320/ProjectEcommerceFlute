@@ -28,6 +28,7 @@ function ResponsiveAppBar() {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    localStorage.clear()
     navigate("/");
   };
 
@@ -118,7 +119,13 @@ function ResponsiveAppBar() {
 
                 <Dropdown.Menu>
                   {userLogin ? (
-                    <Dropdown.Item onClick={() => navigate("/account")}>
+                    <Dropdown.Item
+                      onClick={() => {
+                        userLogin.userName === "admin"
+                          ? navigate("/admin")
+                          : navigate("/account");
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"

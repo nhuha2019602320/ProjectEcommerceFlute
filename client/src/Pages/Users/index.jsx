@@ -18,7 +18,7 @@ const Index = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [idUserUpdate, setIdUserUpdate] = useState("");
   const [role, setRole] = useState();
-
+  const idUserLogin = JSON.parse(localStorage.getItem("user"))._id;
   const handleClose = () => setShow(false);
 
   const handleShow = (user) => {
@@ -26,18 +26,27 @@ const Index = () => {
     setIdUserUpdate(user._id);
     localStorage.setItem("idUser", user._id);
     localStorage.setItem("userNeedManager", JSON.stringify(user));
+    if (idUserLogin !== "6461ad41d6fdd9b2519594ee") {
+      setShow(false);
+      return alert("Bạn không được phép thao tác trên tài khoản này");
+    }
   };
 
   const handleDelete = (e, id, index, navigate) => {
     e.preventDefault();
-    if (window.confirm("Xác nhận xóa") === true) {
-      DeleteUser(id.toString(), navigate);
-      setUsers(users.filter((o, i) => index !== i));
+    if (idUserLogin !== "6461ad41d6fdd9b2519594ee")
+      alert("Bạn không được phép thao tác trên tài khoản này");
+    else {
+      if (window.confirm("Xác nhận xóa") === true) {
+        DeleteUser(id.toString(), navigate);
+        setUsers(users.filter((o, i) => index !== i));
+      }
     }
   };
 
   const handleEditUser = () => {
     const idUser = localStorage.getItem("idUser");
+
     if (userName === "" || email === "") {
       alert("Vui lòng kiểm tra lại thông tin");
     } else {
@@ -47,10 +56,8 @@ const Index = () => {
         phoneNumber: phoneNumber,
         admin: role,
       };
-      console.log(editUser);
 
       EditUser(idUser, editUser);
-      // localStorage.clear();
       window.location.reload();
     }
   };
@@ -63,7 +70,6 @@ const Index = () => {
       setRole(!role);
       alert("Đã cấp quyền truy cập của tài khoản này ");
     }
-    console.log("first", role);
   };
 
   useEffect(() => {
@@ -96,7 +102,7 @@ const Index = () => {
       <AdminPage />
       <div style={{ maxWidth: "100%" }} className="col-10">
         <NavBar />
-        <CreateUser/>
+        <CreateUser />
         <Table striped style={{ marginTop: "30px" }}>
           <thead>
             <tr style={{ textAlign: "center" }}>

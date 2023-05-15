@@ -24,7 +24,6 @@ const userController = {
         newUser.email = req.body.email;
         newUser.password = hashed;
         newUser.phoneNumber = req.body.phoneNumber;
-        console.log("ress", req.body)
         try {
             const user = await newUser.save();
             res.send(user)
@@ -59,7 +58,6 @@ const userController = {
         )
     },
     loginUser : async (req, res) =>  {
-        console.log("request", req.body)
         try {
             const user = await userModel.findOne({
                 email: req.body.email
@@ -77,8 +75,6 @@ const userController = {
                 if(user && decodePassword) {
                     const asccessToken = userController.genergateAccessToken(user);
                     const refreshToken = userController.genergateRefreshToken(user)
-                    console.log("token", asccessToken);
-                    console.log("refresh", refreshToken);
                     res.cookie("refreshToken", refreshToken, {
                         // httpOnly: true,
                         // secure: false,
