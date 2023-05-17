@@ -38,7 +38,7 @@ const Cart = () => {
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <h2>Chưa Có Sản Phẩm Nào Trong Giỏ Hàng</h2>
           <Button variant="outline-success" onClick={() => navigate("/")}>
-            Tiếp Túc Mua Hàng
+            Tiếp Tục Mua Hàng
           </Button>
         </div>
       </div>

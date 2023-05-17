@@ -28,7 +28,7 @@ export default function Menu() {
         fluid
         style={{ minHeight: "40px", backgroundColor: "#34a853" }}
       >
-        <Row className="nav__container nav-dropdown__row">
+        <Row className="nav__container nav-dropdown__row" style={{marginLeft:"500px"}}>
           <Col md={9} sm={6} xs={6} className="nav-dropdown__col">
             <Navbar style={{ padding: "0" }}>
               <Nav>
@@ -51,16 +51,10 @@ export default function Menu() {
                     >
                       DANH MỤC
                     </Dropdown.Item>
+
                     <Dropdown.Item
                       as={Link}
-                      to="/"
-                      className="nav-dropdown-btn"
-                    >
-                      TIN TỨC
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      as={Link}
-                      to="/introduction"
+                      to="/feedback"
                       className="nav-dropdown-btn"
                     >
                       PHẢN HỒI
@@ -72,15 +66,8 @@ export default function Menu() {
                     >
                       LIÊN HỆ
                     </Dropdown.Item>
-                    <Dropdown.Item
-                    
-                      className="nav-dropdown-btn"
-                    >
-                      <a onClick={() => navigate("/cart")}>
-
-
-                      GIỎ HÀNG
-                      </a>
+                    <Dropdown.Item className="nav-dropdown-btn">
+                      <a onClick={() => navigate("/cart")}>GIỎ HÀNG</a>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -96,12 +83,10 @@ export default function Menu() {
                 <Nav.Link as={Link} to="/" className="nav-link-btn">
                   SẢN PHẨM
                 </Nav.Link>
-                <Nav.Link as={Link} to="/introduction" className="nav-link-btn">
+                <Nav.Link as={Link} to="/feedback" className="nav-link-btn">
                   PHẢN HỒI
                 </Nav.Link>
-                <Nav.Link as={Link} to="/" className="nav-link-btn">
-                  TIN TỨC
-                </Nav.Link>
+
                 <Nav.Link as={Link} to="/contact" className="nav-link-btn">
                   LIÊN HỆ
                 </Nav.Link>
